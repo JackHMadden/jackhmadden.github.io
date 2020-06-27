@@ -2186,7 +2186,7 @@ input, select, textarea {
 	}
 
 		header.major:after {
-			background: #e44c65;
+			background: #2e4e6e;
 			content: '';
 			display: inline-block;
 			height: 0.2em;
@@ -3139,15 +3139,15 @@ input, select, textarea {
 		}
 
 		.spotlight.style1 .content {
-			border-color: #1e2e3e;
+			border-color: #2e4e6e;
 		}
 
 		.spotlight.style2 .content {
-			border-color: #1e2e3e;
+			border-color: #2e4e6e;
 		}
 
 		.spotlight.style3 .content {
-			border-color: #1e2e3e;
+			border-color: #2e4e6e;
 		}
 
 		.spotlight.inactive .content {
