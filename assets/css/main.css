@@ -2898,7 +2898,7 @@ input, select, textarea {
 		input[type="reset"].primary,
 		input[type="button"].primary,
 		.button.primary {
-			background-color: #e44c65;
+			background-color: #1e2e3e;
 			box-shadow: none;
 			color: #ffffff !important;
 		}
@@ -2907,14 +2907,14 @@ input, select, textarea {
 			input[type="reset"].primary:hover,
 			input[type="button"].primary:hover,
 			.button.primary:hover {
-				background-color: #e76278;
+				background-color: #142638;
 			}
 
 			input[type="submit"].primary:active,
 			input[type="reset"].primary:active,
 			input[type="button"].primary:active,
 			.button.primary:active {
-				background-color: #e13652;
+				background-color: #1f5182;
 			}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
@@ -3139,15 +3139,15 @@ input, select, textarea {
 		}
 
 		.spotlight.style1 .content {
-			border-color: #e44c65;
+			border-color: #1e2e3e;
 		}
 
 		.spotlight.style2 .content {
-			border-color: #5480f1;
+			border-color: #1e2e3e;
 		}
 
 		.spotlight.style3 .content {
-			border-color: #39c088;
+			border-color: #1e2e3e;
 		}
 
 		.spotlight.inactive .content {
