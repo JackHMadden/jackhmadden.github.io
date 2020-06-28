@@ -1,4 +1,6 @@
-					<h1 id="logo"><a href="index.html">Home</a></h1>
+document.write('\
+\
+				<h1 id="logo"><a href="index.html">Home</a></h1>
 					<nav id="nav">
 						<ul>
 							<!-- <li><a href="index.html">Home</a></li> -->
@@ -32,3 +34,6 @@
 							</li>
 						</ul>
 					</nav>
+	       \
+\
+');
