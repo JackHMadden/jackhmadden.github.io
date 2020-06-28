@@ -14,7 +14,8 @@
 	</head>
 	<body class="is-preload landing">
 		<div id="page-wrapper">
-			{% include header.html %}
+
+			<object name="header" type="text/html" data="/_includes/header.html"></object>
 			<!-- Header -->
 
 
@@ -168,7 +169,12 @@
 				</section> -->
 
 			<!-- Footer -->
-			{% include footer.html %}
+			<script src="jquery.js"></script>
+        <script>
+            $(function(){
+                $("#includedContent").load("/_includes/footer.html");
+            });
+        </script>
 
 		</div>
 
