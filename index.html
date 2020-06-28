@@ -4,6 +4,14 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+$(function(){
+$("#header-template").load("header.html");
+});
+</script>
+
 <html>
 	<head>
 		<title>Jack Madden</title>
@@ -16,9 +24,7 @@
 		<div id="page-wrapper">
 
 			<!-- Header -->
-			<header id="header">
-        			<script src="header.js"></script>
-    			</header>
+			<div id="header-template"><!--Your header.html placeholder--></div>
 
 			<!-- Banner -->
 				<section id="banner">
