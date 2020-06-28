@@ -4,14 +4,6 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script>
-$(function(){
-$("#header-template").load("header.html");
-});
-</script>
-
 <html>
 	<head>
 		<title>Jack Madden</title>
@@ -176,14 +168,7 @@ $("#header-template").load("header.html");
 				</section> -->
 
 			<!-- Footer -->
-				<footer id="footer">
-				<script src="jquery.js"></script>
-       					<script>
-            					$(function(){
-                				$("#includedContent").load("_includes/footer.html");
-            					});
-       					</script>
-				</footer>
+			<div id="footer-template"><!--Your footer.html placeholder--></div>
 
 		</div>
 
@@ -196,6 +181,14 @@ $("#header-template").load("header.html");
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			
+			<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+			<script>
+			$(function(){
+			$("#header-template").load("header.html");
+			$("#footer-template").load("footer.html");
+			});
+			</script>
 
 	</body>
 </html>
