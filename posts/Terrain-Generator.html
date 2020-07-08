@@ -144,12 +144,12 @@ ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, 
 
 									</code></pre>
 									
-									 <img src="/images/terrain-generator/map7.jpg" alt="map">
+									 <img src="/images/terrain-generator/map7.jpg" alt="map" class="center">
 									
 									<p align="left">These maps turned out well for what I wanted though the biggest challenge faced was managing the size. A detailed map would require an order, n, of 10 or 11. 10 was manageable but at 2049x2048 pixels order 11 was taking ages on my computer.
-
+									<br>
 									I did look into parallelizing the Do loops with ParallelDo[] but it seems the sparse arrays make this impossible or I couldn't find the right solution.
-
+									<br>
 									I was able to come up with a solution that worker for me and reduced the time significantly. My main purpose for this is to make global maps that get wrapped onto a sphere. A standard projection just needs an image with an aspect ratio of roughly 2:1. A limitation of the diamond-square algorithm is that it needs to have sides of 2^n+1 pixels but actually it can be 2^n+1 in one direction and (2^n)/2+1 in the other meaning I can make 2:1 maps with a slight code modification. Essentially all I needed to do was change every instance where the code calls is changing in the north-south direction and asks for the size (2^n+1) I just have to tell it the half size ((2^n)/2+1).
 									</p>
 									
