@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<!--
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Jack Madden - Template</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+    
+	</head>
+	<body class="is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+			<div id="header-template"><!--Your header.html placeholder--></div>
+
+			<!-- Main -->
+				<div id="main" class="wrapper style1">
+					<div class="container">
+						<header class="major">
+							<h2>Template</h2>
+							<!--<p></p>-->
+						</header>
+
+						<!-- Content -->
+							<section id="content">
+									<p></p>
+									
+									<pre>
+										<code>
+arraymapmaker[order_, initialjitter1_, initialjitter2_, 
+  jitterfunction1_, jitterfunction2_, read_, filename_] := 
+ Module[{size, base, mid, map, new, dimlist, squarecorners, 
+   diamondcorners, dim, file, jitter1, jitter2, initialjitter, 
+   cornerx, cornery},
+  
+  size = 2^order + 1;
+  initialjitter := RandomReal[{initialjitter1, initialjitter2}];
+  map = SparseArray[{{1, 1} -> initialjitter, {size, size - 1} -> 
+      0, {1, size - 1} -> 0, {size, 1} -> initialjitter}];
+  mid[n_] := (n + 1)/2;
+  dimlist = Reverse[Table[2^i + 1, {i, 1, order}]];
+  file = filename;
+  
+  Do[
+   dim = dimlist[[i]];
+   squarecorners = 
+    Flatten[Table[{y (dim - 1) + 1, x (dim - 1) + 1}, {y, 
+       0, (size - 1)/(dim - 1) - 1, 1}, {x, 
+       0, (size - 1)/(dim - 1) - 1, 1}], 1];
+   diamondcorners = 
+    DeleteDuplicates[
+     Join[Flatten[
+       Table[{y (dim - 1) + 1, Mod[x (dim - 1) + 1, size - 1, 1]}, {y,
+          0, (size - 1)/(dim - 1), 1}, {x, 0, (size - 1)/(dim - 1), 
+         1}], 1], 
+      Flatten[Table[{y (dim - 1) + 1 - 1 + mid[dim], 
+         x (dim - 1) + 1 - 1 + mid[dim]}, {y, 
+         0, (size - 1)/(dim - 1) - 1, 1}, {x, 
+         0, (size - 1)/(dim - 1) - 1, 1}], 1]]];
+   jitter1 = jitterfunction1;
+   jitter2 = jitterfunction2;
+   
+   Do[
+    cornery = squarecorners[[i, 1]];
+    cornerx = squarecorners[[i, 2]];
+    new = (map[[cornery, cornerx]] + 
+         map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]] + 
+         map[[cornery - 1 + dim, cornerx]] + 
+         map[[cornery - 1 + dim, 
+          Mod[cornerx - 1 + dim, size - 1, 1]]])/4. + 
+      RandomReal[{jitter1, jitter2}];
+    (map[[cornery - 1 + mid[dim], cornerx - 1 + mid[dim]]] = #) &@
+     new;
+    
+    , {i, 1, Length[squarecorners]}];
+   If[read == 1, Export[file, map, "HarwellBoeing"]];
+   Print["Completed Squares for dimension  " <> ToString[dimlist[[i]]]]
+    
+    Do[
+     cornery = diamondcorners[[i, 1]];
+     cornerx = diamondcorners[[i, 2]];
+     
+     If[(cornery - 1 + mid[dim]) > size,(*southpole*)
+      new =
+       (map[[cornery, cornerx]]
+          + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
+         (*+map[[cornery+1-mid[dim],Mod[cornerx-1+mid[dim],size-1,
+         1]]]*))
+        /2.(*+RandomReal[{jitter1,jitter2}]*),
+      
+      If[cornery + 1 - mid[dim] <= 0,(*northpole*)
+       new =
+        (map[[cornery, cornerx]]
+           + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
+          (*+map[[cornery-1+mid[dim],Mod[cornerx-1+mid[dim],size-1,
+          1]]]*))
+         /2.(*+RandomReal[{jitter1,jitter2}]*),
+       
+       new =
+        (map[[cornery, cornerx]]
+            + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
+            + 
+            map[[cornery - 1 + mid[dim], 
+             Mod[cornerx - 1 + mid[dim], size - 1, 1]]]
+            + 
+            map[[cornery + 1 - mid[dim], 
+             Mod[cornerx - 1 + mid[dim], size - 1, 1]]])
+          /4. + RandomReal[{jitter1, jitter2}]]];
+     (map[[cornery, Mod[cornerx - 1 + mid[dim], size - 1, 1]]] = #) &@
+      new;
+     ,
+     {i, 1, Length[diamondcorners]}];
+   If[read == 1, Export[file, map, "HarwellBoeing"]];
+   Print["Completed dimension " <> ToString[dimlist[[i]]] <> " of " <>
+      ToString[dimlist] <> " at " <> ToString[DateString[]]],
+   {i, 1, Length[dimlist]}];
+  ]
+										</code>
+									</pre>
+									
+									<p>Here is an example of it being run. The options are:<\p>
+										<ul style="margin-left: auto; margin-right: auto; width:75%;">
+											<li>order of size, n, determines pixel dimensions of map at 2^n+1 pixels per side</li>
+											<li>lower bound on the range of initial jitter</li>
+											<li>upper bound on the range of initial jitter</li>
+											<li>lower bound on jitter function</li>
+											<li>upper bound on jitter function, jitter is a random real between the lower and upper bounds</li>
+											<li>tell the code if you want it to save the file will each iteration, 1 if you do</li>
+											<li>path to a file you want to save your sparse array, .cua file recommended, if you choose a .txt, .tab, or .csv it will take a while to write big files.</li>
+										</ul>
+
+
+									
+									<p align="center"><a href="https://docs.google.com/spreadsheets/d/1qnd-oXXOUhoim40Epf3DEhoq4eGK8FZzjXtNK96oKxg/edit?usp=sharing" class="button small">Data</a></p>
+										
+
+									<p align="center"><a href="https://tompkinscountyny.gov/files2/health/chs/covid19/Timeline-Covid19-Response-Tompkins-EOC.pdf" class="button small">Tompkins County Response Document (pdf)</a></p>
+										
+									<p align="center"><iframe width="600" height="371" seamless="" frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRFq8DulfPXKp8UYJwyatQS63pHRxk-BdMLiX8OKhFUUEOh23owTz3fRWwVpaXKosH_ez1Zn3te-SV-/pubchart?oid=415771410&amp;format=interactive"></iframe></p>
+									
+                                                                        <p style="margin-left: auto; margin-right: auto; width: 75%;" align="left">3-day change over time represents the change in the number of active cases averaged over a 3-day period. This is meant to represent how the number of active cases is changing over time and in which direction. Positive change means cases are increasing, negative means cases are decreasing.</p>
+										
+									<p align="center"><iframe width="960" height="600" seamless="" frameborder="0" scrolling="no" src="https://bao.arcgis.com/covid-19/jhu/county/36109.html"></iframe></p>
+										
+									<p align="center"><iframe src="/pdfs/outbreak.pdf#toolbar=0" width="840" height="700" frameborder="0" scrolling="no"></iframe></p>								
+								
+							</section>
+
+					</div>
+				</div>
+
+			<!-- Footer -->
+			<div id="footer-template"><!--Your footer.html placeholder--></div>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="/assets/js/jquery.min.js"></script>
+			<script src="/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/assets/js/jquery.dropotron.min.js"></script>
+			<script src="/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/assets/js/browser.min.js"></script>
+			<script src="/assets/js/breakpoints.min.js"></script>
+			<script src="/assets/js/util.js"></script>
+			<script src="/assets/js/main.js"></script>
+			<!--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>-->
+			<script>
+			$(function(){
+			$("#header-template").load("/header.html");
+			$("#footer-template").load("/footer.html");
+			});
+			</script>
+
+	</body>
+</html>
