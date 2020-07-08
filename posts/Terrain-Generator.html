@@ -11,7 +11,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="/assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
-    
+		<style>
+		p {
+  			margin-left: auto;
+  			margin-right: auto;
+  			width: 75%;
+			text-align: left;
+		}
+		</style>
 	</head>
 	<body class="is-preload">
 		<div id="page-wrapper">
@@ -33,16 +40,13 @@
 									
 									<pre>
 										<code>
-arraymapmaker[order_, initialjitter1_, initialjitter2_, 
-  jitterfunction1_, jitterfunction2_, read_, filename_] := 
- Module[{size, base, mid, map, new, dimlist, squarecorners, 
-   diamondcorners, dim, file, jitter1, jitter2, initialjitter, 
-   cornerx, cornery},
+arraymapmaker[order_, initialjitter1_, initialjitter2_, jitterfunction1_, jitterfunction2_, read_, filename_] := 
+ 
+ Module[{size, base, mid, map, new, dimlist, squarecorners, diamondcorners, dim, file, jitter1, jitter2, initialjitter, cornerx, cornery},
   
   size = 2^order + 1;
   initialjitter := RandomReal[{initialjitter1, initialjitter2}];
-  map = SparseArray[{{1, 1} -> initialjitter, {size, size - 1} -> 
-      0, {1, size - 1} -> 0, {size, 1} -> initialjitter}];
+  map = SparseArray[{{1, 1} -> initialjitter, {size, size - 1} -> 0, {1, size - 1} -> 0, {size, 1} -> initialjitter}];
   mid[n_] := (n + 1)/2;
   dimlist = Reverse[Table[2^i + 1, {i, 1, order}]];
   file = filename;
@@ -50,19 +54,16 @@ arraymapmaker[order_, initialjitter1_, initialjitter2_,
   Do[
    dim = dimlist[[i]];
    squarecorners = 
-    Flatten[Table[{y (dim - 1) + 1, x (dim - 1) + 1}, {y, 
-       0, (size - 1)/(dim - 1) - 1, 1}, {x, 
-       0, (size - 1)/(dim - 1) - 1, 1}], 1];
+    Flatten[Table[{y (dim - 1) + 1, x (dim - 1) + 1}, 
+    {y, 0, (size - 1)/(dim - 1) - 1, 1}, 
+    {x, 0, (size - 1)/(dim - 1) - 1, 1}], 1];
    diamondcorners = 
     DeleteDuplicates[
      Join[Flatten[
-       Table[{y (dim - 1) + 1, Mod[x (dim - 1) + 1, size - 1, 1]}, {y,
-          0, (size - 1)/(dim - 1), 1}, {x, 0, (size - 1)/(dim - 1), 
-         1}], 1], 
-      Flatten[Table[{y (dim - 1) + 1 - 1 + mid[dim], 
-         x (dim - 1) + 1 - 1 + mid[dim]}, {y, 
-         0, (size - 1)/(dim - 1) - 1, 1}, {x, 
-         0, (size - 1)/(dim - 1) - 1, 1}], 1]]];
+       Table[{y (dim - 1) + 1, Mod[x (dim - 1) + 1, size - 1, 1]}, {y, 0, (size - 1)/(dim - 1), 1}, {x, 0, (size - 1)/(dim - 1), 1}], 1], 
+      Flatten[Table[{y (dim - 1) + 1 - 1 + mid[dim], x (dim - 1) + 1 - 1 + mid[dim]}, 
+	 {y, 0, (size - 1)/(dim - 1) - 1, 1}, 
+	 {x, 0, (size - 1)/(dim - 1) - 1, 1}], 1]]];
    jitter1 = jitterfunction1;
    jitter2 = jitterfunction2;
    
@@ -75,10 +76,10 @@ arraymapmaker[order_, initialjitter1_, initialjitter2_,
          map[[cornery - 1 + dim, 
           Mod[cornerx - 1 + dim, size - 1, 1]]])/4. + 
       RandomReal[{jitter1, jitter2}];
-    (map[[cornery - 1 + mid[dim], cornerx - 1 + mid[dim]]] = #) &@
-     new;
+    (map[[cornery - 1 + mid[dim], cornerx - 1 + mid[dim]]] = #) &@new;
     
     , {i, 1, Length[squarecorners]}];
+    
    If[read == 1, Export[file, map, "HarwellBoeing"]];
    Print["Completed Squares for dimension  " <> ToString[dimlist[[i]]]]
     
@@ -90,17 +91,13 @@ arraymapmaker[order_, initialjitter1_, initialjitter2_,
       new =
        (map[[cornery, cornerx]]
           + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
-         (*+map[[cornery+1-mid[dim],Mod[cornerx-1+mid[dim],size-1,
-         1]]]*))
-        /2.(*+RandomReal[{jitter1,jitter2}]*),
+         (*+map[[cornery+1-mid[dim],Mod[cornerx-1+mid[dim],size-1,1]]]*))/2.(*+RandomReal[{jitter1,jitter2}]*),
       
       If[cornery + 1 - mid[dim] <= 0,(*northpole*)
        new =
         (map[[cornery, cornerx]]
            + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
-          (*+map[[cornery-1+mid[dim],Mod[cornerx-1+mid[dim],size-1,
-          1]]]*))
-         /2.(*+RandomReal[{jitter1,jitter2}]*),
+          (*+map[[cornery-1+mid[dim],Mod[cornerx-1+mid[dim],size-1,1]]]*))/2.(*+RandomReal[{jitter1,jitter2}]*),
        
        new =
         (map[[cornery, cornerx]]
@@ -110,21 +107,18 @@ arraymapmaker[order_, initialjitter1_, initialjitter2_,
              Mod[cornerx - 1 + mid[dim], size - 1, 1]]]
             + 
             map[[cornery + 1 - mid[dim], 
-             Mod[cornerx - 1 + mid[dim], size - 1, 1]]])
-          /4. + RandomReal[{jitter1, jitter2}]]];
-     (map[[cornery, Mod[cornerx - 1 + mid[dim], size - 1, 1]]] = #) &@
-      new;
+             Mod[cornerx - 1 + mid[dim], size - 1, 1]]])/4. + RandomReal[{jitter1, jitter2}]]];
+     (map[[cornery, Mod[cornerx - 1 + mid[dim], size - 1, 1]]] = #) &@new;
      ,
      {i, 1, Length[diamondcorners]}];
    If[read == 1, Export[file, map, "HarwellBoeing"]];
-   Print["Completed dimension " <> ToString[dimlist[[i]]] <> " of " <>
-      ToString[dimlist] <> " at " <> ToString[DateString[]]],
+   Print["Completed dimension " <> ToString[dimlist[[i]]] <> " of " <> ToString[dimlist] <> " at " <> ToString[DateString[]]],
    {i, 1, Length[dimlist]}];
   ]
 										</code>
 									</pre>
 									
-									<p>Here is an example of it being run. The options are:<\p>
+									<p>Here is an example of it being run. The options are:</p>
 										<ul style="margin-left: auto; margin-right: auto; width:75%;">
 											<li>order of size, n, determines pixel dimensions of map at 2^n+1 pixels per side</li>
 											<li>lower bound on the range of initial jitter</li>
