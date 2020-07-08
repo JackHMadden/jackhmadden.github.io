@@ -16,7 +16,11 @@
   			margin-left: auto;
   			margin-right: auto;
   			width: 75%;
-			text-align: left;
+		}
+		ul { 
+  			margin-left: auto;
+  			margin-right: auto;
+  			width: 75%;
 		}
 		</style>
 	</head>
@@ -118,8 +122,8 @@ arraymapmaker[order_, initialjitter1_, initialjitter2_, jitterfunction1_, jitter
 										</code>
 									</pre>
 									
-									<p>Here is an example of it being run. The options are:</p>
-										<ul style="margin-left: auto; margin-right: auto; width:75%;">
+									<p align="left">Here is an example of it being run. The options are:</p>
+										<ul>
 											<li>order of size, n, determines pixel dimensions of map at 2^n+1 pixels per side</li>
 											<li>lower bound on the range of initial jitter</li>
 											<li>upper bound on the range of initial jitter</li>
@@ -129,7 +133,24 @@ arraymapmaker[order_, initialjitter1_, initialjitter2_, jitterfunction1_, jitter
 											<li>path to a file you want to save your sparse array, .cua file recommended, if you choose a .txt, .tab, or .csv it will take a while to write big files.</li>
 										</ul>
 
+									<pre><code>
+									arraymapmaker[8, -1, 1, -100/(i*6)^2, 100/(i*6)^2, 1, "~/map7.cua"]
+									</code><pre>
+									
+									<pre><code>
+map = Import["~/Desktop/map7.cua"];
+normmap = (map - Min[map])/Max[map - Min[map]];
+colorf1 =
+If[# < 0.25, ColorData["DarkTerrain"][0.06],
+If[# < 0.3, ColorData["DarkTerrain"][0.12],
+"DarkTerrain"~Blend~(#)]] &;
 
+ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, Frame -> False]
+
+									</code><pre>
+									
+									 <img src="/images/terrain-generator/map7.jpg" alt="map">
+									
 									
 									<p align="center"><a href="https://docs.google.com/spreadsheets/d/1qnd-oXXOUhoim40Epf3DEhoq4eGK8FZzjXtNK96oKxg/edit?usp=sharing" class="button small">Data</a></p>
 										
