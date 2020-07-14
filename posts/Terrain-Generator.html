@@ -41,11 +41,12 @@
 
 						<!-- Content -->
 							<section id="content">
-									<palign="left">
+									<p align="left">
 										Terrain generation is a fascinating computer problem. Coding fine-tuned randomness can create beautiful results. One technique of terrain generation is called the diamond-square algorithm.
-										<br>
+									</p>
+									<p align="left">
 										<a href="http://stevelosh.com/blog/2016/06/diamond-square/">This post</a> provided me with the understanding to create my own version in Mathematica and has a good explanation of the concept behind the algorithm.
-										</p>
+									</p>
 									<p align="center"><a href="https://github.com/JackHMadden/Terrain_Generator" class="button small">Code on GitHub</a></p>
 								
 									<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FJackHMadden%2FTerrain_Generator%2Fblob%2Fmaster%2Farraymapmaker.snip&style=github&showBorder=on&showLineNumbers=on"></script>
@@ -79,13 +80,15 @@ ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, 
 									</code></pre>
 									
 									<p align="left">These maps turned out well for what I wanted though the biggest challenge faced was managing the size. A detailed map would require an order, n, of 10 or 11. 10 was manageable but at 2049x2048 pixels order 11 was taking ages on my computer.
-									<br>
+									</p>
+									<p align="left">									
 									I did look into parallelizing the Do loops with ParallelDo[] but it seems the sparse arrays make this impossible or I couldn't find the right solution.
-									<br>
+									</p>
+									<p align="left">									
 									I was able to come up with a solution that worker for me and reduced the time significantly. My main purpose for this is to make global maps that get wrapped onto a sphere. A standard projection just needs an image with an aspect ratio of roughly 2:1. A limitation of the diamond-square algorithm is that it needs to have sides of 2^n+1 pixels but actually it can be 2^n+1 in one direction and (2^n)/2+1 in the other meaning I can make 2:1 maps with a slight code modification. Essentially all I needed to do was change every instance where the code calls is changing in the north-south direction and asks for the size (2^n+1) I just have to tell it the half size ((2^n)/2+1).
 									</p>
 								<figure>
- 								 <img src="/images/terrain-generator/map8.jpg" alt="map">
+ 								 <img src="/images/terrain-generator/map8.jpg" alt="map" style="width:400px;">
  								 <figcaption>A 2:1 diamond-square map made in half the time.</figcaption>
 								</figure>
 									<p align="left">My code above has the following features that not all diamond-square algorithms have.</p>
@@ -95,10 +98,11 @@ ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, 
 											<li>I have it save out the sparse array every time it completes the diamond and square passes for each order. This makes it easy to pick up where it left off in case something causes it to crash.</li>
 										</ul>
 									<p align="left">Here are some examples using different color functions.</p>
-								<img src="/images/terrain-generator/map11.jpg" alt="map">
-								<img src="/images/terrain-generator/map12.jpg" alt="map">
-								<img src="/images/terrain-generator/map10.jpg" alt="map">
-								<img src="/images/terrain-generator/map9.jpg" alt="map">
+								<img src="/images/terrain-generator/map11.jpg" alt="map" style="width:500px;">
+								<img src="/images/terrain-generator/map12.jpg" alt="map" style="width:500px;">
+								<img src="/images/terrain-generator/map10.jpg" alt="map" style="width:500px;">
+								<img src="/images/terrain-generator/map12.jpg" alt="map" style="width:500px;">
+								<p></p>
 									<p align="left">You’re also able to make bump maps and ocean masks very easily if you need to. A bump map would simply be the Automatic color function to give height (may need to invert depending on your own colors) and an ocean mask would be a color function that sets black to anything under your ocean elevation and white to everything else.</p>
 								<img src="/images/terrain-generator/colormaskbump.jpg" alt="map">
 							</section>
