@@ -41,89 +41,16 @@
 
 						<!-- Content -->
 							<section id="content">
-									<p></p>
-									<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fpytorch%2Fpytorch%2Fblob%2Fmaster%2Ftorch%2Fnn%2Fcpp.py&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on"></script>
-									<pre>
-										<code>
-arraymapmaker[order_, initialjitter1_, initialjitter2_, jitterfunction1_, jitterfunction2_, read_, filename_] := 
- 
- Module[{size, base, mid, map, new, dimlist, squarecorners, diamondcorners, dim, file, jitter1, jitter2, initialjitter, cornerx, cornery},
-  
-  size = 2^order + 1;
-  initialjitter := RandomReal[{initialjitter1, initialjitter2}];
-  map = SparseArray[{{1, 1} -> initialjitter, {size, size - 1} -> 0, {1, size - 1} -> 0, {size, 1} -> initialjitter}];
-  mid[n_] := (n + 1)/2;
-  dimlist = Reverse[Table[2^i + 1, {i, 1, order}]];
-  file = filename;
-  
-  Do[
-   dim = dimlist[[i]];
-   squarecorners = 
-    Flatten[Table[{y (dim - 1) + 1, x (dim - 1) + 1}, 
-    {y, 0, (size - 1)/(dim - 1) - 1, 1}, 
-    {x, 0, (size - 1)/(dim - 1) - 1, 1}], 1];
-   diamondcorners = 
-    DeleteDuplicates[
-     Join[Flatten[
-       Table[{y (dim - 1) + 1, Mod[x (dim - 1) + 1, size - 1, 1]}, {y, 0, (size - 1)/(dim - 1), 1}, {x, 0, (size - 1)/(dim - 1), 1}], 1], 
-      Flatten[Table[{y (dim - 1) + 1 - 1 + mid[dim], x (dim - 1) + 1 - 1 + mid[dim]}, 
-	 {y, 0, (size - 1)/(dim - 1) - 1, 1}, 
-	 {x, 0, (size - 1)/(dim - 1) - 1, 1}], 1]]];
-   jitter1 = jitterfunction1;
-   jitter2 = jitterfunction2;
-   
-   Do[
-    cornery = squarecorners[[i, 1]];
-    cornerx = squarecorners[[i, 2]];
-    new = (map[[cornery, cornerx]] + 
-         map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]] + 
-         map[[cornery - 1 + dim, cornerx]] + 
-         map[[cornery - 1 + dim, 
-          Mod[cornerx - 1 + dim, size - 1, 1]]])/4. + 
-      RandomReal[{jitter1, jitter2}];
-    (map[[cornery - 1 + mid[dim], cornerx - 1 + mid[dim]]] = #) &@new;
-    
-    , {i, 1, Length[squarecorners]}];
-    
-   If[read == 1, Export[file, map, "HarwellBoeing"]];
-   Print["Completed Squares for dimension  " <> ToString[dimlist[[i]]]]
-    
-    Do[
-     cornery = diamondcorners[[i, 1]];
-     cornerx = diamondcorners[[i, 2]];
-     
-     If[(cornery - 1 + mid[dim]) > size,(*southpole*)
-      new =
-       (map[[cornery, cornerx]]
-          + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
-         (*+map[[cornery+1-mid[dim],Mod[cornerx-1+mid[dim],size-1,1]]]*))/2.(*+RandomReal[{jitter1,jitter2}]*),
-      
-      If[cornery + 1 - mid[dim] <= 0,(*northpole*)
-       new =
-        (map[[cornery, cornerx]]
-           + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
-          (*+map[[cornery-1+mid[dim],Mod[cornerx-1+mid[dim],size-1,1]]]*))/2.(*+RandomReal[{jitter1,jitter2}]*),
-       
-       new =
-        (map[[cornery, cornerx]]
-            + map[[cornery, Mod[cornerx - 1 + dim, size - 1, 1]]]
-            + 
-            map[[cornery - 1 + mid[dim], 
-             Mod[cornerx - 1 + mid[dim], size - 1, 1]]]
-            + 
-            map[[cornery + 1 - mid[dim], 
-             Mod[cornerx - 1 + mid[dim], size - 1, 1]]])/4. + RandomReal[{jitter1, jitter2}]]];
-     (map[[cornery, Mod[cornerx - 1 + mid[dim], size - 1, 1]]] = #) &@new;
-     ,
-     {i, 1, Length[diamondcorners]}];
-   If[read == 1, Export[file, map, "HarwellBoeing"]];
-   Print["Completed dimension " <> ToString[dimlist[[i]]] <> " of " <> ToString[dimlist] <> " at " <> ToString[DateString[]]],
-   {i, 1, Length[dimlist]}];
-  ]
-										</code>
-									</pre>
+									<palign="left">
+										Terrain generation is a fascinating computer problem. Coding fine-tuned randomness can create beautiful results. One technique of terrain generation is called the diamond-square algorithm.
+										<br>
+										<a href="http://stevelosh.com/blog/2016/06/diamond-square/">This post</a> provided me with the understanding to create my own version in Mathematica and has a good explanation of the concept behind the algorithm.
+										</p>
+									<p align="center"><a href="https://github.com/JackHMadden/Terrain_Generator" class="button small">Code on GitHub</a></p>
+								
+									<script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2FJackHMadden%2FTerrain_Generator%2Fblob%2Fmaster%2Farraymapmaker.snip&style=github&showBorder=on&showLineNumbers=on"></script>
 									
-									<p align="left">Here is an example of it being run. The options are:</p>
+									<p align="left">The options are:</p>
 										<ul style="margin-left: auto; margin-right: auto; width: 75%;">
 											<li>order of size, n, determines pixel dimensions of map at 2^n+1 pixels per side</li>
 											<li>lower bound on the range of initial jitter</li>
@@ -133,11 +60,11 @@ arraymapmaker[order_, initialjitter1_, initialjitter2_, jitterfunction1_, jitter
 											<li>tell the code if you want it to save the file will each iteration, 1 if you do</li>
 											<li>path to a file you want to save your sparse array, .cua file recommended, if you choose a .txt, .tab, or .csv it will take a while to write big files.</li>
 										</ul>
-
+									<p align="left">Let's run the function to create the .cua array.</p>
 									<pre><code>
 arraymapmaker[8, -1, 1, -100/(i*6)^2, 100/(i*6)^2, 1, "~/map7.cua"]
 									</code></pre>
-									
+									<p align="left">After a few seconds we can plot the map using a custom color function.</p>
 									<pre><code>
 map = Import["~/Desktop/map7.cua"];
 normmap = (map - Min[map])/Max[map - Min[map]];
@@ -151,15 +78,29 @@ ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, 
 <img src="/images/terrain-generator/map7.jpg" alt="map">
 									</code></pre>
 									
-									 
-									
 									<p align="left">These maps turned out well for what I wanted though the biggest challenge faced was managing the size. A detailed map would require an order, n, of 10 or 11. 10 was manageable but at 2049x2048 pixels order 11 was taking ages on my computer.
 									<br>
 									I did look into parallelizing the Do loops with ParallelDo[] but it seems the sparse arrays make this impossible or I couldn't find the right solution.
 									<br>
 									I was able to come up with a solution that worker for me and reduced the time significantly. My main purpose for this is to make global maps that get wrapped onto a sphere. A standard projection just needs an image with an aspect ratio of roughly 2:1. A limitation of the diamond-square algorithm is that it needs to have sides of 2^n+1 pixels but actually it can be 2^n+1 in one direction and (2^n)/2+1 in the other meaning I can make 2:1 maps with a slight code modification. Essentially all I needed to do was change every instance where the code calls is changing in the north-south direction and asks for the size (2^n+1) I just have to tell it the half size ((2^n)/2+1).
 									</p>
-									
+								<figure>
+ 								 <img src="/images/terrain-generator/map8.jpg" alt="map">
+ 								 <figcaption>A 2:1 diamond-square map made in half the time.</figcaption>
+								</figure>
+									<p align="left">My code above has the following features that not all diamond-square algorithms have.</p>
+										<ul style="margin-left: auto; margin-right: auto; width: 75%;">
+											<li>It is seamless if wrapped east-west, the Mod[]’s take care of this nicely.</li>
+											<li>The north border and south borders where the poles are created talk more closely to the ones nearer the pole, the makes the poles a little more consistent.</li>
+											<li>I have it save out the sparse array every time it completes the diamond and square passes for each order. This makes it easy to pick up where it left off in case something causes it to crash.</li>
+										</ul>
+									<p align="left">Here are some examples using different color functions.</p>
+								<img src="/images/terrain-generator/map11.jpg" alt="map">
+								<img src="/images/terrain-generator/map12.jpg" alt="map">
+								<img src="/images/terrain-generator/map10.jpg" alt="map">
+								<img src="/images/terrain-generator/map9.jpg" alt="map">
+									<p align="left">You’re also able to make bump maps and ocean masks very easily if you need to. A bump map would simply be the Automatic color function to give height (may need to invert depending on your own colors) and an ocean mask would be a color function that sets black to anything under your ocean elevation and white to everything else.</p>
+								<img src="/images/terrain-generator/colormaskbump.jpg" alt="map">
 							</section>
 
 					</div>
