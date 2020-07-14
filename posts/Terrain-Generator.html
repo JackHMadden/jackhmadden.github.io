@@ -87,7 +87,7 @@ ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, 
 									<p align="left">									
 									I was able to come up with a solution that worker for me and reduced the time significantly. My main purpose for this is to make global maps that get wrapped onto a sphere. A standard projection just needs an image with an aspect ratio of roughly 2:1. A limitation of the diamond-square algorithm is that it needs to have sides of 2^n+1 pixels but actually it can be 2^n+1 in one direction and (2^n)/2+1 in the other meaning I can make 2:1 maps with a slight code modification. Essentially all I needed to do was change every instance where the code calls is changing in the north-south direction and asks for the size (2^n+1) I just have to tell it the half size ((2^n)/2+1).
 									</p>
-								<figure align=""center>
+								<figure align="center">
  								 <img src="/images/terrain-generator/map8.jpg" alt="map">
  								 <figcaption>A 2:1 diamond-square map made in half the time.</figcaption>
 								</figure>
