@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Jack Madden - Template</title>
+		<title>Jack Madden - Terrain Generator</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="/assets/css/main.css" />
@@ -35,7 +35,7 @@
 				<div id="main" class="wrapper style1">
 					<div class="container">
 						<header class="major">
-							<h2>Template</h2>
+							<h2>Diamond-square algorithm for making maps in Mathematica</h2>
 							<!--<p></p>-->
 						</header>
 
@@ -88,7 +88,7 @@ ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, 
 									I was able to come up with a solution that worker for me and reduced the time significantly. My main purpose for this is to make global maps that get wrapped onto a sphere. A standard projection just needs an image with an aspect ratio of roughly 2:1. A limitation of the diamond-square algorithm is that it needs to have sides of 2^n+1 pixels but actually it can be 2^n+1 in one direction and (2^n)/2+1 in the other meaning I can make 2:1 maps with a slight code modification. Essentially all I needed to do was change every instance where the code calls is changing in the north-south direction and asks for the size (2^n+1) I just have to tell it the half size ((2^n)/2+1).
 									</p>
 								<figure>
- 								 <img src="/images/terrain-generator/map8.jpg" alt="map" style="width:400px;">
+ 								 <img src="/images/terrain-generator/map8.jpg" alt="map">
  								 <figcaption>A 2:1 diamond-square map made in half the time.</figcaption>
 								</figure>
 									<p align="left">My code above has the following features that not all diamond-square algorithms have.</p>
@@ -101,10 +101,10 @@ ArrayPlot[normmap, Mesh -> None, ImageSize -> Medium, ColorFunction -> colorf1, 
 								<img src="/images/terrain-generator/map11.jpg" alt="map" style="width:500px;">
 								<img src="/images/terrain-generator/map12.jpg" alt="map" style="width:500px;">
 								<img src="/images/terrain-generator/map10.jpg" alt="map" style="width:500px;">
-								<img src="/images/terrain-generator/map12.jpg" alt="map" style="width:500px;">
+								<img src="/images/terrain-generator/map13.jpg" alt="map" style="width:500px;">
 								<p></p>
 									<p align="left">You’re also able to make bump maps and ocean masks very easily if you need to. A bump map would simply be the Automatic color function to give height (may need to invert depending on your own colors) and an ocean mask would be a color function that sets black to anything under your ocean elevation and white to everything else.</p>
-								<img src="/images/terrain-generator/colormaskbump.jpg" alt="map">
+								<img src="/images/terrain-generator/colormaskbump.jpg" alt="map" style="width:500px;">
 							</section>
 
 					</div>
