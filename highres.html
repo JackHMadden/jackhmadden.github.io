@@ -11,12 +11,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<style>
-			micrio {
-				width: 100%;
-				height: 100%;
-			}
-		</style>
 	</head>
 	<body class="is-preload">
 		<div id="page-wrapper">
@@ -34,7 +28,7 @@
 						<!-- Content -->
 							<section id="content" class="col-6 col-12-xsmall">
 								
-								<micr-io id="Fisze" fullscreen minimap two-finger-pan style="height: calc((100vw) * 0.5625)"></micr-io>
+								<micr-io id="Fisze" fullscreen minimap two-finger-pan style="height: calc((100vw) * 0.48)"></micr-io>
 								
 							</section>
 
@@ -47,6 +41,11 @@
 		</div>
 
 		<!-- Scripts -->
+			<script>
+			$(function(){
+			$("#header-template").load("/header.html");
+			$("#footer-template").load("/footer.html");
+			});</script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
@@ -57,12 +56,7 @@
 			<script src="assets/js/main.js"></script>
 			<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 			<script src="https://b.micr.io/micrio-3.1.min.js"></script>
-			<script>
-			$(function(){
-			$("#header-template").load("/header.html");
-			$("#footer-template").load("/footer.html");
-			});
-			</script>
+
 
 	</body>
 </html>
