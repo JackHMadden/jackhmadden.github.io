@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: jmadden.org
+Token: aeec5a95549f1f34dd1b69554d9015205a01527e7f888ac82baa06d708abc085
