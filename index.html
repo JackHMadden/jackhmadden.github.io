@@ -1,217 +1,962 @@
-<!DOCTYPE HTML>
-<!--
-	Landed by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Jack Madden | Ph.D. Astrophysicist and Artist </title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<meta name="description" content="Dr. Jack Madden got his Ph.D. in astrophysics from Cornell University in 2020 and now studies digital and new media art at the Rhode Island School of Design." />
-		<meta name="keywords" content="Dr., Ph.D., Astrophysics, Astronomy, Science, Cornell, RISD, Space, Art, Exoplanet, Digital, Media, Artist, Astrophysicist, Jack, Madden, Habitable, Crypto, Ethereum, Nano" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Jack Madden</title>
+
+        <!--Meta-->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta property="og:title" content="Jack Madden" />
+        <meta property="og:description" content="Personal website of astrophysicist and artist Jack Madden." />
+        <meta property="og:url" content="http://themes.uiueux.com/demo/air/entry/" />
+        <meta property="og:site_name" content="Air. Lightweight Portfolio &amp; Photography HTML Theme Live Demo Site" />
+        <meta property="og:image" content="http://themes.uiueux.com/demo/air/entry/01-cover.jpg" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="media/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" href="media/apple-touch-icon-114x114.png">
+
+        <!-- Google Fonts -->
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins%3A400%2C300%7CLibre+Baskerville%3Aregular%2Citalic%2C700' type='text/css' media='all' />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap" rel="stylesheet">
+
+        <!-- Bootstrap CSS -->
+        <link rel='stylesheet' href='css/bootstrap.css' type='text/css' media='screen' />
+
+        <!-- Font Icon CSS -->
+        <link rel='stylesheet' href='css/font-awesome.min.css' type='text/css' media='screen' />
+
+        <!-- Owl Carousel Plugin CSS -->
+        <link rel='stylesheet' href='css/owl.carousel.css' type='text/css' media='screen' />
+
+        <!-- Lightbox Plugin CSS -->
+        <link rel='stylesheet' href='css/photoswipe.css' type='text/css' media='screen' />
+
+        <!-- Lightbox Plugin Skin CSS -->
+        <link rel='stylesheet' href='css/skin/photoswipe/default/default-skin.css' type='text/css' media='screen' />
+
+        <!-- Air. Theme Elements CSS -->
+        <link rel='stylesheet' href='css/pagebuild.css' type='text/css' media='screen' />
+
+        <!-- Air. Theme Main CSS -->
+        <link rel='stylesheet' href='css/style.css' type='text/css' media='screen' />
+
 	</head>
-	<body class="is-preload landing">
-		<div id="page-wrapper">
+  
+    <body class="page page-id-285 page-template-default default-dark-logo pswp-light-skin responsive-ux page-template-masonry-body navi-show show-top-space dark-logo header-sticky preload">
+      
+        <!--Page Loader-->
+        <div class="page-loading fullscreen-wrap visible">
+            <div class="page-loading-inn">
+                <div class="page-loading-transform">
+                    <div class="site-loading-logo"><img src="media/logo/logo-loading.png" alt="JM" /></div>
+                </div>
+            </div>
+        </div>
 
-			<!-- Header -->
-			<!--<div id="header-template"><!--Your header.html placeholder</div>-->
-				<header id="header">
-				<h1 id="logo"><a href="/index.html">Home</a></h1>
-					<nav id="nav">
-						<ul>
-							<li><a href="https://jmadden.artstation.com/">Art</a>
-								<ul>
-									<li><a href="https://jmadden.artstation.com/albums/2732818">New Media</a></li>
-									<li><a href="https://jmadden.artstation.com/albums/1038417">Concept Art</a></li>
-									<li><a href="https://jmadden.artstation.com/albums/1770731">Paintings</a></li>
-									<li><a href="https://jmadden.artstation.com/albums/1837182">Scientific</a></li>
-									
-								</ul>
-							
-							</li>
-							<li><a href="/pdfs/resume.pdf">CV</a></li>
-							<li><a href="/publications.html">Publications</a></li>
-							<!-- <li><a href="/posts/index.html">Posts</a></li> -->
-							<li><a href="mailto:jmadden@risd.edu" class="button primary">jmadden@risd.edu</a></li>
+        <!--Audio Player-->
+        <div id="jquery_jplayer" class="jp-jplayer"></div>
 
-						</ul>
-					</nav>
-				</header>
-			<!-- Banner -->
-				<section id="banner">
-					<div class="content" style="
-					    margin-right: 50%;
-					">
-						<header>
-							<h2>Jack H. Madden</h2>
-							<p>Ph.D. Astrophysicist and Artist</p>
-						</header>
-						<!-- <span class="image"><img src="images/pic01.jpg" alt="" /></span> -->
-					</div>
-					<a href="#one" class="goto-next scrolly">Next</a>
-				</section>
+        <!--Main wrap-->
+        <div class="wrap-all">
 
-			<!-- One -->
-				<section id="one" class="spotlight style1 bottom">
-					<span class="image fit main"><img src="images/pic02.jpg" alt="" /></span>
-					<div class="content">
-						<div class="container">
-							<div class="row">
-								<div class="col-4 col-12-medium">
-									<h2>About me</h2>
-									<p>I graduated from Franklin and Marshall College in 2014 with a B.A. in Astrophysics 
-									working with Dr. Froney Crawford on extragalactic pulsar surveys. I received my Ph.D. in 
-									astrophysics from Cornell University in 2020. </p>
-								</div>
-								<div class="col-4 col-12-medium">
-									<h2>&nbsp;</h2>
-									<p>At Cornell, I worked with 
-									Dr. Lisa Kaltenegger on modeling the climates of 
-									potentially habitable exoplanets.
-									I also worked with Dr. Natasha Holmes and Dr. Andrea 
-									Stevenson Won on using virtual reality in physics education.</p>
-								</div>
-								<div class="col-4 col-12-medium">
-									<h2>&nbsp;</h2>
-									<p>In the Fall of 2020 I began my Master of 
-									Fine Arts degree at the Rhode Island School of 
-									Design. In their 2-year Digital + Media program I 
-									will focus on exploring our relationship with 
-									science by using it as a creative tool.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a href="#two" class="goto-next scrolly">Next</a>
-				</section>
+            <div id="wrap-outer">
 
-			<!-- Two -->
-				<section id="two" class="spotlight style2 right">
-					<span class="image fit main"><img src="images/pic03.jpg" alt="" /></span>
-					<div class="content">
-						<header>
-							<h2>Research</h2>
-							<p>From modeling life on other worlds to virtual reality in the classroom.</p>
-						</header>
-						<p>My recent work focuses on the role of surface color on the habitability of exoplanets.
-						Using 1D climate and photochemistry models we can explore how planets behave under different 
-						conditions and construct references for future observations of potentially habitable exoplanets.</p>
-						<ul class="actions">
-							<li><a href="publications.html" class="button">Publications</a></li>
-						</ul>
-					</div>
-					<a href="#three" class="goto-next scrolly">Next</a>
-				</section>
+<!--Header-->
+                <header id="header" class="">
 
-			<!-- Three -->
-				<section id="three" class="spotlight style3 left">
-					<span class="image fit main bottom"><img src="images/pic04.jpg" alt="" /></span>
-					<div class="content">
-						<header>
-							<h2>Art</h2>
-							<p>Research inspired</p>
-						</header>
-						<p> As an artist, I explore some of the gaps science has left us. 
-							From visualizing exoplanets we may never see to contemplating the Universe's most fundamental questions, 
-							I work from science through philosophy into art.</p>
-						<ul class="actions">
-							<li><a href="https://jmadden.artstation.com/" class="button">See more</a></li>
-						</ul>
-					</div>
-					<a href="#four" class="goto-next scrolly">Next</a>
-				</section>
+                    <div id="header-main">
+                    
+                        <div class="container-fluid">
 
-			<!-- Four -->
-				<!-- <section id="four" class="wrapper style1 special fade-up">
-					<div class="container">
-						<header class="major">
-							<h2>Recent Work</h2>
-							<p>Research, artwork, and posts. </p>
-						</header>
-						<div class="box alt">
-							<div class="row gtr-uniform">
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<span class="image fit"><img src="/images/Tompkins77.png" alt="" /></span>
-									<h3><a href="/posts/Covid-in-Tompkins.html" class="button fit">Covid-19 in Tompkins County</a></h3>
-									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
-								</section>
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<span class="image fit"><img src="/images/terrain-generator/map11sqr.jpg" alt="" /></span>
-									<h3><a href="#" class="button fit">GJ357 d</a></h3>
-									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
-								</section>
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<span class="image fit"><img src="/images/GJ357transit.png" alt="" /></span>
-									<h3><a href="#" class="button fit">Exoplanet Surfaces</a></h3>
-									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
-								</section>
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<span class="image fit"><img src="/images/GJ357transit.png" alt="" /></span>
-									<h3><a href="#" class="button fit">Moon Phases in VR</a></h3>
-									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
-								</section>
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<span class="image fit"><img src="/images/GJ357transit.png" alt="" /></span>
-									<h3><a href="#" class="button fit">Solar System as Exoplanets</a></h3>
-									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
-								</section>
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<span class="image fit"><img src="/images/GJ357transit.png" alt="" /></span>
-									<h3><a href="#" class="button fit">High Resolution Spectra</a></h3>
-									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
-								</section>
-							</div>
-						</div>
-						<footer class="major">
-							<ul class="actions special">
-								<li><a href="/posts/" class="button">More Posts</a></li>
-							</ul>
-						</footer>
-					</div>
-				</section> -->
+                            <span id="navi-trigger">
+                                <span class="navi-trigger-text">
+                                    <span class="navi-trigger-text-menu navi-trigger-text-inn">MENU</span>
+                                    <span class="navi-trigger-text-close navi-trigger-text-inn">CLOSE</span>
+                                </span>
+                                <span class="navi-trigger-inn">
+                                    <span class="navi-trigger-hamberg-line navi-trigger-hamberg-line1"></span>
+                                    <span class="navi-trigger-hamberg-line navi-trigger-hamberg-line2"></span>
+                                    <span class="navi-trigger-hamberg-line navi-trigger-hamberg-line3"></span>
+                                </span>
+                            </span>
 
-			<!-- Five 
-				<section id="five" class="wrapper style2 special fade">
-					<div class="container">
-						<header>
-							<h2>Magna faucibus lorem diam</h2>
-							<p>Ante metus praesent faucibus ante integer id accumsan eleifend</p>
-						</header>
-						<form method="post" action="#" class="cta">
-							<div class="row gtr-uniform gtr-50">
-								<div class="col-8 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Your Email Address" /></div>
-								<div class="col-4 col-12-xsmall"><input type="submit" value="Get Started" class="fit primary" /></div>
-							</div>
-						</form>
-					</div>
-				</section> -->
+                            <div class="heade-meta">
 
-			<!-- Footer -->
-			<div id="footer-template"><!--Your footer.html placeholder--></div>
+                                <nav id="navi-header">
 
-		</div>
+                                    <div id="navi_wrap" class="menu-menu-1-container">
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-		
-			<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-			<script>
-			$(function(){
-			$("#header-template").load("/header.html");
-			$("#footer-template").load("/footer.html");
-			});
-			</script>
+                                        <ul class="menu clearfix">
+                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="index.html">Portfolio</a></li>
+                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="publications.html">Publications</a></li>
+                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="JackMadden_CV.pdf">CV</a></li>
+                                            <li>|</li>
+                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="contact.html">Contact</a></li>
+                                            <li>|</li>
+                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page">
+                                                <a href="#">Shop</a>
+                                                <ul class="sub-menu">
+                                                    <li class="menu-item"><a href="https://jmadden.artstation.com/store/art_prints">Prints</a></li>
+                                                    <li class="menu-item"><a href="https://www.lulu.com/search?contributor=Jack+Madden&page=1&pageSize=10&adult_audience_rating=00&sortBy=RELEVANCE">Books</a></li>
+                                                    <li class="menu-item"><a href="https://teia.art/astro_madden">Tezos NFTs</a></li>
+                                                    <li class="menu-item"><a href="contact.html">Work for sale</a></li>
+                                                </ul>
+                                            </li>
+                                            <li>&emsp;</li>
+                                            
+                                        </ul>
 
-	</body>
+                                    </div><!--End #navi_wrap-->
+
+                                </nav>
+
+                            </div>
+                                        
+                            <div class="navi-logo">
+
+                                <div class="logo-wrap">
+                                    <div id="logo">
+                                        <a class="logo-a" href="index.html" title="Home">
+                                            <h1 class="logo-h1 logo-not-show-txt">Home</h1>
+                                            <img class="logo-image logo-dark" src="media/logo/logo_dark.png" alt="Home" />
+                                            <span class="logo-light"><img class="logo-image" src="media/logo/logo_light.png" alt="Home" /></span>
+                                        </a>
+                                    </div>
+                                </div><!--End logo wrap-->
+                                 
+                            </div>
+                        
+                        </div>
+                        
+                    </div><!--End header main-->
+                    
+                </header>
+
+<!--menu panel-->
+                <div id="menu-panel">
+
+                    <div class="menu-panel-inn fullscreen-wrap">
+                     
+                        <nav id="navi">
+
+                            <div id="navi-wrap" class="menu-navi-wrap">
+
+                                <ul class="menu clearfix">
+                                    <li id="menu-item-246" class="menu-item"><a href="index.html">Portfolio</a></li>
+                                    <li id="menu-item-256" class="menu-item"><a href="publications.html">Publications</a></li>
+                                    <li id="menu-item-247" class="menu-item"><a href="JackMadden_CV.pdf">CV</a></li>
+                                    <li id="menu-item-247" class="menu-item"><a href="contact.html">Contact</a></li>
+                                    <li class="menu-item current-menu-item current_page_item menu-item-has-children">
+                                        <a>Shop</a>
+                                        <ul class="sub-menu">
+                                                <li class="menu-item"><a href="https://jmadden.artstation.com/store/art_prints">Prints</a></li>
+                                                <li class="menu-item"><a href="https://www.lulu.com/search?contributor=Jack+Madden&page=1&pageSize=10&adult_audience_rating=00&sortBy=RELEVANCE">Books</a></li>
+                                                <li class="menu-item"><a href="https://teia.art/astro_madden">Tezos NFTs</a></li>
+                                                <li class="menu-item"><a href="contact.html">Work for sale</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                        </nav>
+
+                        <div id="menu-panel-bottom" class="container-fluid"> 
+
+                            <div class="menu-panel-bottom-left col-md-3 col-sm-3 col-xs-3">
+
+                                <div class="search-top-btn-class">
+                                    <span class="fa fa-search"></span>
+                                    <form class="search_top_form"  method="get" action="#">
+                                        <input type="search" id="s" name="s" class="search_top_form_text" placeholder="Type and Hit Enter">
+                                    </form>
+                                </div> 
+
+                            </div>
+
+                            <div class="menu-panel-bottom-right col-md-9 col-sm-9 col-xs-9">
+
+                                <div class="socialmedia-mobile">
+                                        
+                                    <ul class="socialmedia clearfix">                        
+                                            <li class="socialmedia-li">
+                                                <a title="Instagram" href="https://www.instagram.com/astro_madden/" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">Instagram</span>
+                                                </a>
+                                            </li>
+                                            <li class="socialmedia-li">
+                                                <a title="GitHub" href="https://github.com/JackHMadden/" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">GitHub</span>
+                                                </a>
+                                            </li>
+                                            <li class="socialmedia-li">
+                                                <a title="orcid" href="https://orcid.org/0000-0002-4701-7833" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">ORCiD</span>
+                                                </a>
+                                            </li>
+                                            <li class="socialmedia-li">
+                                                <a title="Artstation" href="https://www.artstation.com/jmadden" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">Artstation</span>
+                                                </a>
+                                            </li>
+                                    </ul>
+                        
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+        <!--End #menu-panel-->
+
+
+    			
+ <!-- Main Content Wrap -->
+        		<div id="wrap">
+
+                    <!-- Main Content : List, text content ... -->
+        	        <div id="content">
+
+                        <div class="content_wrap_outer fullwrap-layout">
+                    
+                                <div id="content_wrap" class="">
+
+                                    <!--Portfolio Template-->
+                                    <div class="container-masonry ux-portfolio-spacing-40 ux-portfolio-3col ux-portfolio-full ux-has-filter" data-col="3" data-spacer="40" data-template="intro-r-filter">
+
+                                        <!--Introduction right & Filter left-->
+                                        <div class="container page-template-intro-left-list-right">
+
+                                            <!--Introduction-->
+                                            <section class="ux-portfolio-template-intro">
+                                                <p style="text-align: left;"><span style="font-size:24px"> I'm <b>Jack Madden</b>, an astrphysicist and artist working toward humanizing our understanding of the universe through research-based art.</span></p>
+                                            </section>
+
+                                            <!--Filter-->
+                                            <div class="filters-wrap">
+                                                <div class="clearfix filters">
+                                                    <ul class="filters-ul container">
+                                                        
+                                                        <li class="filters-li active">
+                                                            <a id="all" class="filters-a" href="#" data-filter="*">All
+                                                                <span class="filter-num">15</span>
+                                                            </a>
+                                                        </li> 
+                                                        
+                                                        <li class="filters-li">
+                                                            <a class="filters-a" data-filter=".filter_code" href="#" data-catid="4" data-pageid="123">Code Art
+                                                                <span class="filter-num">6</span>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="filters-li">
+                                                            <a class="filters-a" data-filter=".filter_physical" href="#" data-catid="7" data-pageid="123">Physical Art
+                                                                <span class="filter-num">5</span>
+                                                            </a>
+                                                        </li>
+                                                        
+                                                        <li class="filters-li">
+                                                            <a class="filters-a" data-filter=".filter_concept" href="#" data-catid="25" data-pageid="123">Concept Art
+                                                                <span class="filter-num">4</span>
+                                                            </a>
+                                                        </li>
+
+                                                    </ul>             
+                                                </div><!--End filter-->
+                                            </div><!--End filters-wrap-->
+
+                                        </div><!--End page-template-intro-left-list-right-->
+
+
+
+                                        <!--Portfolio Listing-->
+                                        <div class="masonry-list masonry-grid grid-mask-boxed-center">
+
+
+<!--Tall item-->
+                                            <section class="grid-item grid-item-tall filter_physical filter_post-format-gallery" data-postid="97">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-space-4.html" 
+                                                        title="Untitled space no.4" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Physical Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_physical">
+                                                                Physical Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-space-4.html" 
+                                                                title="Untitled space no.4" class="grid-item-tit-a">
+                                                                Untitled space no.4
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/space4/DSC_0014.jpg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section> 
+
+
+<!--Small item-->            
+                                            <section class="grid-item grid-item-small filter_physical filter_post-format-gallery" data-postid="170">
+
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-mfa-thesis.html" 
+                                                        title="MFA Thesis" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Physical Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_physical">
+                                                                Physical Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-mfa-thesis.html" 
+                                                                title="MFA Thesis" class="grid-item-tit-a">
+                                                                MFA Thesis
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/mfathesis/mfathesis_exteriordetail.jpg"></div>
+                                                    </div>
+                                
+                                                </div><!--End inside-->
+                                            </section> 
+
+<!--Small item-->            
+                                            <section class="grid-item grid-item-small filter_physical filter_post-format-gallery" data-postid="170">
+
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-the-individual-rice.html" 
+                                                        title="The Individual" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Physical Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_physical">
+                                                                Physical Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-the-individual-rice.html" 
+                                                                title="The Individual" class="grid-item-tit-a">
+                                                                The Individual
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/theindividualrice/DSC_0483Index.jpg"></div>
+                                                    </div>
+                                
+                                                </div><!--End inside-->
+                                            </section> 
+
+
+<!--Big item-->                                            
+                                            <section class="grid-item grid-item-big filter_code filter_post-format-gallery" data-postid="511">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-complete-definitions1.html" 
+                                                        title="Complete Definitions no.1" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Code Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_code">
+                                                                Code Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-complete-definitions1.html" 
+                                                                title="Complete Definitions no.1" class="grid-item-tit-a">
+                                                                Complete Definitions no.1
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/completedefinitions/no1_Meaning_10_200_wideIndex.jpg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section>
+<!--Small item-->            
+                                            <section class="grid-item grid-item-small filter_code filter_post-format-gallery" data-postid="170">
+
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-deep-fields.html" 
+                                                        title="Deep Fields" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Code Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_code">
+                                                                Code Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-deep-fields.html" 
+                                                                title="Deep Fields" class="grid-item-tit-a">
+                                                                Deep Fields
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/deepfields/MACSJ0717_4.0.3.Total copy.jpg"></div>
+                                                    </div>
+                                
+                                                </div><!--End inside-->
+                                            </section> 
+
+ 
+
+
+
+
+<!--Long item-->            
+                                            <section class="grid-item grid-item-long grid-item—width2 filter_physical filter_post-format-gallery" data-postid="48">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-see-Equations.html" 
+                                                        title="see Equations" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Physical Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_physical">
+                                                                Physical Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-see-Equations.html" 
+                                                                title="see Equations" class="grid-item-tit-a">
+                                                                see Equations
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 37.44%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/seeequations/DSC_2588Index.jpg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section>
+
+
+<!--Small item-->            
+                                            <section class="grid-item grid-item-small filter_code filter_post-format-gallery" data-postid="170">
+
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-complete-definitions2.html" 
+                                                        title="Complete Definitions no.2" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Code Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_code">
+                                                                Code Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-complete-definitions2.html" 
+                                                                title="Complete Definitions no.2" class="grid-item-tit-a">
+                                                                Complete Definitions no.2
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/completedefinitions/Knowledge3000_BALLOONIndex.jpeg"></div>
+                                                    </div>
+                                
+                                                </div><!--End inside-->
+                                            </section>
+
+
+<!--Long item-->            
+                                            <section class="grid-item grid-item-long grid-item—width2 filter_code filter_post-format-gallery" data-postid="48">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-complete-definitions3.html" 
+                                                        title="Complete Definitions no.3" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Code Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_code">
+                                                                Code Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-complete-definitions3.html" 
+                                                                title="Complete Definitions no.3" class="grid-item-tit-a">
+                                                                Complete Definitions no.3
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 37.44%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/completedefinitions/Absurd No.3Index.jpg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section>
+
+
+<!--Tall item-->
+                                            <section class="grid-item grid-item-tall filter_concept filter_post-format-gallery" data-postid="97">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-exoplanet-art.html" 
+                                                        title="Science Illustration" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Concept Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_concept">
+                                                                Concept Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-exoplanet-art.html" 
+                                                                title="Exoplanet concepts" class="grid-item-tit-a">
+                                                                Science Illustration
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/scienceillustration/jack-madden-e8rfjelxsaupeoyIndex.jpeg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section>
+
+<!--Tall item-->
+                                            <section class="grid-item grid-item-tall filter_code filter_post-format-gallery" data-postid="97">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-deep-fields.html" 
+                                                        title="Deep Fields" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Code Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_code">
+                                                                Code Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-deep-fields.html" 
+                                                                title="Deep Fields" class="grid-item-tit-a">
+                                                                Deep Fields
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/deepfields/potw1302a.tif_0.7.0..0.Total.Straight.2..0 copy.jpeg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section>
+<!--Small item-->            
+                                            <section class="grid-item grid-item-small filter_code filter_post-format-gallery" data-postid="170">
+
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-books-for-robots-only.html" 
+                                                        title="Books for Robots (only)" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Code Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_code">
+                                                                Code Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-books-for-robots-only.html" 
+                                                                title="Books for Robots (only)" class="grid-item-tit-a">
+                                                                Books for Robots (only)
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/booksforrobotsonly/IMG_4417Index.jpg"></div>
+                                                    </div>
+                                
+                                                </div><!--End inside-->
+                                            </section> 
+
+<!--Big item-->                                            
+                                            <section class="grid-item grid-item-big filter_physical filter_post-format-gallery" data-postid="511">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-the-individual-painting.html" 
+                                                        title="Untitled paintings" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Code Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_physical">
+                                                                Physical Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-the-individual-painting.html" 
+                                                                title="Untitled paintings" class="grid-item-tit-a">
+                                                                Untitled paintings
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/theindividualpainting/ColorVertIndex.jpg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section> 
+            
+
+<!--Small item-->            
+                                            <section class="grid-item grid-item-small filter_concept filter_post-format-gallery" data-postid="170">
+
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-exoplanet-art.html" 
+                                                        title="Scientific Illustation" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Concept Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_concept">
+                                                                Concept Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-exoplanet-art.html" 
+                                                                title="Deep Fields" class="grid-item-tit-a">
+                                                                Scientific Illustation
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/scienceillustration/jack-madden-transitstill-3Index.jpeg"></div>
+                                                    </div>
+                                
+                                                </div><!--End inside-->
+                                            </section>
+
+
+<!--Tall item-->
+                                            <section class="grid-item grid-item-tall filter_concept filter_post-format-gallery" data-postid="97">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-exoplanet-art.html" 
+                                                        title="Exoplnet Concepts" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Concept Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_concept">
+                                                                Concept Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-exoplanet-art.html" 
+                                                                title="Exoplanet concepts" class="grid-item-tit-a">
+                                                                Exoplanet concepts
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" 
+                                                        data-bg="media/scienceillustration/jack-madden-racedayIndex.jpeg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section>
+
+
+<!--Big item-->                                            
+                                            <section class="grid-item grid-item-big filter_concept filter_post-format-gallery" data-postid="511">
+                                                <div class="grid-item-inside" >
+                                                    <div class="grid-item-con">
+                                                        <a 
+                                                        href="pr-exoplanet-art.html" 
+                                                        title="Exoplanet Rendering" 
+                                                        class="grid-item-mask-link grid-item-open-url"></a>
+                                                                                
+                                                        <div class="grid-item-con-text">
+                                                            <span class="grid-item-cate">
+                                                                <a href="#" 
+                                                                title="View all posts in Concept Art" 
+                                                                class="grid-item-cate-a" 
+                                                                data-filter=".filter_concept">
+                                                                Physical Art
+                                                                </a>
+                                                            </span>
+                                                            <h2 class="grid-item-tit">
+                                                                <a 
+                                                                href="pr-exoplanet-art.html" 
+                                                                title="Exoplanet Rendering" class="grid-item-tit-a">
+                                                                Exoplanet Rendering
+                                                                </a>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
+                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/scienceillustration/jack-madden-earthlike2-1-gibbons1Index.jpg"></div>
+                                                    </div>
+                                                                
+                                                </div><!--End inside-->
+                                            </section> 
+
+
+
+                                        </div><!--End masonry-list-->
+
+                                    </div><!-- End container-masonry -->
+
+                                </div><!-- End #content_wrap-->
+
+                        </div><!-- End content_wrap_outer-->
+
+                    </div><!--End #content-->
+
+                    <footer id="footer" class="footer-cols-layout">
+
+                        <div class="footer-info">
+                            <div class="footer-container">
+                                <div class="span6">
+                                    <div id="logo-footer">
+                                        <a href="index.html" title="Home">
+                                            <img class="logo-footer-img" src="media/logo/logo_darkpen.png" alt="Home" />
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="span6">
+                                    <div class="footer-social">
+                                        <ul class="socialmedia clearfix">                       
+                                            <li class="socialmedia-li">
+                                                <a title="Instagram" href="https://www.instagram.com/astro_madden/" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">Instagram</span>
+                                                </a>
+                                            </li>
+                                            <li class="socialmedia-li">
+                                                <a title="GitHub" href="https://github.com/JackHMadden/" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">GitHub</span>
+                                                </a>
+                                            </li>
+                                            <li class="socialmedia-li">
+                                                <a title="orcid" href="https://orcid.org/0000-0002-4701-7833" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">ORCiD</span>
+                                                </a>
+                                            </li>
+                                            <li class="socialmedia-li">
+                                                <a title="Artstation" href="https://www.artstation.com/jmadden" class="socialmedia-a">
+                                                    <span class=""></span> <span class="socialmedia-text">Artstation</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid back-top-wrap"><div id="back-top"></div></div>
+
+                    </footer>
+
+                </div><!--End #wrap -->  
+    	       
+               <div class="video-overlay modal"><span class="video-close"></span></div><!--end video-overlay-->
+    	  
+            </div><!--End wrap-outer-->
+
+        </div><!--End wrap-all-->
+
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+            <div class="pswp__bg"></div>
+
+            <div class="pswp__scroll-wrap">
+
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+
+                <div class="pswp__ui pswp__ui--hidden">
+
+                    <div class="pswp__top-bar">
+
+                        <div class="pswp__counter"></div>
+
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                              <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div> 
+                    </div>
+
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                    </button>
+
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                    </button>
+
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- jQuery Library -->
+        <script type='text/javascript' src='js/library/jquery.min.js'></script>
+        <!-- Main Js Plugin -->
+        <script type='text/javascript' src='js/main.min.js'></script>
+        <!-- Air. Theme main js -->
+        <script type='text/javascript' src='js/custom.theme.js'></script>
+
+    </body>
 </html>
