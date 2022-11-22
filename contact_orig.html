@@ -299,7 +299,17 @@
 
                                                     <div class="col-md-6 col-sm-6 moudle  bottom-space-no" style="">
 
-                                                        <iframe class="responsive-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSdulM24gLkbsDRE31fnNO4pMgoa8VjaMXbe84ghcZNh7otNRQ/viewform?embedded=true" width="100%" height="600px" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                                                        <div class="contactform ux-mod-nobg">
+
+                                                            <form action="contact.php" id="contact-form" class="contact_form" method="POST">
+                                                                <p class="span6"><input type="text" id="idi_name" name="idi_name" class="requiredField" value="Name" onBlur="if (this.value =='' ) {this.value = 'Name';}" onFocus="if (this.value == 'Name' || this.value == 'Required' ) { this.value = ''; }" /></p>
+                                                                <p class="span6"><input type="text" id="idi_mail" name="idi_mail" class="requiredField email" value="Email" onBlur="if (this.value =='' ) {this.value = 'Email';}" onFocus="if (this.value == 'Email' || this.value  == 'Required' || this.value == 'Invalid email' ) {this.value = '';}" /></p>
+                                                                <p><textarea rows="4" name="idi_text" id="idi_text" cols="4" class="requiredField inputError"  onfocus="if(this.value==this.defaultValue|| this.value  == 'Required'){this.value='';}" onblur="if(this.value==''){this.value=this.defaultValue;}" >YOUR MESSAGE</textarea></p>
+                                                                <input type="hidden" class="info-tip" value="send" name="contact_form" data-message="Done!" data-sending="Sending" data-error="Please Enter Correct Verification Number" />
+                                                                <div class="btnarea"><input type="submit" id="idi_send" name="idi_send" value="SEND" /></div>
+                                                            </form>
+
+                                                        </div>
 
                                                     </div> 
 
