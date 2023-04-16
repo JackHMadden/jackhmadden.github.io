@@ -3761,7 +3761,7 @@ h3#reply-title small, #comments .nav-tabs li.active h3#reply-title .logged,#comm
 /* Portfolio List - Mask for Item */
 .grid-item-con:after,.product-caption 
 { 
-  background-color: #FFFFFF;
+  background-color: #ffffffd9;
 }
 
 /* Button */
