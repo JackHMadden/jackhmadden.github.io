@@ -2,8 +2,9 @@
 <html lang="en-US">
     <head>
         <title>Jack Madden</title>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
         <script src="https://kit.fontawesome.com/6f24593378.js" crossorigin="anonymous"></script>
+        <script src="media/anomaly/sketch.js"></script>
         <!--Meta-->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta property="og:title" content="Jack Madden" />
@@ -97,6 +98,7 @@
                                             <li class="external menu-item menu-item-type-post_type menu-item-object-page">
                                                 <a href="index.html">Portfolio</a>
                                                 <ul class="sub-menu">
+                                                    <li class="menu-item"><a href="pr-anomaly.html">Anomaly</a></li>
                                                     <li class="menu-item"><a href="pr-atmospheres.html">Atmospheres</a></li>
                                                     <li class="menu-item"><a href="pr-otherview-effect.html">The Otherview Effect</a></li>
                                                     <li class="menu-item"><a href="pr-space-4.html">Space 4</a></li>
@@ -119,8 +121,8 @@
                                                 <a href="#">Support Me</a>
                                                 <ul class="sub-menu">
                                                     <li class="menu-item"><a href="https://jmadden.artstation.com/store/art_prints">Prints</a></li>
-                                                    <li class="menu-item"><a href="https://www.lulu.com/search?contributor=Jack+Madden&page=1&pageSize=10&adult_audience_rating=00&sortBy=RELEVANCE">Books</a></li>
-                                                    <li class="menu-item"><a href="https://makersplace.com/astro_madden">Makersplace NFTs</a></li>
+                                                    <!--<li class="menu-item"><a href="https://www.lulu.com/search?contributor=Jack+Madden&page=1&pageSize=10&adult_audience_rating=00&sortBy=RELEVANCE">Books</a></li>-->
+                                                    <!--<li class="menu-item"><a href="https://makersplace.com/astro_madden">Makersplace NFTs</a></li>-->
                                                     <li class="menu-item"><a href="contact.html">Work for sale</a></li>
                                                 </ul>
                                             </li>
@@ -171,8 +173,7 @@
                                         <a>Support Me</a>
                                         <ul class="sub-menu">
                                                 <li class="menu-item"><a href="https://jmadden.artstation.com/store/art_prints">Prints</a></li>
-                                                <li class="menu-item"><a href="https://www.lulu.com/search?contributor=Jack+Madden&page=1&pageSize=10&adult_audience_rating=00&sortBy=RELEVANCE">Books</a></li>
-                                                <li class="menu-item"><a href="https://makersplace.com/astro_madden">Makersplace NFTs</a></li>
+                                                
                                                 <li class="menu-item"><a href="contact.html">Work for sale</a></li>
                                         </ul>
                                     </li>
@@ -231,7 +232,6 @@
                     </div>
 
                 </div><!--End #menu-panel-->
-
     			
 
 
@@ -250,218 +250,152 @@
                                 <article class="post type-post status-publish format-gallery has-post-thumbnail hentry category-branding category-featured category-illustration category-works post_format-post-format-gallery">
 
 
-
-
-
-<!--General Wrap-->
-                                    <div class="container-fluid" style="max-width: 80vw; padding-top: 2%;" >
-
-                                        <div class="row">
-
-                                            <div class="col-md-6 col-sm-6 general_moudle">
-
-                                                <div class="row">
-
-                                                    <!--Text Element-->
-                                                    <div class="col-md-6 col-sm-6 moudle bottom-space-20" style="">
-
-                                                        <div class="text_block ux-mod-nobg" data-animationend="fadeined">
-                                                            <p></p>
-                                                            <h5>What I do</h5>
-                                                            <p></p>
-                                                            <p></p>                 
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row">
-
-                                                    <!--Text Element-->
-                                                    <div class="col-md-6 col-sm-6 moudle  bottom-space-no" style="">
-                            
-                                                        <div class="text_block ux-mod-nobg" data-animationend="fadeined">
-
-                                                            <p><img class="size-medium wp-image-504 alignleft" width="200" src="media/headshoteggsmall.png" alt="me"> <br>I sell original works including my paintings and installations. Below you can see what I currently have for sale. Many of my works are available as prints through <a href="https://jmadden.artstation.com/store/art_prints">Artstation</a>. Please reach out if you are interested in purchasing my work or have questions.</p>
-                                                            <p><br></p>
-                                                            <p>I'm also available for commissions of scientific illustations, figures, and scientific design consulting.</p>
-                                                        </div>
-                                                    </div>
-
-                                                </div>      
-
-                                            </div><!--general_moudle-->
-
-                                            <!--General Wrap-->
-                                            <div class="col-md-6 col-sm-6 general_moudle">
-
-                                                <!--Text Element-->
-                                                <div class="row">
-
-                                                    <div class="col-md-6 col-sm-6 moudle  bottom-space-20" style="">
-
-                                                        <div class="text_block ux-mod-nobg  " data-animationend="fadeined">
-                                                            <p></p>
-                                                            <h5>Get in touch<br></h5>
-                                                            <p></p><p></p>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <!--Contact Form--> 
-
-                                                    <div class="col-md-6 col-sm-6 moudle  bottom-space-no" style="">
-
-                                                        <div class="contactform ux-mod-nobg">
-
-                                                            <form action="contact.php" id="contact-form" class="contact_form" method="POST">
-                                                                <p class="span6"><input type="text" id="idi_name" name="idi_name" class="requiredField" value="Name" onBlur="if (this.value =='' ) {this.value = 'Name';}" onFocus="if (this.value == 'Name' || this.value == 'Required' ) { this.value = ''; }" /></p>
-                                                                <p class="span6"><input type="text" id="idi_mail" name="idi_mail" class="requiredField email" value="Email" onBlur="if (this.value =='' ) {this.value = 'Email';}" onFocus="if (this.value == 'Email' || this.value  == 'Required' || this.value == 'Invalid email' ) {this.value = '';}" /></p>
-                                                                <p><textarea rows="4" name="idi_text" id="idi_text" cols="4" class="requiredField inputError"  onfocus="if(this.value==this.defaultValue|| this.value  == 'Required'){this.value='';}" onblur="if(this.value==''){this.value=this.defaultValue;}" >YOUR MESSAGE</textarea></p>
-                                                                <input type="hidden" class="info-tip" value="send" name="contact_form" data-message="Done!" data-sending="Sending" data-error="Please Enter Correct Verification Number" />
-                                                                <div class="btnarea"><input type="submit" id="idi_send" name="idi_send" value="SEND" /></div>
-                                                            </form>
-
-                                                        </div>
-
-                                                    </div> 
-
-                                                </div>      
-
-                                            </div><!--general_moudle-->
-                                            
-                                        </div>
-
-
-                                    </div><!--End container-fluid-->
-
-
-
-
-
-
-
-
-                                    <div class=" blog-unit-gallery-wrap start-from-gallery gallery-spacing-40 " style=" padding-top: 5%;">
+                                    <div class=" blog-unit-gallery-wrap start-from-gallery gallery-spacing-40 ">
 
                                         <div class="single-gallery-wrap-inn" data-style="">
 
                                             <div class="list-layout lightbox-photoswipe" data-gap="40">
                                                                                 
+<!--1 landscape (16:9) column-->
+                                                <div class="container-fluid" style="max-width: 90vw; margin-top: 2cm;">
+                                                <div class="list-layout-col list-layout-col1 clearfix">
+                                                                       
+                                                    <div class="list-layout-col1-item list-layout-item">
 
+                                                        <div class="list-layout-inside">
 
-<!--3 portrait (3:2) columns-->
-                                                <div class="list-layout-col list-layout-col3 clearfix">
-                                                                                    
-                                                    <div class="list-layout-col3-item list-layout-item" style="">
-                                                        <div class="list-layout-inside">
-                                                            <div class="single-image mouse-over" data-lightbox="true">
-                                                                <a title="see Equation 6.32 / 2022 / 16x20in" class="lightbox-item" href="media/seeequations/DSC_2596.jpg" data-size="1000x1500">
-                                                                    <span class="ux-lazyload-wrap" style=" padding-top: 56.3%;">
-                                                                        <img alt="see Equation 6.32 / 2022 / 16x20in" title="see Equation 6.32 / 2022 / 16x20in" src="media/blank.gif" data-src="media/seeequations/DSC_2596.jpg" width="660" height="950" class="list-layout-img gallery-images-img ux-lazyload-img lazy">
-                                                                    </span>
-                                                                </a><p>&emsp;[For sale] / see Equation 6.32 / 2022 / 16x20in</p>
-                                                            </div>
-                                                        </div><!--End list-layout-inside-->  
-                                                    </div><!--End list-layout-item-->
-                                                    
-                                                    <div class="list-layout-col3-item list-layout-item" style="">
-                                                        <div class="list-layout-inside">
-                                                            <div class="single-image mouse-over" data-lightbox="true">
-                                                                <a title="see Equation 4 / 2022 / 16x20in" class="lightbox-item" href="media/seeequations/DSC_2592.jpg" data-size="1000x1500">
-                                                                    <span class="ux-lazyload-wrap" style=" padding-top: 56.3%;">
-                                                                        <img alt="see Equation 6.32 / 2022 / 16x20in" title="see Equation 6.32 / 2022 / 16x20in" src="media/blank.gif" data-src="media/seeequations/DSC_2592.jpg" width="660" height="950" class="list-layout-img gallery-images-img ux-lazyload-img lazy">
-                                                                    </span>
-                                                                </a><p>&emsp;[For sale] / see Equation 4 / 2022 / 16x20in</p>
+                                                            <div class="single-image mouse-over" data-lightbox="false">
+                                                                <div id="sketch-container"></div>
                                                             </div>
                                                         </div><!--End list-layout-inside--> 
                                                     </div><!--End list-layout-item-->
-
-                                                    <div class="list-layout-col3-item list-layout-item" style="">
-                                                        <div class="list-layout-inside">
-                                                            <div class="single-image mouse-over" data-lightbox="true">
-                                                                <a title="see Equation 29.131 / 2022 / 16x20in" class="lightbox-item" href="media/seeequations/DSC_2597.jpg" data-size="1000x1500">
-                                                                    <span class="ux-lazyload-wrap" style=" padding-top: 56.3%;">
-                                                                        <img alt="see Equation 29.131 / 2022 / 16x20in" title="see Equation 29.131 / 2022 / 16x20in" src="media/blank.gif" data-src="media/seeequations/DSC_2597.jpg" width="660" height="950" class="list-layout-img gallery-images-img ux-lazyload-img lazy">
-                                                                    </span>
-                                                                </a><p>&emsp;[For sale] / see Equation 29.131 / 2022 / 16x20in</p>
-                                                            </div>
-                                                        </div><!--End list-layout-inside--> 
-                                                    </div><!--End list-layout-item-->
-
                                                 </div>
-
-<!--3 landscape (3:2) columns-->
-                                                <div class="list-layout-col list-layout-col3 clearfix">
-                                                                                    
-                                                    <div class="list-layout-col3-item list-layout-item" style="">
-                                                        <div class="list-layout-inside">
-                                                            <div class="single-image mouse-over" data-lightbox="true">
-                                                                <a title="" class="lightbox-item" href="media/theindividualpainting/ColorVert.jpg" data-size="1400x788">
-                                                                    <span class="ux-lazyload-wrap" style=" padding-top: 56.3%;">
-                                                                        <img alt="" title="" src="media/blank.gif" 
-                                                                        data-src="media/theindividualpainting/ColorVert.jpg" 
-                                                                        width="1400" height="788" class="list-layout-img gallery-images-img ux-lazyload-img lazy">
-                                                                    </span>
-                                                                </a><p>&emsp;[For sale] / Untitled / 2021 / 10x14in</p>
-                                                            </div>
-                                                        </div><!--End list-layout-inside--> 
-                                                    </div><!--End list-layout-item-->
-                                                    
-                                                    <div class="list-layout-col3-item list-layout-item" style="">
-                                                        <div class="list-layout-inside">
-                                                            <div class="single-image mouse-over" data-lightbox="true">
-                                                                <a title="" class="lightbox-item" href="media/theindividualpainting/ColorHoriz.jpg" data-size="1400x788">
-                                                                    <span class="ux-lazyload-wrap" style=" padding-top: 56.3%;">
-                                                                        <img alt="" title="" src="media/blank.gif" 
-                                                                        data-src="media/theindividualpainting/ColorHoriz.jpg" 
-                                                                        width="1400" height="788" class="list-layout-img gallery-images-img ux-lazyload-img lazy">
-                                                                    </span>
-                                                                </a><p>&emsp;[SOLD] / Untitled / 2021 / 10x14in</p>
-                                                            </div>
-                                                        </div><!--End list-layout-inside--> 
-                                                    </div><!--End list-layout-item-->
-
-                                                    <div class="list-layout-col3-item list-layout-item" style="">
-                                                        <div class="list-layout-inside">
-                                                            <div class="single-image mouse-over" data-lightbox="true">
-                                                                <a title="" class="lightbox-item" href="media/theindividualpainting/ColorDiagonal.jpg" data-size="1400x788">
-                                                                    <span class="ux-lazyload-wrap" style=" padding-top: 56.3%;">
-                                                                        <img alt="" title="" src="media/blank.gif" 
-                                                                        data-src="media/theindividualpainting/ColorDiagonal.jpg" 
-                                                                        width="1400" height="788" class="list-layout-img gallery-images-img ux-lazyload-img lazy">
-                                                                    </span>
-                                                                </a><p>&emsp;[SOLD] / Untitled / 2021 / 10x14in</p>
-                                                            </div>
-                                                        </div><!--End list-layout-inside--> 
-                                                    </div><!--End list-layout-item-->
-
                                                 </div>
 
 
 
 
 
-
-
-<!--End list-layout-->
                                             </div><!--End list-layout-->                                                            
                                         </div><!--End single-gallery-wrap-inn-->
                                     </div><!--End blog-unit-gallery-wrap-->    
 
                                     
 
-                            
+
+
+
+                                    <div class="title-wrap container">
+                                      <div class="title-wrap-con">
+                                            <h1 class="title-wrap-tit" >Anomaly</h1>
+                                        </div>
+                                    </div>
+
+                                    <div class="container gallery-post-des "> 
+                                   
+                                        <div class="entry" style="vertical-align: text-top;">
+
+                                            <p>It only takes one day. Coral doesn’t consider the 30-year average before bleaching; a wildfire doesn’t wait for annual reports before sparking; ice turns to water at the speed of light. What made the COVID crisis feel more like a crisis was the rapid availability of data. We had access to dashboards of graphs that were updated daily, it evolved for us at a pace we could witness. While the climate, by definition, changes over decades, the experience of that change manifests in the daily present. Each day contributes to those averages. Each day brings us closer or keeps us under the threshold of +1.5°C of warming.</p> 
+
+                                            <p>The data I have seen does not express this daily urgency. I realized such a plot could be made using <a href="https://climatereanalyzer.org/clim/t2_daily">reanalysis data hosted by the University of Maine</a>. Using their absolute surface temperatures, I was able to calculate the offset needed to present the data as an anomaly from the pre-industrial baseline. The result is the most up to date global temperature anomaly chart. The reanalysis data updates daily but on approximately a one week delay.</p> 
+                                                
+                                            <p>There are many baselines and ways to calculate the temperature anomaly. The University of Maine even displays a 1979-2000 baseline, but the 1850-1900 range is what the IPCC uses for their target of +1.5°C and +2.0°C of maximum allowed warming. To get the anomaly from the 1850-1900 baseline, I use the ERA5 data from 1950 to the end of 1979 to get an average offset for each day of the year. I then can calibrate the offset using the annual anomalies from the global time series data at <a href="https://berkeleyearth.org">berkeleyearth.org</a>. This gave an extra baseline offset of +0.3°C to calibrate a 1950-1979 anomaly to an 1850-1900 anomaly. When added to the ERA5 data, the yearly averages match the BerkeleyEarth values. For example, the 2023 offset BerkeleyEarth calculated is +1.54, which is what my process calculates.</p> 
+                                                
+                                            <p>See the disclaimer at <a href="https://climatereanalyzer.org">climatereanalyzer.org</a> to understand how to use this information.</p>
+                                        </div><!--End entry-->
+
+
+                                            <div class="gallery-property">
+                                                <ul class="gallery-info-property">
+                                                    <li class="gallery-info-property-li">
+                                                        <h3 class="gallery-info-property-item gallery-info-property-tit">Release</h3>
+                                                        <div class="gallery-info-property-item gallery-info-property-con">2024</div>
+                                                    </li>
+                                                    <li class="gallery-info-property-li">
+                                                        <h3 class="gallery-info-property-item gallery-info-property-tit">Medium</h3>
+                                                        <div class="gallery-info-property-item gallery-info-property-con">p5.js</div>
+                                                    </li>
+                                                    
+                                                    
+                                                    
+                                                    <li class="gallery-info-property-li">
+                                                        <h3 class="gallery-info-property-item gallery-info-property-tit">Availability</h3>
+                                                        <div class="gallery-info-property-item gallery-info-property-con"><a href="https://editor.p5js.org/JackHMadden/sketches/1qOfJBITX">Open source</a></div>
+                                                    </li>
+
+                                                </ul>
+                                                
+                                                <div class="social-bar">
+
+                                                    <ul class="post_social post-meta-social">
+                                                    
+                                                    <li class="post-meta-social-li">
+                                                        <a class="share postshareicon-instagram-wrap" 
+                                                        href="https://www.instagram.com/astro_madden/" 
+                                                        onclick="window.open('https://www.instagram.com/astro_madden/','Instagram','width=600,height=1500,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight-200)+''); return false;">
+                                                        <span class="fa fa-instagram postshareicon-instagram"></span>
+                                                        </a>
+                                                    </li>
+                                        
+                                                    </ul>
+                                                </div><!--End social-bar-->
+
+                                            </div>
+                                    </div>
+<!--Ending Documentation--> 
+                                    <div class=" blog-unit-gallery-wrap start-from-gallery gallery-spacing-40 ">
+                                        <div class="single-gallery-wrap-inn" data-style="">
+                                            <div class="list-layout lightbox-photoswipe" data-gap="40">
+
+<!--1 landscape (16:9) column-->
+                                                <div class="list-layout-col list-layout-col1 clearfix">
+                                                                        
+                                                    <div class="list-layout-col1-item list-layout-item" style="max-width: 1000px;">
+                                                        <div class="list-layout-inside">
+                                                            <div class="single-image mouse-over" data-lightbox="true">
+                                                                <a title="" class="lightbox-item" href="media/anomaly/Feb8screenshot.jpg" data-size="1000x600">
+                                                                    <span class="ux-lazyload-wrap" style=" padding-top: 56.3%;">
+                                                                        <img alt="" title="" src="media/blank.gif" 
+                                                                        data-src="media/anomaly/Feb8screenshot.jpg" 
+                                                                        width="1000" height="600" class="list-layout-img gallery-images-img ux-lazyload-img lazy">
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        </div><!--End list-layout-inside--> 
+                                                    </div><!--End list-layout-item-->
+                                                </div>
+
+
+
+                                            </div><!--End list-layout-->
+                                        </div><!--End single-gallery-wrap-inn-->                                    
+                                    </div><!--End blog-unit-gallery-wrap-->
 
 
 
 
-                   
-
-
-
+<!--Post navi-->
+                                    <div class="blog-unit-meta-bottom">
+                                        <nav class="post-navi-single row">
+                                            <div class="container">
+                                                <div class="post-navi-unit post-navi-unit-prev col-sm-5 col-md-5 col-xs-5">
+                                                    <a href="index.html" 
+                                                    title="" 
+                                                    class="arrow-item arrow-prev"><span class="navi-arrow"></span><span class="navi-title-tag">HOME</span><span class="navi-title-img"><img width="150" height="150" src="media/nav/DSC_2588IndexNext.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Thumbnail Image" srcset="media/nav/DSC_2588IndexNext.jpg 150w, media/nav/DSC_2588IndexNext.jpg 400w, media/nav/DSC_2588IndexNext.jpg 650w" sizes="(max-width: 150px) 100vw, 150px" /></span></a>
+                                                </div>
+                                                            
+                                                <div class="post-navi-go-back col-sm-2 col-md-2 col-xs-2">
+                                                    <a class="post-navi-go-back-a" href="index.html" data-postid="61"><span class="post-navi-go-back-a-inn"></span></a>
+                                                </div>
+                                                
+                                                <div class="post-navi-unit post-navi-unit-next col-sm-5 col-md-5 col-xs-5">
+                                                    <a href="pr-atmospheres.html" 
+                                                    title="Space 4" 
+                                                    class="arrow-item arrow-next"><span class="navi-arrow"></span><span class="navi-title-tag">NEXT</span><span class="navi-title-img"><img width="150" height="150" src="media/nav/atmospheresNEXT.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Thumbnail Image" srcset="media/nav/atmospheresNEXT.jpg 150w, media/nav/atmospheresNEXT.jpg 400w, media/nav/atmospheresNEXT.jpg 650w" sizes="(max-width: 150px) 100vw, 150px" /></span></a>
+                                                </div>
+                                            </div>
+                                        </nav>
+                                    </div><!--End blog-unit-meta-bottom-->                   
 
 
                                 </article>
