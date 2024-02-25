@@ -254,10 +254,11 @@ function draw() {
     
     // 2024 text
     textSize(18*textscale);
-    stroke(208,0,0,textopacity);
+    stroke(255,255,255,textopacity);
     strokeWeight(1.5)
     fill(208,0,0,textopacity)
     textAlign(LEFT,BOTTOM)
+    textStyle(BOLD);
     text(dayofyear(last24+1)+" 2024\n+"+nf(anomaly2024[last24],1,2)+"°C",mapx(last24)+(0.015*width),mapy(anomaly2024[last24]))
     //text("+"+nf(avg2024,1,2)+"°C",mapx(last24)+5,mapy(avg2024))
     
