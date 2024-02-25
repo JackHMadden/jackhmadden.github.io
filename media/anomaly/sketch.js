@@ -268,6 +268,7 @@ function draw() {
     strokeWeight(1)
     fill(100,100,100,textopacity)
     textAlign(LEFT,BOTTOM)
+    textStyle(NORMAL);
     text("2023\naverage\n"+"+"+nf(avg2023,1,2)+"°C",mapx(365)+(0.005*width),mapy(avg2023))
     
     // Signature
