@@ -115,10 +115,10 @@ function setup() {
   text("Temperature anomaly (°C)",-height/2,xcoord1-(0.055*width)) // y-axis label
   rotate(PI/2);
   textAlign(LEFT, CENTER);
-  textSize(24*textscale);
+  textSize(23*textscale);
   stroke(0);
   fill(0);
-  text("1940-2024 Daily Global Temperature Anomaly",xcoord1,ycoord2-(0.05*height)) // Title
+  text("1940-2024 Daily Global Surface Air Temperature Anomaly",xcoord1,ycoord2-(0.05*height)) // Title
   textSize(12*textscale);
   fill(100);
   stroke(100);
