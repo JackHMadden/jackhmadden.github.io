@@ -8,7 +8,7 @@
 // 
 // The ERA5 data available at climatereanalyzer.org/clim/t2_daily is given in absolute temperature. To get the anomaly from 1850-1900, I use the ERA5 data from 1950 to the end of 1979 to get an average offset for each day of the year. I then can calibrate the offset using the annual anomalies from the global time series data at berkeleyearth.org. This gave an extra baseline offset of +0.3°C to calibrate a 1950-1979 anomaly to a 1850-1900 anomaly. When added to the ERA5 data the yearly averages match the BerkeleyEarth values. For example, the 2023 offset BerkeleyEarth calculated is +1.54 which is what my process calculates. See the disclaimer at climatereanalyzer.org to understand how to use this information.
 
-var xcoord1,ycoord1,xcoord2,ycoord2,rangey,ticksy,R1,G1,B1,R2,G2,B2,xpos,xposdecadal,xpos2023,xpos2024,xpos2025,img,backswitch,marker,nowindex,months,days,average2023,average2024,textopacity,anomaly2023=[],anomaly2024=[],anomaly2025=[],anomalydecadal=[],decades=[],baselineyears=[],yearlys,offsets=[],index2023,index2024,index2025,decadelist,backgroundcolor,bloffset,windowwidth,textscale
+var xcoord1,ycoord1,xcoord2,ycoord2,rangey,ticksy,R1,G1,B1,R2,G2,B2,xpos,xposdecadal,xpos2023,xpos2024,xpos2025,img,backswitch,marker,nowindex,months,days,average2023,average2024,average2025,textopacity,anomaly2023=[],anomaly2024=[],anomaly2025=[],anomalydecadal=[],decades=[],baselineyears=[],yearlys,offsets=[],index2023,index2024,index2025,decadelist,backgroundcolor,bloffset,windowwidth,textscale,xpos2026,average2026,anomaly2026=[],index2026
 
 function preload(){
   yearlys = loadJSON("https://climatereanalyzer.org/clim/t2_daily/json/era5_world_t2_day.json");
@@ -36,7 +36,7 @@ function setup() {
   R2=204;G2=71;B2=15;               //lerp color end
   index2023 = 83;                   //Index of 2023 in yearly data
   index2024 = 84;                   //Index of 2024 in yearly data
-  index2025 = 85;                   //Index of 2024 in yearly data
+  index2025 = 85;                   //Index of 2025 in yearly data
   xpos = 2;                         //Initialize yearly animation
   xposdecadal =1;                   //Initialize decadal animation
   xpos2023 = 1;                     //Initialize 2023 animation
@@ -50,23 +50,28 @@ function setup() {
   textopacity=0;                    //Initialize animation text opacity
   bloffset=0.3; // Baseline offset between 1950-2000 and 1850-1900 in °C
   
+  index2026 = 86;                   //Index of 2026 in yearly data
+  xpos2026 = 1;                     //Initialize 2026 animation
+  
   ///////////////\\\\\\\\\\\\\\\
   //////// Calculations \\\\\\\\\
   // Remove null values from yearly data
-  for (let i = 0; i <= index2025; i++) {yearlys[i].data = yearlys[i].data.filter(value => value !== null);} 
+  for (let i = 0; i <= index2026; i++) {yearlys[i].data = yearlys[i].data.filter(value => value !== null);} 
   
   //Generate 1950-1979inc baseline offsets array 
   for (let j = 10; j <=39; j++) {baselineyears.push(j)}
   offsets = averageArraysInJSON(yearlys, baselineyears);
   
-  //Perform calculations on 2025, 2024, and 2023 to get averages
-  nowindex = yearlys[index2025].data.length-1; // last index position in current year data
+  //Perform calculations on 2026, 2025, 2024, and 2023 to get averages
+  nowindex = yearlys[index2026].data.length-1; // last index position in current year data
   for (let i=0; i<yearlys[index2023].data.length;i++){anomaly2023.push(yearlys[index2023].data[i]-offsets[i]+bloffset)} //calculate anomaly for 2023
   for (let i=0; i<yearlys[index2024].data.length-1;i++){anomaly2024.push(yearlys[index2024].data[i]-offsets[i]+bloffset)} //calculate anomaly for 2024 
-  for (let i=0; i<yearlys[index2025].data.length;i++){anomaly2025.push(yearlys[index2025].data[i]-offsets[i]+bloffset)} //calculate anomaly for 2025 
+  for (let i=0; i<yearlys[index2025].data.length;i++){anomaly2025.push(yearlys[index2025].data[i]-offsets[i]+bloffset)} //calculate anomaly for 2025
+  for (let i=0; i<yearlys[index2026].data.length;i++){anomaly2026.push(yearlys[index2026].data[i]-offsets[i]+bloffset)} //calculate anomaly for 2026 
+  avg2026 = arrayavg(anomaly2026); //get 2026 average anomaly
   avg2023 = arrayavg(anomaly2023); //get 2023 average anomaly
   avg2024 = arrayavg(anomaly2024); //get 2024 average anomaly
-  avg2025 = arrayavg(anomaly2025); //get 2024 average anomaly
+  avg2025 = arrayavg(anomaly2025); //get 2025 average anomaly
   
   //Generate decade averages arrays 
   //generates the decades array of 10 year indexes
@@ -164,13 +169,11 @@ function draw() {
   }}
   
   //Plot the 2023 line
-  if (xpos2023<=365 && xposdecadal>365) {
-  stroke(100,100,100,150);
+  if (xpos2023<=365 && xpos>82) {
+  stroke(100,100,100,90);
   strokeWeight(1.2);
   beginShape();
-    for (let i = xpos2023-8; i < xpos2023; i++) {
-      vertex(mapx(i),mapy(anomaly2023[i]));
-    }
+    for (let i = xpos2023-8; i < xpos2023; i++) {vertex(mapx(i),mapy(anomaly2023[i]));}
   endShape();
     //Draw average line
     stroke(200);
@@ -180,8 +183,8 @@ function draw() {
   }
 
   //Plot the 2024 line
-  if (xpos2024<=365 && xpos2023>365) {
-  stroke(208,0,0,150); 
+  if (xpos2024<=365 && xpos>82) {
+  stroke(100,100,100,90); 
   strokeWeight(1.2);
   beginShape();
     for (let i = xpos2024-8; i <= xpos2024; i++) {vertex(mapx(i),mapy(anomaly2024[i]));}
@@ -194,33 +197,48 @@ function draw() {
   }
   
   //Plot the 2025 line
-  if (xpos2025<=nowindex && xpos2024>365) {
+  if (xpos2025<=365 && xpos>82) {
+  stroke(100,100,100,90); 
+  strokeWeight(1.2);
+  beginShape();
+    for (let i = xpos2025-8; i <= xpos2025; i++) {vertex(mapx(i),mapy(anomaly2025[i]));}
+  endShape();
+    //Draw average line
+    stroke(200);
+    strokeWeight(1);
+    let dashing=[5,5];
+    //drawDashedLine(mapx(0),mapy(avg2025),mapx(xpos2025+5),mapy(avg2025),dashing);
+  }
+  
+  //Plot the 2026 line
+  if (xpos2026<=nowindex && xpos2025>365) {
   stroke(208,0,0); 
   strokeWeight(2.2);
   beginShape();
-    for (let i = xpos2025-2; i <= xpos2025; i++) {vertex(mapx(i),mapy(anomaly2025[i]));}
+    for (let i = xpos2026-2; i <= xpos2026; i++) {vertex(mapx(i),mapy(anomaly2026[i]));}
   endShape();
     //Draw average line
     stroke(240,120,120);
     strokeWeight(1);
     let dashing=[5,5];
-    //drawDashedLine(mapx(0),mapy(avg2024),mapx(xpos2024+5),mapy(avg2024),dashing);
+    //drawDashedLine(mapx(0),mapy(avg2026),mapx(xpos2026+5),mapy(avg2026),dashing);
   }
   
-  // Animation controls
+  // Animation speed controls
   if (xpos<=82){xpos=xpos+2}
   if (xpos>82 && xposdecadal<=365){xposdecadal=xposdecadal+7}
-  if (xposdecadal>365 && xpos2023<=365){xpos2023=xpos2023+7}
-  if (xpos2023>365 && xpos2024<=365){xpos2024=xpos2024+7}
-  if (xpos2024>365 && xpos2025<=nowindex){xpos2025=xpos2025+1}
+  if (xpos>82 && xpos2023<=365){xpos2023=xpos2023+7}
+  if (xpos>82 && xpos2024<=365){xpos2024=xpos2024+7}
+  if (xpos>82 && xpos2025<=365){xpos2025=xpos2025+7}
+  if (xpos2025>365 && xpos2026<=nowindex){xpos2026=xpos2026+1}
 
  
 /////////////////////////////
   //Switch to static background 
-  if (backswitch==0&&xpos2025>=nowindex){img = get();backswitch=1} //saves chart after plotting to make it the new background
+  if (backswitch==0&&xpos2026>=nowindex){img = get();backswitch=1} //saves chart after plotting to make it the new background
   
   //Runs after last line is drawn
-  if(xpos2025>nowindex){
+  if(xpos2026>nowindex){
     background(img);
     
     //Horizontal Gridline
@@ -247,15 +265,15 @@ function draw() {
     strokeWeight(1.5);
     stroke(255,0,0,nlmap(marker,0,18,255,0));
     ellipse(mapx(nowindex),
-            mapy(anomaly2025[nowindex]),
+            mapy(anomaly2026[nowindex]),
             marker);
     
-    //Last 2025 point
+    //Last 2026 point
     stroke(208,0,0);
     strokeWeight(2);
-    line(mapx(nowindex-1),mapy(anomaly2025[nowindex-1]),mapx(nowindex),mapy(anomaly2025[nowindex]))
+    line(mapx(nowindex-1),mapy(anomaly2026[nowindex-1]),mapx(nowindex),mapy(anomaly2026[nowindex]))
     strokeWeight(5);
-    point(mapx(nowindex),mapy(anomaly2025[nowindex]));
+    point(mapx(nowindex),mapy(anomaly2026[nowindex]));
     
     
     // Plot line labels 
@@ -273,15 +291,25 @@ function draw() {
     text(decadelist[i],xcoord2,mapy(anomalydecadal[i][364]-offsets[364]+bloffset)+fourties)
     }
     
-    // 2025 text
+    // 2026 text
     textSize(18*textscale);
     stroke(255,255,255,textopacity);
     strokeWeight(1.5)
     fill(208,0,0,textopacity)
     textAlign(LEFT,BOTTOM)
     textStyle(BOLD);
-    text(dayofyear(nowindex+1)+" 2025\n+"+nf(anomaly2025[nowindex],1,2)+"°C",mapx(nowindex)+(0.015*width),mapy(anomaly2025[nowindex]))
+    text(dayofyear(nowindex+1)+" 2026\n+"+nf(anomaly2026[nowindex],1,2)+"°C",mapx(nowindex)+(0.015*width),mapy(anomaly2026[nowindex]))
     //text("+"+nf(avg2024,1,2)+"°C",mapx(nowindex)+5,mapy(avg2024))
+    
+    
+    // 2025 text
+    textSize(16*textscale);
+    stroke(228,220,0,textopacity);
+    strokeWeight(1)
+    fill(208,0,0,textopacity)
+    textAlign(LEFT,BOTTOM)
+    textStyle(NORMAL);
+    text("'25"+"+"+nf(avg2025,1,2)+"°C",mapx(365)+(0.005*width),mapy(avg2025)+(0.025*height))
     
     // 2024 text
     textSize(16*textscale);
@@ -290,16 +318,16 @@ function draw() {
     fill(208,0,0,textopacity)
     textAlign(LEFT,BOTTOM)
     textStyle(NORMAL);
-    text("2024\n"+"+"+nf(avg2024,1,2)+"°C",mapx(365)+(0.005*width),mapy(avg2024)-(0.017*height))
+    text("'24"+"+"+nf(avg2024,1,2)+"°C",mapx(365)+(0.005*width),mapy(avg2024)+(0.005*height))
     
     // 2023 text
     textSize(16*textscale);
-    stroke(100,100,100,textopacity);
+    stroke(228,150,0,textopacity);
     strokeWeight(1)
-    fill(100,100,100,textopacity)
+    fill(208,0,0,textopacity)
     textAlign(LEFT,CENTER)
     textStyle(NORMAL);
-    text("2023\n"+"+"+nf(avg2023,1,2)+"°C",mapx(365)+(0.005*width),mapy(avg2023))
+    text("'23"+"+"+nf(avg2023,1,2)+"°C",mapx(365)+(0.005*width),mapy(avg2023)-(0.015*height))
     
     // Signature
     textSize(12*textscale);
