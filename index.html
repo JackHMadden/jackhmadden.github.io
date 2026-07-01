@@ -512,14 +512,51 @@ const pages = [
 
   // --- PROJECTS ---------------------------------------------------------------------------------------------
   // --- TEDX 
-  {id: "tedx", label: "TEDx", group: "Projects", type: "project",
-    eyebrow: "TEDx · 2023",
+  {id: "tedxrisd", label: "TEDxRISD", group: "Projects", type: "project",
+    eyebrow: "TEDxRISD · 2023",
     title: "How to Make Art like an Astrophysicist",
     sections: [
       { youtube: true, id: "fe68vvIFaAQ", autoplay: false, caption: "" },
     ]
   },
-
+  // --- DEEP FIELDS 
+  {id: "deep-fields", label: "Deep Fields", group: "Projects", type: "project",
+    eyebrow: "Digital images · 2021–ongoing · Mathematica",
+    title: "Deep Fields",
+    sections: [
+      { image: true, size: "tall", src: "media/projects/deepfields/potw1838a.tif_0.5.0.04.0.Total.Linear.2..0.jpeg", caption: "" },
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/deepfields/HUDF_AS_2280.jpeg",    caption: "" },
+        { size: "mid", src: "media/projects/deepfields/MACSJ0717_4.0.3.Total.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/deepfields/M79_4.0.65.Total.jpg",                          caption: "" },
+        { size: "mid", src: "media/projects/deepfields/heic1820b_6x4.8.tif_0.5.0..1.Total.Straight.2..0.jpeg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/deepfields/CompositeNGC6231.jpg",                                    caption: "" },
+        { size: "mid", src: "media/projects/deepfields/jw01963-o001_t001_nircam_Composite-4_Collected.jpg",      caption: "" },
+      ]},
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/deepfields/heic1605a.tif_0.25.0..1.Total.Angle.27.5.0.jpeg",         caption: "" },
+        { size: "mid", src: "media/projects/deepfields/potw1302a.tif_0.7.0..0.Total.Straight.2..0.jpeg",   caption: "" },
+      ]},
+      { text: "We can see to the very edge of what would ever be physically visible to us in the universe. These images compress 10s of billions of light years into a 2D plane without any context for scale, creating the perception of a rich and crowded reality. These images are typically used to showcase the fullness of the universe by showing thousands of galaxies in an area a few arcminutes across. Sorting the pixels by brightness we can really see how empty this space is. The final image uses all the same pixels as the original without edits, just a rearrangement. The interstitial spaces in these images represent lines of sight going nearly as far as the edge of the visible universe, while the bright pixels contain emission from trillions of stars." },
+      { text: "<a href='https://community.wolfram.com/groups/-/m/t/2222977' target='_blank'>Open source on Wolfram Community Forum.</a>" },
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/deepfields/heic0309d.tif_0.75.0.1.0.Total.Diagonal.100.0.jpeg",  caption: "" },
+        { size: "mid", src: "media/projects/deepfields/heic1309c.tif_0..0.05.0.Total.Diagonal.11.6_3.8k.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/deepfields/heic1523b.tif_0.95.0.03.1.Total.Linear.100.0.jpg",        caption: "" },
+        { size: "mid", src: "media/projects/deepfields/heic1820a.tif_0.26.0..0.Total.Angle.11.8.0.jpeg",         caption: "" },
+      ]},
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/deepfields/opo0708a.tif_0.85.0..0.Total.Diagonal.2..0.jpeg",  caption: "" },
+        { size: "mid", src: "media/projects/deepfields/potw1236a.tif_0.4.0.0.Total.Diagonal.2..0.jpeg",   caption: "" },
+      ]},
+    ]
+  },
   // --- SPACE 4 
   {id: "space4", label: "Space 4", group: "Projects", type: "project",
     eyebrow: "Installation · 2022 · Light, darkness",
@@ -1001,6 +1038,51 @@ groups.forEach(g => {
 });
 
 // --------------------------------------------------------------------------------------------------------------------
+// PREFETCHING IMAGES
+// --------------------------------------------------------------------------------------------------------------------
+
+const prefetched = new Set(); // track what's already been fetched
+
+function getPageImages(page) {
+  if (!page || !page.sections) return [];
+  const srcs = [];
+  for (const s of page.sections) {
+    if (s.image && s.src)  srcs.push(s.src);
+    if (s.pair) s.images.forEach(img => { if (img.src) srcs.push(img.src); });
+  }
+  // also grab bio hero if present
+  if (page.type === 'bio') {
+    page.sections?.forEach(s => { if (s.image && s.src) srcs.push(s.src); });
+  }
+  return srcs;
+}
+
+function prefetchPage(page) {
+  if (!page) return;
+  getPageImages(page).forEach(src => {
+    if (prefetched.has(src)) return;
+    prefetched.add(src);
+    const img = new Image();  // no CORS restriction, works on file:// too
+    img.src = src;            // browser fetches and caches silently
+  });
+}
+
+function prefetchFromIndex(currentIndex) {
+  // Prefetch in order outward from current page — next first, then previous,
+  // then the ones further out, so the most likely next clicks load first
+  const order = [];
+  for (let i = 1; i < pages.length; i++) {
+    if (currentIndex + i < pages.length) order.push(currentIndex + i);
+    if (currentIndex - i >= 0)           order.push(currentIndex - i);
+  }
+  // Stagger fetches so they don't all fire at once
+  order.forEach((idx, i) => {
+    setTimeout(() => prefetchPage(pages[idx]), i * 400);
+  });
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------
 // ACTIVATE + HASH ROUTING
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -1008,35 +1090,49 @@ function activate(id) {
   closeMenu();
   const page = pages.find(p => p.id === id);
   if (!page || page.type === 'external') return;
+
   // Stop and remove any running p5 sketch before swapping content
   if (currentP5) { currentP5.remove(); currentP5 = null; }
+
   // 1. Push hash to URL so the link is shareable
   history.pushState(null, '', '#' + id);
+
   // 2. Update active state in nav
   document.querySelectorAll('.nav-item[data-id]').forEach(el => {
     el.classList.toggle('active', el.dataset.id === id);
   });
+
   // 3. Scroll main to top
   main.scrollTop = 0;
+
   // 4. Render content
   main.innerHTML = '';
   const div = document.createElement('div');
   div.className = 'content';
+
   if      (page.type === 'bio')          div.innerHTML = renderBio(page);
   else if (page.type === 'publications') div.innerHTML = renderPubs(page);
   else if (page.type === 'links')        div.innerHTML = renderLinks(page);
   else                                   div.innerHTML = renderProject(page);
+
   main.appendChild(div);
+
   // 5. If this page has a p5 section, initialize the right sketch now that
   //    the container element is in the DOM
   const p5Container = div.querySelector('[data-p5]');
   if (p5Container) initSketch(p5Container, p5Container.dataset.sketch);
+
+  // 6. After current page settles, prefetch images for adjacent pages
+  const currentIndex = pages.findIndex(p => p.id === id);
+  setTimeout(() => prefetchFromIndex(currentIndex), 2000);
 }
+
 // Handle browser back / forward
 window.addEventListener('popstate', () => {
   const id = window.location.hash.slice(1);
   if (pages.find(p => p.id === id)) activate(id);
 });
+
 // On first load: read hash or fall back to first page
 const initialId = window.location.hash.slice(1);
 activate(pages.find(p => p.id === initialId) ? initialId : pages[0].id);
