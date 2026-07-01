@@ -1,1014 +1,1216 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jack Madden — Astrophysicist & Artist</title>
+  <meta name="description" content="Jack Madden is an astrophysicist and artist working toward humanizing our understanding of the universe through research-based art."/>
+  <meta name="author" content="Jack Madden"/>
+  <meta name="keywords" content="Jack Madden, astrophysics, art, exoplanets, science communication, RISD, Cornell"/>
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:title"       content="Jack Madden — Art & Science"/>
+  <meta property="og:description" content="Portfolio, publications, and research across art and science by Jack Madden."/>
+  <meta property="og:url"         content="https://jackhmadden.github.io/" />
+  <meta property="og:image"       content="https://jackhmadden.github.io/media/site/logo.png"/>
+  <!-- Favicon — inline SVG, no extra file needed -->
+  <link rel="icon" href="media/site/favicon.ico"/>
+  <!-- p5.js (no sound addon needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/p5.min.js"></script>
+ <!-- Font load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  
+  <script>
+    (function() {
+      const h = new Date().getHours() + new Date().getMinutes() / 60;
+      //const h = 12;
+      const m = new Date().getMonth(); // 0=Jan ... 11=Dec
+      // [dawn, sunrise, sunset, dusk] as decimal clock hours
+      // Times are local clock times at ~40°N, DST-adjusted where marked
+      const S = {
+        'dec-jan': [6.75, 7.25, 16.75, 17.25],  // standard
+        'feb':     [6.50, 7.00, 17.50, 18.00],  // standard
+        'mar':     [6.75, 7.25, 19.50, 20.00],  // DST 
+        'apr':     [6.00, 6.50, 19.75, 20.25],  // DST
+        'may-jun': [5.25, 5.75, 20.25, 20.75],  // DST
+        'jul-aug': [5.50, 6.00, 20.00, 20.50],  // DST
+        'sep-oct': [6.25, 6.75, 19.00, 19.50],  // DST 
+        'nov':     [6.00, 6.75, 17.00, 17.50],  // standard
+      };
+      
+      let t;
+      if (m === 11 || m === 0) t = S['dec-jan'];
+      else if (m === 1)         t = S['feb'];
+      else if (m === 2)         t = S['mar'];
+      else if (m === 3)         t = S['apr'];
+      else if (m === 4 || m === 5) t = S['may-jun'];
+      else if (m === 6 || m === 7) t = S['jul-aug'];
+      else if (m === 8 || m === 9) t = S['sep-oct'];
+      else                      t = S['nov']; 
 
-    <head>
-        <title>Jack Madden</title>
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-0XP9YXFNED"></script>
-	<script>
-  		window.dataLayer = window.dataLayer || [];
-  		function gtag(){dataLayer.push(arguments);}
-  		gtag('js', new Date());
-  		gtag('config', 'G-0XP9YXFNED');
-	</script>    
-        <!--Meta-->
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta property="og:title" content="Jack Madden" />
-        <meta property="og:description" content="Personal website of astrophysicist and artist Jack Madden." />
-        <meta property="og:url" content="https://jackhmadden.github.io/" />
-        <meta property="og:site_name" content="Jack Madden" />
-        <meta property="og:image" content="media/logo/logo-loading.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-        <!-- Favicon -->
-        <link rel="shortcut icon" href="media/favicon.ico">
-        <link rel="apple-touch-icon-precomposed" href="media/apple-touch-icon-114x114.png">
-        <!-- Google Fonts -->
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins%3A400%2C300%7CLibre+Baskerville%3Aregular%2Citalic%2C700' type='text/css' media='all' />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap" rel="stylesheet">
-        <!-- Bootstrap CSS -->
-        <link rel='stylesheet' href='css/bootstrap.css' type='text/css' media='screen' />
-        <!-- Font Icon CSS -->
-        <link rel='stylesheet' href='css/font-awesome.min.css' type='text/css' media='screen' />
-        <!-- Owl Carousel Plugin CSS -->
-        <link rel='stylesheet' href='css/owl.carousel.css' type='text/css' media='screen' />
-        <!-- Lightbox Plugin CSS -->
-        <link rel='stylesheet' href='css/photoswipe.css' type='text/css' media='screen' />
-        <!-- Lightbox Plugin Skin CSS -->
-        <link rel='stylesheet' href='css/skin/photoswipe/default/default-skin.css' type='text/css' media='screen' />
-        <!-- Air. Theme Elements CSS -->
-        <link rel='stylesheet' href='css/pagebuild.css' type='text/css' media='screen' />
-        <!-- Air. Theme Main CSS -->
-        <link rel='stylesheet' href='css/style.css' type='text/css' media='screen' />
-	</head>
+      const [dawn, sunrise, sunset, dusk] = t;
+      let scheme;
+      if      (h >= sunrise && h < sunset)  scheme = 'day';
+      else if (h >= dawn    && h < sunrise) scheme = 'dawn';
+      else if (h >= sunset  && h < dusk)    scheme = 'dusk';
+      else if (h >= 2.75  && h < 3.25)      scheme = '3am';
+      else                                  scheme = 'night';
 
-    <body class="page page-id-285 page-template-default default-dark-logo pswp-light-skin responsive-ux page-template-masonry-body navi-show show-top-space dark-logo header-sticky preload">
+      document.documentElement.setAttribute('data-scheme', scheme);
+    })();
+  </script>
 
-<!--Page Loader-->
-        <div class="page-loading fullscreen-wrap visible">
-            <div class="page-loading-inn">
-                <div class="page-loading-transform">
-                    <div class="site-loading-logo"><img src="media/logo/logo-loading.png" alt="JM" /></div>
-                </div>
-            </div>
-        </div>
-<!--Audio Player-->
-        <div id="jquery_jplayer" class="jp-jplayer"></div>
-<!--Main wrap-->
-        <div class="wrap-all">
-            <div id="wrap-outer">
-<!--Begin Header-->
-                <header id="header" class="">
-                    <div id="header-main">
-                        <div class="container-fluid">
-                            <span id="navi-trigger">
-                                <span class="navi-trigger-text">
-                                    <span class="navi-trigger-text-menu navi-trigger-text-inn">MENU</span>
-                                    <span class="navi-trigger-text-close navi-trigger-text-inn">CLOSE</span>
-                                </span>
-                                <span class="navi-trigger-inn">
-                                    <span class="navi-trigger-hamberg-line navi-trigger-hamberg-line1"></span>
-                                    <span class="navi-trigger-hamberg-line navi-trigger-hamberg-line2"></span>
-                                    <span class="navi-trigger-hamberg-line navi-trigger-hamberg-line3"></span>
-                                </span>
-                            </span>
-                            <div class="heade-meta">
-                                <nav id="navi-header">
-                                    <div id="navi_wrap" class="menu-menu-1-container">
-                                        <ul class="menu clearfix">
-                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page">
-                                                <a href="index.html">Portfolio</a>
-                                                <ul class="sub-menu">
-                                                    <li class="menu-item"><a href="pr-postersession.html">Poster Session</a></li>
-                                                    <li class="menu-item"><a href="pr-knowndispleasure.html">Known Displeasure</a></li>
-                                                    <li class="menu-item"><a href="pr-anomaly.html">Anomaly</a></li>
-                                                    <li class="menu-item"><a href="pr-atmospheres.html">Atmospheres</a></li>
-                                                    <li class="menu-item"><a href="pr-otherview-effect.html">The Otherview Effect</a></li>
-                                                    <li class="menu-item"><a href="pr-space-4.html">Space 4</a></li>
-                                                    <li class="menu-item"><a href="pr-see-Equations.html">See equations</a></li>
-                                                    <li class="menu-item"><a href="pr-the-individual-rice.html">The Individual</a></li>
-                                                    <li class="menu-item"><a href="pr-complete-definitions1.html">Complete Definitions</a></li>
-                                                    <li class="menu-item"><a href="pr-books-for-robots-only.html">Books for Robots (Only)</a></li>
-                                                    <li class="menu-item"><a href="pr-deep-fields.html">Deep Fields</a></li>                             
-                                                    <li class="menu-item"><a href="pr-mfa-thesis.html">MFA Thesis</a></li>
-                                                    <li class="menu-item"><a href="pr-the-individual-painting.html">Untitled paintings</a></li>
-                                                    <li class="menu-item"><a href="pr-exoplanet-art.html">Scientific Illustration</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="publications.html">Publications</a></li>
-                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="pdfs/JackMadden_CV.pdf">CV</a></li>
-                                            <li>|</li>
-                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="contact.html">Contact</a></li>
-                                            <li>|</li>
-                                            <li class="external menu-item menu-item-type-post_type menu-item-object-page"><a href="https://jmadden.artstation.com/store/art_prints">Prints</a></li>
-                                            <li>&emsp;</li>
-                                        </ul>
-                                    </div><!--End #navi_wrap--></nav></div>
-                            <div class="navi-logo">
-                                <div class="logo-wrap">
-                                    <div id="logo">
-                                        <a class="logo-a" href="index.html" title="Home">
-                                            <h1 class="logo-h1 logo-not-show-txt">Home</h1>
-                                            <img class="logo-image logo-dark" src="media/logo/logo_dark.png" alt="Home" />
-                                            <span class="logo-light"><img class="logo-image" src="media/logo/logo_light.png" alt="Home" /></span>
-                                        </a>
-                                    </div></div><!--End logo wrap--></div></div></div><!--End header main-->
-                </header><!--End Header-->
-<!--Begin Menu Panel-->
-                <div id="menu-panel">
-                    <div class="menu-panel-inn fullscreen-wrap">
-                        <nav id="navi">
-                            <div id="navi-wrap" class="menu-navi-wrap">
-                                <ul class="menu clearfix">
-                                    <li id="menu-item-246" class="menu-item"><a href="index.html">Portfolio</a></li>
-                                    <li id="menu-item-256" class="menu-item"><a href="publications.html">Publications</a></li>
-                                    <li id="menu-item-247" class="menu-item"><a href="pdfs/JackMadden_CV.pdf">CV</a></li>
-                                    <li id="menu-item-248" class="menu-item"><a href="contact.html">Contact</a></li>
-                                    <li id="menu-item-249" class="menu-item"><a href="https://jmadden.artstation.com/store/art_prints">Prints</a></li>
-                                </ul>
-                            </div></nav>
-                        <div id="menu-panel-bottom" class="container-fluid"> 
-                            <div class="menu-panel-bottom-left col-md-3 col-sm-3 col-xs-3">
-                                <div class="search-top-btn-class"></div></div>
-                            <div class="menu-panel-bottom-right col-md-9 col-sm-9 col-xs-9">
-                                <div class="socialmedia-mobile">
-                                    <ul class="socialmedia clearfix">                        
-                                            <li class="socialmedia-li">
-                                                <a title="Instagram" href="https://www.instagram.com/astro_madden/" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">Instagram</span></a></li>
-                                            <li class="socialmedia-li">
-                                                <a title="GitHub" href="https://github.com/JackHMadden/" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">GitHub</span></a></li>
-                                            <li class="socialmedia-li">
-                                                <a title="orcid" href="https://orcid.org/0000-0002-4701-7833" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">ORCiD</span></a></li>
-                                            <li class="socialmedia-li">
-                                                <a title="Artstation" href="https://www.artstation.com/jmadden" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">Artstation</span></a></li>
-                                    </ul>
-                                </div></div></div></div>
-                </div><!--End Menu Panel-->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:         #F5F4F0;
+      --sidebar-bg: #F5F4F0; 
+      --border:     #c8c4bc;
+      --accent:     #2D4A3E;
+      --link:       #03B2ED;
+      --text-pri:   #1A1918;
+      --text-sec:   #6E6C67;
+      --text-muted: #ABA9A4;
+      --sidebar-w:  224px;}
+    /* --- Night --- */
+    [data-scheme="night"] {
+      --bg:         #0E0D12;
+      --sidebar-bg: #13121A;
+      --border:     #1E1D28;
+      --accent:     #8BA898;
+      --link:       #03B2ED;
+      --text-pri:   #E0DEF0;
+      --text-sec:   #a9a7b8;
+      --text-muted: #8A889E;}
+    /* --- Dawn --- */
+    [data-scheme="dawn"] {
+      --bg:         #D8D2E8;
+      --sidebar-bg: #CEC8DE;
+      --border:     #B0A8C8;
+      --accent:     #6A5498;
+      --link:       #03B2ED;
+      --text-pri:   #1A1628;
+      --text-sec:   #6A6080;
+      --text-muted: #A89CB8;}
+    /* --- Dusk --- */
+    [data-scheme="dusk"] {
+      --bg:         #F2E4D0;
+      --sidebar-bg: #EAD8C0;
+      --border:     #C8A880;
+      --accent:     #8A4820;
+      --link:       #03B2ED;
+      --text-pri:   #1E1008;
+      --text-sec:   #6A4E38;
+      --text-muted: #A88060;}
+    /* --- 3am --- I'm glad you're awake... */
+    [data-scheme="3am"] {
+      --bg:         #000000;
+      --sidebar-bg: #000000;
+      --border:     #B31B6F;
+      --accent:     #0B9FBD;
+      --link:       #e29127;
+      --text-pri:   #B31B6F;
+      --text-sec:   #6C0E41;
+      --text-muted: #025067;}
+    [data-scheme="3am"] .nav-item.active {
+      text-shadow: 0 0 8px var(--accent);
+      box-shadow: inset 2px 0 8px var(--text-sec);
+    }
 
- <!-- All Content Wrap -->
-        		<div id="wrap">
+     /* --- LAYOUT --- */
+    html, body {
+      height: 100%; font-family: 'Space Mono', monospace; background: var(--bg); color: var(--text-pri); 
+      font-size: 14px; line-height: 1.6; overflow: hidden;}
+    .shell { display: flex; height: 100vh; }
 
-<!-- Main Content : List, text content ... -->
-        	        <div id="content">
-                        <div class="content_wrap_outer fullwrap-layout">
-                                <div id="content_wrap" class="">
-                                    <!--Portfolio Template-->
-                                    <div class="container-masonry ux-portfolio-spacing-40 ux-portfolio-3col ux-portfolio-full ux-has-filter" data-col="3" data-spacer="40" data-template="intro-r-filter">
-                                        <!--Introduction right & Filter left-->
-                                        <div class="container page-template-intro-left-list-right">
-                                            <!--Introduction-->
-                                            <section class="ux-portfolio-template-intro">
-                                                <p style="text-align: left;"><span style="font-size:24px"> I'm <b>Jack Madden</b>, an astrophysicist and artist working toward humanizing our understanding of the universe through research-based art.</span></p>
-                                            </section>
-                                            <!--Filter-->
-                                            <div class="filters-wrap">
-                                                <div class="clearfix filters">
-                                                    <ul class="filters-ul container">
-                                                        <li class="filters-li active">
-                                                            <a id="all" class="filters-a" href="#" data-filter="*">All
-                                                                <span class="filter-num">23</span></a></li> 
-                                                        <li class="filters-li">
-                                                            <a class="filters-a" data-filter=".filter_Code" href="#" data-catid="4" data-pageid="123">Code Art
-                                                                <span class="filter-num">7</span></a></li>
-                                                        <li class="filters-li">
-                                                            <a class="filters-a" data-filter=".filter_Physical" href="#" data-catid="7" data-pageid="123">Physical Art
-                                                                <span class="filter-num">10</span></a></li>
-                                                        <li class="filters-li">
-                                                            <a class="filters-a" data-filter=".filter_Concept" href="#" data-catid="25" data-pageid="123">Concept Art
-                                                                <span class="filter-num">4</span></a></li>
-                                                        <li class="filters-li">
-                                                            <a class="filters-a" data-filter=".filter_Talks" href="#" data-catid="13" data-pageid="123">Talks
-                                                                <span class="filter-num">1</span></a></li>
-                                                        <li class="filters-li">
-                                                            <a class="filters-a" data-filter=".filter_Essays" href="#" data-catid="14" data-pageid="123">Essays
-                                                                <span class="filter-num">1</span></a></li>
-                                                    </ul> 
-                                                </div></div></div><!--End page-template-intro-left-list-right-->
-<!--Portfolio Listing-->
-                                        <div class="masonry-list masonry-grid grid-mask-boxed-center">
+    /* --- SIDEBAR --- */
+    .sidebar {
+      width: var(--sidebar-w); min-width: var(--sidebar-w); background: var(--sidebar-bg); 
+      border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; 
+      scrollbar-width: none; transition: transform 0.25s ease;}
+    .sidebar::-webkit-scrollbar { 
+      display: none; }
+    .sidebar-name {
+      padding: 28px 22px 22px; border-bottom: 1px solid var(--border); position: relative; overflow: visible;}
+    .sidebar-name .name { 
+      font-size: 20px; font-weight: 600; font-family: 'Futura'; letter-spacing: 0.14em; line-height: 1.35;} 
+    .sidebar-name .descriptor {
+      font-size: 16px; color: var(--text-muted); font-family: 'Futura'; margin-top: 5px; letter-spacing: 0.04em;} 
+    .nav-group { 
+      padding: 18px 0 6px; }
+    .nav-group-label {
+      display: block; padding: 0 20px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);}
+    .nav-item {
+      display: flex; align-items: center; width: 100%; padding: 2px 22px; font-family: 'Space Mono', monospace; 
+      font-size: 12px; font-weight: 400; color: var(--text-sec); background: none; border: none; 
+      border-left: 2px solid transparent; cursor: pointer; text-align: left; text-decoration: none; line-height: 1.5; 
+      transition: color 0.12s, border-left-color 0.12s, background-color 0.12s;}
+    .nav-item:hover { 
+      color: var(--text-pri); font-weight: 600;}
+    .nav-item.active {
+      color: var(--accent); border-left-color: var(--accent); background-color: rgba(45, 74, 62, 0.06); font-weight: 700;}
+    .nav-item-external {
+      justify-content: space-between; }
+    .nav-ext-icon { 
+      opacity: 0.35; flex-shrink: 0; display: flex; }
+    .sidebar-spacer {
+      flex: 1; }
+    .sidebar-logo {
+      padding: 0px 45px;}
+    .sidebar-logo img {
+      max-width: 100%; height: auto; max-height: 52px; opacity: 0.2;}
 
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Physical filter_post-format-gallery">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a href="pr-knowndispleasure.html" class="grid-item-mask-link grid-item-open-url"></a>
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" class="grid-item-cate-a" data-filter=".filter_Physical">
-                                                                Physical Art</a></span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a href="pr-knowndispleasure.html" class="grid-item-tit-a">
-                                                                Known Displeasure</a></h2></div></div>
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/knowndispleasure/DSC_0041.jpg"></div></div></div>
-                                            </section>                                             
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Talks filter_post-format-gallery" data-postid="176">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="https://youtu.be/fe68vvIFaAQ"  
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="https://tedxrisd.com/Unravel" 
-                                                                title="TEDxRISD" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Talks">
-                                                                TEDxRISD</a></span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="https://youtu.be/fe68vvIFaAQ" class="grid-item-tit-a">
-                                                                How to Make Art like an Astrophysicist</a></h2>
-                                                        </div></div>
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/nav/tedx-event-photos-46.jpg"></div>
-                                                    </div></div></section>
-<!--Tall item-->
-                                            <section class="grid-item grid-item-tall filter_Code filter_post-format-gallery" >
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a href="pr-deep-fields.html" class="grid-item-mask-link grid-item-open-url"></a>
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#"  class="grid-item-cate-a" data-filter=".filter_Code">
-                                                                Code Art</a></span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a href="pr-deep-fields.html" class="grid-item-tit-a">
-                                                                Deep Fields</a></h2></div></div>
-                                                    <div class="brick-content ux-lazyload-wrap" style="padding-top: 150.1%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/deepfields/CompositeNGC6231_index.jpg"></div></div></div>
-                                            </section>
+    /* --- MAIN --- */
+    .main {
+      flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent;}
+    .main::-webkit-scrollbar { 
+      width: 5px; }
+    .main::-webkit-scrollbar-thumb { 
+      background: var(--border); border-radius: 3px; }
 
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Code filter_post-format-gallery">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a href="pr-anomaly.html" class="grid-item-mask-link grid-item-open-url"></a>
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" class="grid-item-cate-a" data-filter=".filter_Code">
-                                                                Code Art</a></span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a href="pr-anomaly.html" class="grid-item-tit-a">
-                                                                Anomaly</a></h2></div></div>
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/anomaly/Feb8screenshot.jpg"></div></div></div>
-                                            </section>                                             
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Physical filter_post-format-gallery">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a href="pr-postersession.html" class="grid-item-mask-link grid-item-open-url"></a>
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" class="grid-item-cate-a" data-filter=".filter_Physical">
-                                                                Physical Art</a></span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a href="pr-postersession.html" class="grid-item-tit-a">
-                                                                Poster Session</a></h2></div></div>
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/postersession/empty.jpg"></div></div></div>
-                                            </section>
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Essays filter_post-format-gallery">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a href="publications.html" class="grid-item-mask-link grid-item-open-url"></a>
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" class="grid-item-cate-a" data-filter=".filter_Essays">
-                                                                Essays</a></span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a href="publications.html" class="grid-item-tit-a">
-                                                                    Nancy Graves - RISD Manual</a></h2></div></div>
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/essays/nancygraves.jpg"></div></div></div>
-                                            </section>
+    /* --- CONTENT BASE --- */
+    .content {
+      max-width: 1080px; margin: 0 auto; padding: 56px 52px 96px; animation: fadeUp 0.50s ease both;}
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateX(0); }
+      to   { opacity: 1; transform: translateX(0); }}
+    .eyebrow {
+      font-size: 12px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px;}
+    .page-title {
+      font-size: 26px; font-weight: 700; letter-spacing: 0.025em; line-height: 1.2; margin-bottom: 30px;}
+    .body-text {
+      max-width: 640px; font-size: 13px; line-height: 1.9; color: var(--text-sec); margin-bottom: 22px;}
+    .body-text a {
+      color: var(--link);}
 
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Physical filter_post-format-gallery" data-postid="170">
+    /* --- IMAGE BLOCKS --- */
+    figure { margin: 40px 0; }
+    figcaption {
+      font-size: 10px; color: var(--text-muted); margin-top: 10px; line-height: 1.6; font-style: italic;}
+    figcaption a {
+      color: var(--link);}  
+    .figure-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 40px 0;}
+    .figure-pair figure { margin: 0; }
 
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-atmospheres.html" 
-                                                        title="24 Atmospheres" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Physical Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-atmospheres.html" 
-                                                                title="24 Atmospheres" class="grid-item-tit-a">
-                                                                24 Atmospheres
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/atmospheres/atmospheres_25 in frame angle2.jpg"></div>
-                                                    </div>
-                                
-                                                </div><!--End inside-->
-                                            </section> 
+    /* --- BIO PAGE --- */
+    .hero-img {
+      width: 100%; height: 400px; display: block; object-fit: cover;}
+    .bio-grid {
+      display: grid; grid-template-columns: 1fr 210px; gap: 52px; align-items: start;}
+    .contact-label {
+      display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; 
+      color: var(--text-muted); margin-bottom: 14px;}
+    .contact-list {list-style: none; }
+    .contact-item {
+      display: flex; align-items: center; gap: 10px; padding: 5px 0;}
+    .contact-icon {
+      flex-shrink: 0; display: flex; color: var(--text-muted);}
+    .contact-item a {
+      font-size: 12px; letter-spacing: 0.10em; color: var(--text-sec); text-decoration: none; 
+      border-bottom: 1px solid transparent; transition: color 0.12s, border-color 0.12s;}
+    .contact-item a:hover {
+      color: var(--accent); border-bottom-color: var(--accent);}
 
-<!--Tall item-->
-                                            <section class="grid-item grid-item-tall filter_Physical filter_post-format-gallery" data-postid="97">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-space-4.html" 
-                                                        title="Untitled space no.4" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Physical Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-space-4.html" 
-                                                                title="Untitled space no.4" class="grid-item-tit-a">
-                                                                Untitled space no.4
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/space4/DSC_0014.jpg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section> 
-<!--Big item-->                                            
-                                            <section class="grid-item grid-item-big filter_Physical filter_post-format-gallery" data-postid="512">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-otherview-effect.html" 
-                                                        title="The Otherview Effect" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Physical Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-otherview-effect.html" 
-                                                                title="The Otherview Effect" class="grid-item-tit-a">
-                                                                The Otherview Effect
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/othervieweffect/otherview_lights on 1.jpg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section>
+    /* --- PUBLICATIONS PAGE --- */
+    .pub-page-links {
+      display: flex; gap: 20px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border);}
+    .pub-page-links a {
+      font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; 
+      transition: border-color 0.12s;}
+    .pub-page-links a:hover { border-bottom-color: var(--accent); }
+    .pub-list { list-style: none; }
+    .pub-item {padding: 10px 0;}
+    .pub-year {
+      font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; margin-bottom: 5px;}
+    .pub-title {
+      font-size: 13px; font-weight: 700; line-height: 1.5; margin-bottom: 6px;}
+    .pub-title a {
+      color: var(--text-pri); text-decoration: none; border-bottom: 1px solid var(--border); 
+      transition: color 0.12s, border-color 0.12s;}
+    .pub-title a:hover {
+      color: var(--accent); border-bottom-color: var(--accent);}
+    .pub-authors {
+      font-size: 11px; color: var(--text-sec); margin-bottom: 3px;}
+    .pub-journal {
+      font-size: 11px; color: var(--text-muted); font-style: italic;}
+    .pub-data {margin-top: 3px;}
+    .pub-data a {
+      display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text-muted); 
+      text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.12s, border-color 0.12s;}
+    .pub-data a:hover {
+      color: var(--accent); border-bottom-color: var(--accent);}
 
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Physical filter_post-format-gallery" data-postid="170">
+    /* --- LINKS PAGE --- */
+    .link-list { list-style: none; }
+    .link-item {
+      display: grid; grid-template-columns: 96px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border); align-items: start;}
+    .link-item:first-child { border-top: 1px solid var(--border); }
+    .link-date {
+      font-size: 11px; color: var(--text-muted); letter-spacing: 0.03em; padding-top: 2px; line-height: 1.5;}
+    .link-title a {
+      font-size: 13px; font-weight: 700; color: var(--text-pri); text-decoration: none; 
+      border-bottom: 1px solid var(--border); transition: color 0.12s, border-color 0.12s;}
+    .link-title a:hover {
+      color: var(--accent); border-bottom-color: var(--accent);}
+    .link-note {
+      font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.65;}
+    
+      /* --- JAVASCRIPT CONTAINERS --- */  
+    .p5-breakout {margin: 48px -52px;}
+    .p5-container {
+      width: 100%; overflow: hidden; background: var(--bg);}
+    .p5-container canvas {display: block;}
 
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-mfa-thesis.html" 
-                                                        title="MFA Thesis" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Physical Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-mfa-thesis.html" 
-                                                                title="MFA Thesis" class="grid-item-tit-a">
-                                                                MFA Thesis
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/mfathesis/mfathesis_exteriordetail.jpg"></div>
-                                                    </div>
-                                
-                                                </div><!--End inside-->
-                                            </section> 
+      /* --- MENU BUTTON --- */
+    .menu-btn {
+      display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 101; 
+      width: 120px; height: 48px; flex-direction: column; justify-content: space-around; align-items: center; 
+      padding: 10px 20px; background: var(--sidebar-bg); border: 1px solid var(--border); gap: 2px; 
+      border-radius: 100px; cursor: pointer;}
+    .menu-btn span {
+      display: block; width: 24px; height: 1.5px; background: var(--text-sec);}
+    .menu-overlay {
+      display: none; position: fixed; inset: 0; z-index: 99; background: rgba(0,0,0,0.3);}
 
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Physical filter_post-format-gallery" data-postid="170">
+    /* --- RESPONSIVE --- */
+    @media (max-width: 700px) {
+      :root { --sidebar-w: 190px; }
+      .content { padding: 32px 24px 72px; }
+      .page-title { font-size: 20px; }
+      .bio-grid { grid-template-columns: 1fr; gap: 32px; }
+      .figure-pair { grid-template-columns: 1fr; }
+      .link-item { grid-template-columns: 80px 1fr; gap: 12px; }
+      .p5-breakout { margin-left: -24px; margin-right: -24px; }
+      .sidebar {
+        position: fixed; top: 0; left: 0; height: 100%; z-index: 100; transform: translateX(-100%);}
+      .sidebar.open {transform: translateX(0);}
+      .menu-btn {display: flex;}
+    }
 
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-the-individual-rice.html" 
-                                                        title="The Individual" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Physical Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-the-individual-rice.html" 
-                                                                title="The Individual" class="grid-item-tit-a">
-                                                                The Individual
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/theindividualrice/DSC_0483Index.jpg"></div>
-                                                    </div>
-                                
-                                                </div><!--End inside-->
-                                            </section> 
+  </style>
+</head>
+<body>
 
+ <!-- --- MENU BUTTON --- -->
+<button class="menu-btn" id="menuBtn" aria-label="Open menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="menu-overlay" id="menuOverlay"></div>
 
-<!--Big item-->                                            
-                                            <section class="grid-item grid-item-big filter_Code filter_post-format-gallery" data-postid="511">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-complete-definitions1.html" 
-                                                        title="Complete Definitions no.1" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Code Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Code">
-                                                                Code Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-complete-definitions1.html" 
-                                                                title="Complete Definitions no.1" class="grid-item-tit-a">
-                                                                Complete Definitions no.1
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/completedefinitions/no1_Meaning_10_200_wideIndex.jpg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section>
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Code filter_post-format-gallery" data-postid="170">
+<div class="shell">
+  <!-- --- SIDEBAR --- -->
+  <aside class="sidebar">
+    <div class="sidebar-name">
+      <div class="name">Jack Madden</div>
+      <div class="descriptor">Astrophysicist &amp; Artist</div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-logo" id="sidebarLogo" style="display:none"></div>
+  </aside>
+  <!-- --- MAIN --- -->
+  <main class="main" id="main"></main>
+</div>
 
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-deep-fields.html" 
-                                                        title="Deep Fields" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Code Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Code">
-                                                                Code Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-deep-fields.html" 
-                                                                title="Deep Fields" class="grid-item-tit-a">
-                                                                Deep Fields
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/deepfields/MACSJ0717_4.0.3.Total copy.jpg"></div>
-                                                    </div>
-                                
-                                                </div><!--End inside-->
-                                            </section> 
+<!-- Javascript files -->
+<script src="media/scripts/starfield.js"></script>
+<script src="media/scripts/fluid.js"></script>
+<script src="media/projects/anomaly/anomaly.js"></script>
 
+<script>
+// --------------------------------------------------------------------------------------------------------------------
+// CONFIG 
+// --------------------------------------------------------------------------------------------------------------------
+
+const LOGO_SRC          = 'media/site/logo.png';  
+const LOGO_SRCinv       = 'media/site/logo-inverted.png';
+const ADS_URL           = 'https://ui.adsabs.harvard.edu/search/q=orcid%3A0000-0002-4701-7833'; 
+const ORCID_PROFILE_URL = 'https://orcid.org/0000-0002-4701-7833'; 
+const INSTA_URL         = 'https://www.instagram.com/astro_madden/';
+const CV_URL            = 'media/site/JackMadden_CV.pdf';
+
+let currentP5 = null; // Tracks the running p5 instance so it can be cleanly removed on navigation
+
+// --- JAVASCRIPT SKETCH REGISTRY ---------
+const SKETCHES = {
+  starfield: sketchStarfield,   // scripts/starfield.js
+  fluid:     sketchFluid,       // scripts/fluid.js
+  anomaly:   sketchAnomaly,     
+};
+
+// --- ICONS (inline SVG)
+const ICONS = {
+  email: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="15" height="15">
+    <rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/>
+    <path d="M1.5 5.5 8 9.5l6.5-4"/>
+  </svg>`,
+  instagram: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" width="15" height="15">
+    <rect x="1.5" y="1.5" width="13" height="13" rx="3.5"/>
+    <circle cx="8" cy="8" r="3"/>
+    <circle cx="11.8" cy="4.2" r="0.8" fill="currentColor" stroke="none"/>
+  </svg>`,
+  orcid: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="15" height="15">
+  <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"
+    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16z
+       M5.5 3a.9.9 0 1 0 0 1.8A.9.9 0 0 0 5.5 3z
+       M4.8 5.6h1.5v6.3H4.8z
+       M8.1 5.6h2.4c2 0 3.2 1.2 3.2 3.1s-1.2 3.1-3.2 3.1H8.1z"/>
+  </svg>`,
+  cv: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="15" height="15">
+    <path d="M3 1.5h7l3 3v10H3z"/>
+    <path d="M10 1.5v3h3"/>
+    <path d="M5.5 7.5h5M5.5 10h5M5.5 12.5h3"/>
+  </svg>`,
+  external: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11">
+    <path d="M5.5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V6.5"/>
+    <path d="M8 1h3v3"/>
+    <path d="M5.5 6.5 11 1"/>
+  </svg>`,
+  data: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" width="11" height="11">
+    <ellipse cx="6" cy="3" rx="4" ry="1.5"/>
+    <path d="M2 3v3c0 .83 1.79 1.5 4 1.5S10 6.83 10 6V3"/>
+    <path d="M2 6v3c0 .83 1.79 1.5 4 1.5S10 9.83 10 9V6"/>
+  </svg>`,
+};
+
+// --------------------------------------------------------------------------------------------------------------------
+// PAGES DATA
+// --------------------------------------------------------------------------------------------------------------------
+const pages = [
+
+  // --- BIO ---------------------------------------------------------------------------------------------------
+  {id: "bio",
+    label: "Bio & Contact",
+    group: null,
+    type: "bio",
+    eyebrow: "Jack Madden",
+    sections: [
+    { video: true, src: "media/projects/othervieweffect/OtherviewEffect_720 1minute.mp4", autoplay: true, caption: "The Otherview Effect" },
+    ],
+    bio: [
+      "Jack is an independent research-based artist and research affiliate with Blue Marble Space who is passionate about understanding the universe, even if it means asking difficult questions about how science operates.",
+      "He holds a Ph.D. in astrophysics from Cornell University, where he worked on modeling the atmospheres of habitable planets; and an M.F.A. in digital media from the Rhode Island School of Design for designing new ways to experience science. Jack blends his astronomy background with conceptual art training to create art and write about bridging the gap between scientific discovery and genuine human understanding.",
+      "His achievements range from discovering an extragalactic pulsar to winning the RISD Museum's Dorner prize and exhibiting artwork on the International Space Station. He is currently focused on designing new ways to communicate life-detection research and seeing the universe through the image artifacts, glitches, and military connections often hidden. "
+    ],
+    contact: [
+      { icon: "email",     label: "jack.madden@bmsis.org", href: "mailto:jack.madden@bmsis.org" },
+      { icon: "instagram", label: "@Astro_Madden",         href: INSTA_URL },
+      { icon: "orcid",     label: "ORCiD",                 href: ORCID_PROFILE_URL },
+      { icon: "cv",        label: "Download CV",           href: CV_URL },
+    ],
+  },
+
+  // --- PUBLICATIONS --------------------------------------------------------------------------------------
+  {id: "publications",
+    label: "Publications",
+    group: null,
+    type: "publications",
+    eyebrow: "Selected peer-reviewed articles & essays",
+    title: "Publications",
+    pubs: [
+    {year: "2025",
+      title: "Collaborating with Artists in the Search for Life",
+      authors: "Madden J., Collins C., Rollins M. and Capirala A.",
+      journal: "NASA-DARES white paper",
+      href: "https://ui.adsabs.harvard.edu/abs/2026arXiv260624943M/abstract"},
+    {year: "2024",
+      title: "Double Take: Plate VI Maskeyne Da Region of the Moon",
+      authors: "Madden J. & Roberts J.",
+      journal: "RISD Manual, Issue 19",
+      href: "https://risdmuseum.org/node/1179371",
+      data: { label: "OpenAccess", href: "media/projects/nancygraves/Madden_Manual_19_DoubleTake_Graves_OpenAccess.pdf" }},
+    {year: "2020",
+      title: "High-resolution Spectra for a Wide Range of Habitable Zone Planets around Sun-like Stars",
+      authors: "Madden J. & Kaltenegger L.",
+      journal: "The Astrophysical Journal Letters, 898(2), L42",
+      href: "https://ui.adsabs.harvard.edu/abs/2020ApJ...898L..42M/abstract",
+      data: { label: "Data on Zenodo", href: "https://doi.org/10.5281/zenodo.3912065" }},
+    {year: "2020",
+      title: "How surfaces shape the climate of habitable exoplanets",
+      authors: "Madden J. & Kaltenegger L.",
+      journal: "Monthly Notices of the Royal Astronomical Society, 495(1), 1–13",
+      href: "https://ui.adsabs.harvard.edu/abs/2020arXiv200100085M/abstract",
+      data: { label: "Data on Zenodo", href: "https://doi.org/10.5281/zenodo.3912065" }},
+    {year: "2020",
+      title: "High-Resolution Transmission Spectra of Earth through Geological Time",
+      authors: "Kaltenegger L., Lin Z. & Madden J.",
+      journal: "The Astrophysical Journal Letters, 892(1), L17",
+      href: "https://ui.adsabs.harvard.edu/abs/2019arXiv191211149K/abstract",},
+    {year: "2020",
+      title: "Ready Student One: Exploring predictors for student learning in virtual reality",
+      authors: "Madden J. H., Schuldt J. P., Kim B., Pandita S., Won A. S. & Holmes N. G.",
+      journal: "PLOS ONE, 15(3), e0229788",
+      href: "https://ui.adsabs.harvard.edu/abs/2019arXiv191010939M/abstract",
+      data: { label: "Data on CISER", href: "https://doi.org/10.6077/f12c-m973" }},
+    {year: "2019",
+      title: "The Habitability of GJ 357 d: Possible Climates and Observability",
+      authors: "Kaltenegger L., Madden J., Lin Z., Rugheimer S., Segura A., Luque R., Pallé E. & Espinoza N.",
+      journal: "The Astrophysical Journal Letters, 883(2), L40",
+      href: "https://ui.adsabs.harvard.edu/abs/2019ApJ...883L..40K/abstract",},
+    {year: "2019",
+      title: "Planetary system around the nearby M dwarf GJ 357 including a transiting, hot, Earth-sized planet optimal for atmospheric characterization",
+      authors: "Luque R. et al.",
+      journal: "Astronomy & Astrophysics, 628, A39",
+      href: "https://ui.adsabs.harvard.edu/abs/2019A%26A...628A..39L/abstract",},
+    {year: "2018",
+      title: "A Catalog of Spectra, Albedos, and Colors of Solar System Bodies for Exoplanet Comparison",
+      authors: "Madden J. H. & Kaltenegger L.",
+      journal: "Astrobiology, 18(12), 1559–1573",
+      href: "https://ui.adsabs.harvard.edu/abs/2018AsBio..18.1559M/abstract",
+      data: { label: "Data on Zenodo", href: "https://doi.org/10.5281/zenodo.3930986" }},
+    {year: "2018",
+      title: "Virtual Reality as a Teaching Tool for Moon Phases and Beyond",
+      authors: "Madden J. H., Won A. S., Schuldt J. P., Kim B., Pandita S., Sun Y., Stone T. J. & Holmes N. G.",
+      journal: "Physics Education Research Conference Proceedings",
+      href: "https://adsabs.harvard.edu/cgi-bin/bib_query?arXiv:1807.11179",},
+    {year: "2014",
+      title: "Global Distribution of Lunar Impact Melt Flows",
+      authors: "Neish C., Madden J., Carter L., Hawke B., Giguere T., Bray V., Osinski G. & Cahill J.",
+      journal: "Icarus, 239, 105–117",
+      href: "https://ui.adsabs.harvard.edu/abs/2014Icar..239..105N/abstract",},
+    {year: "2013",
+      title: "Eight New Radio Pulsars in the Large Magellanic Cloud",
+      authors: "Ridley J., Crawford F., Lorimer D., Bailey S., Madden J., Anella R. & Chennamangalam J.",
+      journal: "Monthly Notices of the Royal Astronomical Society, 433(1), 138–146",
+      href: "https://ui.adsabs.harvard.edu/abs/2013MNRAS.433..138R/abstract",},
+    ]
+  },
+
+  // --- LINKS (instagram link log) ------------------------------------------------------------------
+  {id: "links", 
+    label: "Links", group: null, type: "links", eyebrow: "", title: "Links",
+    entries: [
+      {date: "2024-02-18", title: "Talk: Art and astrophysics collaboration",
+        url: "https://www.youtube.com/watch?v=Ni6_TL5K7Ho", note: ""},
+      {date: "2024-02-18", title: "Anomaly graph",
+        url: "https://jackhmadden.github.io/index.html#anomaly", note: ""},
+      {date: "2023-07-26", title: "Penn State SETI Symposium",
+        url: "https://psu.mediaspace.kaltura.com/media/Jack+Madden/1_sjyy635k", note: ""},
+      {date: "2023-03-15", title: "TEDxRISD",
+        url: "https://youtu.be/fe68vvIFaAQ", note: ""},
+      {date: "2023-02-15", title: "The Art of Planetary Science",
+        url: "https://www.lpl.arizona.edu/art/2023", note: ""},
+      {date: "2023-02-15", title: "Miniature Monumental",
+        url: "http://www.bristolartmuseum.org/miniature-monumental.html", note: ""},
+      {date: "2022-07-05", title: "Book: Abyss without Vertigo",
+        url: "https://www.lulu.com/shop/jack-madden/abyss-without-vertigo/paperback/product-wnj4q8.html", note: ""},
+      {date: "2022-05-01", title: "Festival of the Smallest",
+        url: "https://thesmallest.222lodge.nl/", note: ""},
+      {date: "2022-03-16", title: "Life in ice",
+        url: "https://news.cornell.edu/stories/2022/03/tint-life-color-catalog-built-find-frozen-worlds", note: ""},
+      {date: "2021-07-12", title: "Dorner Exhibit",
+        url: "https://risdmuseum.org/exhibitions-events/exhibitions/dorner-prize", note: ""},
+      {date: "2021-01-11", title: "Definition Animation",
+        url: "https://youtu.be/365A8GKDOy4", note: ""},
+      {date: "2021-01-02", title: "Gatsby",
+        url: "https://easyzoom.com/image/238912", note: ""},
+    ]
+  },
+
+  // --- PROJECTS ---------------------------------------------------------------------------------------------
+  // --- TEDX 
+  {id: "tedx", label: "TEDx", group: "Projects", type: "project",
+    eyebrow: "TEDx · 2023",
+    title: "How to Make Art like an Astrophysicist",
+    sections: [
+      { youtube: true, id: "fe68vvIFaAQ", autoplay: false, caption: "" },
+    ]
+  },
+
+  // --- SPACE 4 
+  {id: "space4", label: "Space 4", group: "Projects", type: "project",
+    eyebrow: "Installation · 2022 · Light, darkness",
+    title: "Untitled space no.4",
+    sections: [
+      { image: true, src: 'media/projects/space4/DSC_0015.jpg', caption: "" },
+      { pair: true, images: [
+        {src: "media/projects/space4/DSC_0022-3.jpg", caption: "" },
+        {src: "media/projects/space4/DSC_0008-2.jpg", caption: "" }
+      ]},
+      { pair: true, images: [
+        {src: "media/projects/space4/DSC_0091.jpg",  caption: "" },
+        {src: "media/projects/space4/DSC_0221.jpg",  caption: "" }
+      ]},
+      { text: "<em>There is only what you bring with you. Solitude gives you the space and time to find what you can leave behind.</em>" },
+      { text: "The atom of subjective value is the individual. Each individual is an engine for the entire process of internalizing reality, generating morality, and enacting change. A self-awareness of this power is itself a powerful force to reorganize the psyche. As a method of achieving this self-awareness, solitude can focus our attention on how narrow and disconnected the funnel of our body is in relation to our environment, the world, or the universe. Solitude can also bring us to the realization that the narrowness of our experiences are significantly finite and non-zero as opposed to insignificant." },
+      { text: "'I have discovered that all the unhappiness of people arises from one single fact, that we cannot sit quietly in our own room.' Modernizing the language of this quote highlights how it applies just as much today as it did 400 years ago for Pascal. Being alone presents a challenge to us. We can either confront our isolation or retreat from it with a distraction. It unsettles us when we are confronted by a quiet moment with how truly alone we are. No one will ever truly 'get' us, the universe doesn't 'care' about us, we'll never escape our own minds. Acceptance of our universal isolation, however unpalatable, is a first step in finding a more satisfying peace with it. In this project, I will create a physical space for personal acceptance by isolating the viewer so completely to allow for reflection on their relationship with solitude." },
+      { text: "The harder it feels to be alone the more helpful it can be. Finding solitude is hard physically and mentally. Humans are constantly seeking connection which leaves little chance a person can be caught incapable of distracting themselves with work, communication, social media, entertainment, religion, education, or nature. Dedicated time for isolated self-reflection is also rare because we have a natural aversion to it. Being alone with just your head can be quite unsettling without practiced exposure." },
+      { text: "A self-awareness of this power is necessary for those who wish to enact a lasting change, a type of alteration that may register perceptibly by the future. With thorough application of the principles of the subjective diversity solution to nihilism, the legacy we leave should be designed to create examples for individuals to follow, question, and learn from. The value of an example is not in the progress it seemingly contributes but by the usefulness of its artifact to teach a future generation. To do this authentically you must feel yourself as a distinct entity, trust yourself as a creator of change, and become the scientist of your own reality." },
+      { pair: true, images: [
+        {src: "media/projects/space4/Wireframe34_Front.jpg", caption: "Wireframe, front" },
+        {src: "media/projects/space4/sign.jpg",              caption: "" }
+      ]},
+      { pair: true, images: [
+        {src: "media/projects/space4/WindowWide.jpg",        caption: "" },
+        {src: "media/projects/space4/SideView_Uncovered.jpg",caption: "Side view, uncovered" }
+      ]},
+    ]
+  },
+  
+  // --- OTHERVIEW EFFECT 
+  {id: "othervieweffect", label: "The Otherview Effect", group: "Projects", type: "project",
+    eyebrow: "Installation · 2023 · 35mm slides, Ektagraphic Model 210, Mathematica",
+    title: "The Otherview Effect",
+    sections: [
+      { image: true, src: "media/projects/othervieweffect/otherview_DSC_0166_Full.jpg", caption: "" },
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/othervieweffect/otherview_Slides on display.jpg", caption: "" },
+        { size: "mid", src: "media/projects/othervieweffect/otherview_lights on 2.jpg",       caption: "" },
+      ]},
+      { pair: true, images: [
+        { size: "mid", src: "media/projects/othervieweffect/otherview_lights off 1.jpg",    caption: "" },
+        { size: "mid", src: "media/projects/othervieweffect/otherview_Slides close up.jpg", caption: "" },
+      ]},
+      { text: "\"...it's beautiful, it's home, and it's fragile.\" This is the Earth as described by Michael Collins after the Apollo 11 mission; only 23 other people have seen the view he did. Since the 60s, many astronauts and space tourists have seen the Earth from orbit but only the 24 Apollo astronauts have seen it from such a distance as to render the Earth small enough to be covered with an outstretched hand. To see the Earth from above evokes unity and stewardship but to see it tiny wells up a visceral existential perspective of ultimate solitude. This is the 'overview effect' and for 50 years we have been out of touch with this feeling. Since then, images of Earth have become more ubiquitous and less striking, we have lost touch with the context in which they exist as part of a bigger universe. The Blue Marble photo taken on Apollo 17 that emboldened a global environmental movement takes a back seat to computer rendered earth on the iPhone lock screen. There is still a future in which we reconnect with the Earth's image and see our home with fresh eyes but it will take an image substantially more extreme." },
+      { text: "We have so far discovered approximately two dozen planets that could have an Earth-like climate. We know where they are and we are actively constructing the telescopes to observe them closely. We will soon enter an age where Earth is no longer the only pale blue dot we know of, a perspective shift is approaching. I have generated imagined views of new planets by mirroring the scientific process by which these potential Earth-like planets are simulated to aid in their discovery. The process I developed started by collecting images from the Apollo missions where the overview effect was felt through the very lens of each photo. With this image set, I trained a neural network to generate new Earth-like images which mirrors the process by which exoplanetary research models based off of Earth are used to generate scientifically valuable simulations of new habitable planets. The images output from the trained network also bear the uncertainty and clumsiness inherent in the scientific models. When viewed in isolation it is clear this is like Earth but not, uncanny but possible, there could be life beyond the resolution. Are we ready for the image of our home to be just one of many? <a href='https://community.wolfram.com/groups/-/m/t/2843397'>Open source on Wolfram Community.</a>" },
+      { pair: true, images: [
+        { src: "media/projects/othervieweffect/otherview_DSC_0194.jpg", caption: "" },
+        { src: "media/projects/othervieweffect/otherview_DSC_0196.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/othervieweffect/otherview_DSC_0199.jpg", caption: "" },
+        { src: "media/projects/othervieweffect/otherview_DSC_0211.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/othervieweffect/otherview_DSC_0231.jpg", caption: "" },
+        { src: "media/projects/othervieweffect/otherview_DSC_0252.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/othervieweffect/otherview_DSC_0256.jpg", caption: "" },
+        { src: "media/projects/othervieweffect/otherview_DSC_0259.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/othervieweffect/otherview_DSC_0197.jpg", caption: "" },
+        { src: "media/projects/othervieweffect/otherview_DSC_0241.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/othervieweffect/otherview_DSC_0250.jpg", caption: "" },
+        { src: "media/projects/othervieweffect/otherview_DSC_0253.jpg", caption: "" },
+      ]},
+    ]
+  },
  
+  // --- 24 ATMOSPHERES 
+  {id: "24atmospheres", label: "24 Atmospheres", group: "Projects", type: "project",
+    eyebrow: "Sculpture · 2023 · Carbon-fixing copper spheres",
+    title: "24 Atmospheres",
+    sections: [
+      { image: true, src: "media/projects/24atmospheres/atmospheres_25 in frame angle2 copy.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/24atmospheres/atmospheres_array3-2.jpg",         caption: "" },
+        { src: "media/projects/24atmospheres/atmospheres_25 in frame angle1.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/24atmospheres/atmospheres_25 in frame angle3.jpg", caption: "" },
+        { src: "media/projects/24atmospheres/atmospheres_25 in frame angle4.jpg", caption: "" },
+      ]},
+      { image: true, src: "media/projects/24atmospheres/atmospheres_DSC_0019.jpg", caption: "" },
+      { text: "Looking back at Earth from the edge of our Solar System, Voyager 1 snapped a photo that would contextualize our home as a tiny blue dot in a vast field of darkness and stray starlight. When Carl Sagan spoke about this image, the tiny blue dot represented the stage on which everything we know, have ever known, and will ever know will play out. Today, we are finding more Earths. More places that would be blue dots, indistinguishable from Earth, until closely examined. From what we've found so far, the shortlist for Earth-like planets around other stars contains 21 unique worlds. We know virtually nothing of these places except that they exist in conditions that could render them habitable. As we continue to study these places, one indicator of Earth-like conditions will be the presence of a blue atmosphere. A blue atmosphere is an evolutionarily important, deeply engrained symbol of fair conditions to humans. As greenhouse gasses increase, our perception of a habitable atmosphere is decoupling from Earth at the same time we meticulously scan these 21 atmospheres for an Earth-like blue." },
+      { image: true, src: "media/projects/24atmospheres/atmospheres_top of thumb.jpg", caption: "" },
+    ]
+  },
+ 
+  // --- BOOKS FOR ROBOTS (ONLY) 
+  {id: "booksforrobotsonly", label: "Books for Robots (Only)", group: "Projects", type: "project",
+    eyebrow: "Artist's book · 2020 · Printed book",
+    title: "Books for Robots (Only)",
+    sections: [
+      { image: true, src: "media/projects/booksforrobotsonly/IMG_4417.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/booksforrobotsonly/IMG_4428.JPG", caption: "" },
+        { src: "media/projects/booksforrobotsonly/IMG_4416.JPG", caption: "" },
+      ]},
+      { text: "Science fiction has given us images of cartoonish looking humanoid robots sitting quietly on the floor skimming through books. Today, research is being done on AI decision making using books as the source material. AI is fed stories and programmed to find value alignment using the ways problems were solved in the books. Value alignment, judging whether something is socially right or wrong, for AI is critically important for AIs making quick decisions in the real world." },
+      { text: "With this work, I wanted to, in a sense, prepare for that moment when robots are incorporated in our lives and making decisions by making a book that is written in a language that needs a computer to be read. This brought up a number of questions about leisure, efficiency, and how humans learn from books, and what each would mean for a robot of the future. I don't think it's too early to start thinking about how we treat robots and how they are brought into our society and what sorts of independence and comforts they are given." },
+      { text: "I took public domain texts and converted them into an array of QR codes to be composed into a book. For this first edition I picked Frankenstein by Mary Shelley, The Policeman's Beard is Half Constructed by Racter, and Thus Spake Zarathustra by Friedrich Nietzsche. I experimented with several ways of presenting the QR codes and settled on a style that was efficient, usable, and visually interesting. To fully express the sentiment of the piece I had the book printed, unreadable by anyone without the aid of a computer but maybe readable by some future robot." },
+      { pair: true, images: [
+        { src: "media/projects/booksforrobotsonly/ForRobotsOnly.jpg",  caption: "" },
+        { src: "media/projects/booksforrobotsonly/ForRobotsOnly2.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/booksforrobotsonly/ForRobotsOnly3.jpg", caption: "" },
+        { src: "media/projects/booksforrobotsonly/ForRobotsOnly4.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/booksforrobotsonly/ForRobotsOnly5.jpg", caption: "" },
+        { src: "media/projects/booksforrobotsonly/ForRobotsOnly6.jpg", caption: "" },
+      ]},
+    ]
+  },
+ 
+  // --- ANOMALY 
+  {id: "anomaly", label: "Anomaly", group: "Projects", type: "project",
+    eyebrow: "Live data visualization · 2024-Ongoing · p5.js",
+    title: "Anomaly",
+    sections: [
+      {p5: true,
+        sketch: 'anomaly',
+        height: "620",
+        caption: "Global daily surface temperature anomaly from the 1850–1900 pre-industrial baseline. Data: ERA5 reanalysis via University of Maine. Updated weekly. Open source on the <a href='https://editor.p5js.org/JackHMadden/sketches/1qOfJBITX'>p5.js editor</a>."
+      },
+      { text: "It only takes one day. Coral doesn't consider the 30-year average before bleaching; a wildfire doesn't wait for annual reports before sparking; ice turns to water at the speed of light. What made the COVID crisis feel more like a crisis was the rapid availability of data. We had access to dashboards of graphs that were updated daily, it evolved for us at a pace we could witness. While the climate, by definition, changes over decades, the experience of that change manifests in the daily present. Each day contributes to those averages. Each day brings us closer or keeps us under the threshold of +1.5°C of warming." },
+      { text: "The data I have seen does not express this daily urgency. I realized such a plot could be made using reanalysis data hosted by the <a href='https://climatereanalyzer.org/clim/t2_daily'>University of Maine</a>. Using their absolute surface temperatures, I was able to calculate the offset needed to present the data as an anomaly from the pre-industrial baseline. The result is the most up to date global temperature anomaly chart. The reanalysis data updates daily but on approximately a one week delay." },
+      { text: "There are many baselines and ways to calculate the temperature anomaly. The University of Maine even displays a 1979–2000 baseline, but the 1850–1900 range is what the IPCC uses for their target of +1.5°C and +2.0°C of maximum allowed warming. To get the anomaly from the 1850–1900 baseline, I use the ERA5 data from 1950 to the end of 1979 to get an average offset for each day of the year. I then calibrate the offset using the annual anomalies from the global time series data at <a href='https://berkeleyearth.org'>berkeleyearth.org</a>. This gave an extra baseline offset of +0.3°C to calibrate a 1950–1979 anomaly to an 1850–1900 anomaly. When added to the ERA5 data, the yearly averages match the BerkeleyEarth values. For example, the 2023 offset BerkeleyEarth calculated is +1.54, which is what my process calculates." },
+      { text: "See the disclaimer at <a href='https://climatereanalyzer.org'>climatereanalyzer.org</a> to understand how to use this information." },
+      { image: true, src: "media/projects/anomaly/Feb8screenshot.jpg", caption: "" },
+    ]
+  },
+ 
+  // --- COMPLETE DEFINITIONS 1 
+  {id: "completedefinitions-1", label: "Complete Definitions I", group: "Projects", type: "project",
+    eyebrow: "Digital rendering · 2020 · Embedding style no.1 · Vector graphics, Mathematica",
+    title: "Complete Definitions",
+    sections: [
+      { image: true, src: "media/projects/completedefinitions/no1_Meaning_10_200_wide.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/completedefinitions/Knowledge3000_STAR.jpeg",  caption: "Knowledge" },
+        { src: "media/projects/completedefinitions/Authentic3000_STAR.jpeg",  caption: "Authentic" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/completedefinitions/Absurd3000_STAR.jpeg",    caption: "Absurd" },
+        { src: "media/projects/completedefinitions/Rational3000_STAR.jpeg",  caption: "Rational" },
+      ]},
+      { text: "Words can be frustrating. Often cumbersome and nebulous, language holds a great deal of power, shaping our thoughts and actions. This series of ultra-high-resolution digital renderings and animations visualizes the hierarchical structures in the definitions of words whose true meanings can be elusive." },
+      { text: "This project renders graphical representations of \"complete definitions\" — all the words that arise in defining the initial seed word. Beginning at a single point, lines are drawn between the seed word and the words needed to define it, and then the words needed to define those words, followed by the next words, and so on, until no new words are necessary." },
+      { text: "By arranging and connecting the relationships between words and the words needed to define them, structures emerge to show how confined, repetitive, closed, and isolated language is. The value of words only exists with collective agreement among many people. Different seed words create different structures, but the components are all the same. Zooming in, we find an overwhelming forest of connections and a sense of how complex language can be, but zooming out reveals a closed system. <a href='https://community.wolfram.com/groups/-/m/t/2358728'>Open source on Wolfram Community.</a>" },
+      { pair: true, images: [
+        { src: "media/projects/completedefinitions/MeaningNo1Detail2.jpeg", caption: "" },
+        { src: "media/projects/completedefinitions/MeaningNo1Detail3.jpeg", caption: "" },
+      ]},
+      { image: true, src: "media/projects/completedefinitions/MeaningNo1Detail1.jpeg", caption: "" },
+    ]
+  },
+ 
+  // --- COMPLETE DEFINITIONS 2 
+  {id: "completedefinitions-2", label: "Complete Definitions II", group: "Projects", type: "project",
+    eyebrow: "Digital rendering · 2020 · Embedding method no.2 · Vector graphics, Mathematica",
+    title: "Complete Definitions",
+    sections: [
+      { image: true, src: "media/projects/completedefinitions/Knowledge2Detail1.jpeg", caption: "" },
+      { image: true, src: "media/projects/completedefinitions/Absurd3000_BALLOON.jpeg", caption: "Absurd" },
+      { pair: true, images: [
+        { src: "media/projects/completedefinitions/Knowledge3000_BALLOON.jpeg",  caption: "Knowledge" },
+        { src: "media/projects/completedefinitions/Authentic3000_BALLOON.jpeg",  caption: "Authentic" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/completedefinitions/Morality3000_BALLOON.jpeg", caption: "Morality" },
+        { src: "media/projects/completedefinitions/Rational3000_BALLOON.jpeg", caption: "Rational" },
+      ]},
+      { image: true, src: "media/projects/completedefinitions/Knowledge2Detail2.jpeg", caption: "" },
+      { text: "This project renders graphical representations of \"complete definitions\" — all the words that arise in defining the initial seed word. Beginning at a single point, lines are drawn between the seed word and the words needed to define it, and then the words needed to define those words, followed by the next words, and so on, until no new words are necessary." },
+      { text: "The connections can be arranged in different ways to show different features of the network. <a href='#complete-definitions-1'>Embedding method no.1</a> represents a simple system of adding new words counterclockwise to complete a circle which weighs all nodes equally and gives a sense of how the network builds over time. Method no.2 balloons connections out of the most commonly used nodes based on their order of appearance which leads to more variety in structure. <a href='https://community.wolfram.com/groups/-/m/t/2358728'>Open source on Wolfram Community.</a>" },
+      { image: true, src: "media/projects/completedefinitions/Meaning3000_BALLOON.jpeg", caption: "Meaning" },
+      { image: true, src: "media/projects/completedefinitions/Knowledge2Detail3.jpeg", caption: "" },
+    ]
+  },
+ 
+  // --- COMPLETE DEFINITIONS 3 
+  {id: "completedefinitions-3", label: "Complete Definitions III", group: "Projects", type: "project",
+    eyebrow: "Digital rendering · 2020 · Embedding method no.3 · Vector graphics, Mathematica",
+    title: "Complete Definitions",
+    sections: [
+      { image: true, src: "media/projects/completedefinitions/Absurd No.3.jpg", caption: "" },
+      { image: true, src: "media/projects/completedefinitions/AbsurdNo3Detail2.jpeg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/completedefinitions/Knowledge3000_SPIRAL_discrete.jpeg",  caption: "Knowledge" },
+        { src: "media/projects/completedefinitions/Authentic3000_SPIRAL_discrete.jpeg",  caption: "Authentic" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/completedefinitions/Meaning3000_SPIRAL_discrete.jpeg",  caption: "Meaning" },
+        { src: "media/projects/completedefinitions/Rational3000_SPIRAL_discrete.jpeg", caption: "Rational" },
+      ]},
+      { image: true, src: "media/projects/completedefinitions/Morality3000_SPIRAL_discrete.jpeg", caption: "Morality" },
+      { text: "This project renders graphical representations of \"complete definitions\" — all the words that arise in defining the initial seed word. Beginning at a single point, lines are drawn between the seed word and the words needed to define it, and then the words needed to define those words, followed by the next words, and so on, until no new words are necessary." },
+      { text: "The connections can be arranged in different ways to show different features of the network. <a href='#complete-definitions-1'>Embedding method no.1</a> represents a simple system of adding new words counterclockwise to complete a circle. <a href='#complete-definitions-2'>Method no.2</a> balloons connections out of the most commonly used nodes. Here, method no.3 works from the center outward to emphasize the concentration of connections near the beginning of the network. <a href='https://community.wolfram.com/groups/-/m/t/2358728'>Open source on Wolfram Community.</a>" },
+      { image: true, src: "media/projects/completedefinitions/AbsurdNo3Detail1.jpeg", caption: "" },
+      { image: true, src: "media/projects/completedefinitions/AbsurdNo3Detail3.jpeg", caption: "" },
+    ]
+  },
+ 
+  // --- SCIENTIFIC ILLUSTRATION 
+  {id: "scienceillustration", label: "Scientific Illustration", group: "Projects", type: "project",
+    eyebrow: "Digital art · 2014–Ongoing · Terragen, Photoshop, Blender, Illustrator",
+    title: "Scientific Illustration",
+    sections: [
+      { text: "I began communicating science through concept art during my PhD in astrophysics. I mixed my own research into the worlds I designed to add layers of complexity and context. This process fed back into the science by bringing up new questions and lines of inquiry that we previously hadn't considered. <a href='https://www.artstation.com/jmadden'>More on Artstation.</a>" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-earthlike2-1-gibbons1.jpeg",      caption: "" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-tgout-0027.jpeg",                 caption: "" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-madden-mova2.jpeg",               caption: "" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-e8rfjelxsaupeoy.jpeg",            caption: "Nature Astronomy cover for Voyager 1" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-beyond-the-sea.jpeg",             caption: "" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-cornellcosmichr2-1.jpeg",         caption: "" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-gl357clear.jpeg",                 caption: "For my research on the habitability of GJ357d" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-finalcover.jpeg",                 caption: "For my research on the reflectivity of life in ice" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-kozakis-1b.jpeg",                 caption: "The surface of a habitable planet around a white dwarf" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-nomoreborders.jpeg",              caption: "" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-raceday.jpeg",                    caption: "" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-taubootisdiagram11734.jpeg",      caption: "The magnetic fields around Tau Bootis b" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-transitstill-3.jpeg",             caption: "For research on the transit of planets around white dwarfs" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-trappistnew.jpeg",                caption: "Scale comparison between our solar system and TRAPPIST-1" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-thecolorofhabitability.jpeg",     caption: "For my thesis research on the color of planets around other stars" },
+      { image: true, src: "media/projects/scienceillustration/jack-madden-final-cover.jpeg",                caption: "For my research on the colors of solar system planets" },
+    ]
+  },
+ 
+  // --- KNOWN DISPLEASURE 
+  {id: "knowndispleasure", label: "Known Displeasure", group: "Projects", type: "project",
+    eyebrow: "Installation · 2024 · Thumbtacks, laserjets, 80s paper, grad student surveys, randomized scripts",
+    title: "Known Displeasure",
+    sections: [
+      { pair: true, images: [
+        { src: "media/projects/knowndispleasure/DSC_0077.jpg", caption: "" },
+        { src: "media/projects/knowndispleasure/DSC_0076.jpg", caption: "" },
+      ]},
+      { image: true, src: "media/projects/knowndispleasure/DSC_0074.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/knowndispleasure/DSC_0041.jpg", caption: "" },
+        { src: "media/projects/knowndispleasure/DSC_0053.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/knowndispleasure/DSC_0062.jpg", caption: "" },
+        { src: "media/projects/knowndispleasure/DSC_0046.jpg", caption: "" },
+      ]},
+      { text: "Harold Craft, the creator of the graph on Joy Division's Unknown Pleasures album, was a former graduate student in my department 44 years before I arrived. The figure was originally published in his thesis which lay on a shelf just down the hall from my office. As I became sensitive to the power of visuals, Craft's graph and its story became a frequent slide in my lessons on scientific figure design. Once during my harrowing graduate experience, I visited Harold's thesis as one would a sacred text and imagined both the unknown pleasures and horrors that filled the same halls 40 years back..." },
+      { pair: true, images: [
+        { src: "media/projects/knowndispleasure/DSC_0075.jpg", caption: "" },
+        { src: "media/projects/knowndispleasure/DSC_0059.jpg", caption: "" },
+      ]},
+      { image: true, src: "media/projects/knowndispleasure/DSC_0072.jpg", caption: "" },
+    ]
+  },
+ 
+  // --- MFA THESIS 
+  {id: "mfathesis", label: "Abyss without Vertigo", group: "Projects", type: "project",
+    eyebrow: "Artist's book · 2022 · Two 800-page paperback volumes",
+    title: "Abyss without Vertigo",
+    sections: [
+      { image: true,
+        src: "media/projects/mfathesis/mfathesis_exteriordetail.jpg", caption: "" },
+      { image: true,
+        src: "media/projects/mfathesis/mfathesis_exterior11400x788.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/mfathesis/mfathesis_exteriordetail1.jpg", caption: "" },
+        { src: "media/projects/mfathesis/mfathesis_exteriordetail2.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/mfathesis/mfathesis_interiordetail1.jpg", caption: "" },
+        { src: "media/projects/mfathesis/mfathesis_interiordetail2.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/mfathesis/mfathesis_interiordetail3.jpg", caption: "" },
+        { src: "media/projects/mfathesis/mfathesis_exterior3.jpg",        caption: "" },
+      ]},
+      { text: "My RISD MFA thesis, <em>Abyss without Vertigo</em>. 1600 pages spread over 2 volumes containing almost 10 years of handwritten notes from 23 courses throughout my BA and PhD studies in astrophysics. My new writing on MFA projects and art philosophy is presented next to the lessons where the ideas first originated in my classes. Diagrammatically explained on the cover, the book itself represents a scale metaphor for the volume of our galaxy compared to the explorable volume of all the solar systems in the galaxy. This ratio is the same as the surface area of all 1600 pages compared to the dot that makes the head of the human figure on the back cover. <a href='https://digitalcommons.risd.edu/masterstheses/850/'>Full thesis digital copy.</a> Available in print: <a href='https://www.lulu.com/shop/jack-madden/mfa-thesis-volume-1/paperback/product-9rnyj4.html'>Volume 1</a> and <a href='https://www.lulu.com/shop/jack-madden/mfa-thesis-volume-2/paperback/product-qmerwd.html'>Volume 2</a>." },
+      { image: true,
+        src: "media/projects/mfathesis/mfathesis_interior1.jpg", caption: "" },
+    ]
+  },
+ 
+  // --- POSTER SESSION 
+  {id: "postersession", label: "Poster Session", group: "Projects", type: "project",
+    eyebrow: "Painting · 2024 · Thumbtacks, oil and acrylic on unstretched canvas",
+    title: "Poster Session",
+    sections: [
+      { image: true,
+        src: "media/projects/postersession/looking3.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/postersession/looking1.jpg", caption: "" },
+        { src: "media/projects/postersession/closeup2.jpg", caption: "" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/postersession/fullsquare.jpg", caption: "" },
+        { src: "media/projects/postersession/closeup1.jpg",   caption: "" },
+      ]},
+      { text: "Each poster session you attend can reveal a little more about how science really works. Experimental techniques, updated code, data reanalysis, careful adjustments to observation… the base of the scientific food chain that feeds the flashy headlines starts here at the poster session." },
+      { text: "The display of a scientific poster may be the closest a scientist gets to exhibiting art. And, like art, great depth can be seen if you know what to look for. Math, logic, and data are jammed through an undertrained kaleidoscope of graphic design, aesthetics, advertisement, prose, craft, and arbitrary standards to create a highly performative and immersive experience. For newcomers, the poster session presents a windy atmosphere of support and loneliness, providing a collective rite of passage but denying feedback and comfort. If not for the thumbtacks strewn about, seeing the soft walls, bright colors, and punny titles would imply a nursery where new scientists are awkwardly prepared for release into the wild. This innocence can feel tragic with seasoned awareness of what may lie ahead for these students. Try not to get lost." },
+      { pair: true, images: [
+        { src: "media/projects/postersession/closeup3.jpg", caption: "" },
+        { src: "media/projects/postersession/looking2.jpg", caption: "" },
+      ]},
+    ]
+  },
+ 
+  // --- SEE EQUATIONS 
+  {id: "seeequations", label: "see Equations", group: "Projects", type: "project",
+    eyebrow: "Mixed media · 2022 · Cut panel, paint, resin, fabric",
+    title: "see Equations",
+    sections: [
+      { image: true,
+        src: "media/projects/seeequations/eq29.131_DSC_2588.jpg", caption: "" },
+      { image: true,
+        src: "media/projects/seeequations/DSC_2604.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/seeequations/DSC_2597.jpg", caption: "see Equation 29.131 / 2022 / 16x20in" },
+        { src: "media/projects/seeequations/DSC_2592.jpg", caption: "see Equation 4 / 2022 / 16x20in" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/seeequations/DSC_2568.jpg", caption: "" },
+        { src: "media/projects/seeequations/DSC_2590.jpg", caption: "" },
+      ]},
+      { text: "We can measure beyond our ability to sense and internalize our findings. This creates scientific absurdity where our seeking of knowledge is in tension with our inability to understand. Scientific rationality is a powerful engine for generating knowledge-centered meaning while intentionally avoiding existential meaning. Scientists and non-scientists alike must turn to art and philosophy to explore and grasp the influence discovery should have on the self and society. The further we are removed from reality by scale in space or time the less influential it can feel. By allowing the human perspective to float along these scales we can see that all scales in space and time are connected with equal weight. The ends to which we pursue a clear picture of reality will remain arbitrary unless we become capable of embodying new ways of thinking." },
+      { text: "We have a capacity to expand our perspective beyond ourselves and what is human. Going beyond individual scale is clearly important to many people in the ways we act for future generations and adjust our lives around the 'planet wide'. Our maximum spatial range of concern extends from atomic scales to interplanetary scales. In time, our maximum range of concern spans from milliseconds to hundreds of years. These are scales which we can more easily internalize consciously but are not the limit of the scales that influence us. Through science, we have intricate models for physics from the subatomic to the Universe encompassing." },
+      { text: "Given the way the universe is predicted to expand, there is a large but finite region of the Universe that can be explored from Earth given infinite time. This sets an upper limit on what spatial scale needs to be thought of as influential. Likewise, there is a large but finite amount of time that we predict our Universe will be atomically capable of sustaining any trace of intelligent life, putting an upper limit on the time scale we ought to concern ourselves with. The time and space of human influence is finite — how much could widespread internalization of these scales change the way we think about humanity's decisions and choices? <a href='https://community.wolfram.com/groups/-/m/t/2469500'>Open source on Wolfram Community.</a>" },
+      { image: true,  src: "media/projects/seeequations/DSC_2612.jpg", caption: "" },
+      { image: true,  src: "media/projects/seeequations/DSC_2596.jpg", caption: "see Equation 6.32 / 2022 / 16x20in" },
+      { image: true,  src: "media/projects/seeequations/DSC_2586.jpg", caption: "" },  
+    ]
+  },
+ 
+  // --- THE INDIVIDUAL (RICE) 
+  {id: "theindividualrice", label: "The Individual", group: "Projects", type: "project",
+    eyebrow: "Sculpture · Launched Feb. 19, 2022 · Returned May 2023 · Oil on rice grain (3×5mm)",
+    title: "The Individual",
+    sections: [
+      { image: true,
+        src: "media/projects/theindividualrice/DSC_0483.jpg", caption: "" },
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/TheIndividualNo7.jpg",      caption: "The Individual no.7 / 2021 / 5×3mm" },
+        { src: "media/projects/theindividualrice/3_DSC_2672_80.jpg",         caption: "NG-17 Resupply Launch / Feb. 19, 2022" },
+      ]},
+      { image: true,
+        src: "media/projects/theindividualrice/Moon Gallery Test Flight ISS Cupola - Moon Gallery Foundation-Nanoracks-nasa-2.jpg",
+        caption: "MoonGallery on the International Space Station (NASA/Nanoracks)" },
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/Tools.jpg",    caption: "" },
+        { src: "media/projects/theindividualrice/GridSide.jpg", caption: "" },
+      ]},
+      { text: "With this work I challenge others to think about what keeps the individual going and how they fit into an indifferent Universe. Does its emptiness provide a canvas where change is possible, or are we in perfect equilibrium? By hand-painting a human figure on a rice grain, the viewer is confronted by the limits of their own scale to see the image and by the scale at which they themselves are represented in the larger Universe. Even though the figure is small and alone in a featureless space, their mere existence makes them capable of standing out and creating visible change." },
+      { text: "Using a brush made from carbon fiber thread and a microscope, I can paint at a scale limited only by the precision of my hand movement. The rice as a seed is a canvas and an element capable of profound impact in large quantities. With a few simple strokes, the figures are recognizably human and share a common pose, one of forward motion. Beyond external incentives, beyond even hope, there is a simple curiosity to learn what the future holds for us; one step at a time is the best we can do when faced with the chaos, calamity, and vastness of an indifferent universe. What better place for this work than to float freely in space? One of these rice grains, no.7, was flown aboard a resupply mission to the international space station, where it spent over a year in constant freefall. Tumbling for 10,000 hours straight, the figure has since returned to Earth and continues forward upon the rice seed." },
+      { text: "To move forward in the face of all possible odds makes us uniquely human. To look at all the facts and imagine something impossible is what took us to the Moon and what will take us even further. This feeling of minuscule scale and the question of genuine impact represent a connection between astronomy and philosophy that I visualize through art as a way of reminding us of this dissonance and eventually coming to terms with it. From my time as an astrophysicist, I have experienced firsthand the Sisyphean absurdity of trying to comprehend the vastness of our universe. Accepting the small magnitude of our existence is essential in forming a more comfortable relationship with scale and the cosmos." },
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/TheIndividualNo1.jpg",  caption: "No.1" },
+        { src: "media/projects/theindividualrice/TheIndividualNo8.jpg",  caption: "No.8" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/TheIndividualNo9.jpg",  caption: "No.9" },
+        { src: "media/projects/theindividualrice/TheIndividualNo10.jpg", caption: "No.10" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/TheIndividualNo11.jpg", caption: "No.11" },
+        { src: "media/projects/theindividualrice/TheIndividualNo12.jpg", caption: "No.12" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/TheIndividualNo13.jpg", caption: "No.13" },
+        { src: "media/projects/theindividualrice/TheIndividualNo14.jpg", caption: "No.14" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/TheIndividualNo15.jpg", caption: "No.15" },
+        { src: "media/projects/theindividualrice/TheIndividualNo16.jpg", caption: "No.16" },
+      ]},
+      { pair: true, images: [
+        { src: "media/projects/theindividualrice/TheIndividualNo17.jpg", caption: "No.17" },
+        { src: "media/projects/theindividualrice/GridFront.jpg",         caption: "" },
+      ]},
+    ]
+  },
+ 
+  // --- UNTITLED PAINTINGS 
+  {id: "untitledpaintings", label: "Untitled Paintings", group: "Projects", type: "project", 
+  eyebrow: "Painting series · 2021 · Gouache and oil on paper and board", 
+  title: "Untitled Paintings",
+    sections: [
+      { text: "An ongoing series of small paintings sized less than 11×14in using various techniques for fine detail painting. The human figures are just a few millimeters tall." },
+      { image: true, src: "media/projects/untitledpaintings/14.jpg", caption: "#14 — Oil and gouache on 8×10 board" },
+      { image: true, src: "media/projects/untitledpaintings/15.jpg", caption: "#15 — Oil and gouache on 8×10 board" },
+      { image: true, src: "media/projects/untitledpaintings/13.jpg", caption: "#13 — Oil and gouache on 5×7 board" },
+      { image: true, src: "media/projects/untitledpaintings/12.jpg", caption: "#12 — Oil and gouache on 5×7 board" },
+      { image: true, src: "media/projects/untitledpaintings/ColorVert.jpg", caption: "#10 — Oil and gouache on 8×11 paper" },
+      { image: true, src: "media/projects/untitledpaintings/BW.jpg", caption: "#7 — Acrylic and gouache on 9×12 panel" },
+      { image: true, src: "media/projects/untitledpaintings/ColorHoriz.jpg", caption: "#8 — Acrylic and gouache on 9×12 panel" },
+      { image: true, src: "media/projects/untitledpaintings/ColorDiagonal.jpg",caption: "#6 — Oil and gouache on 9×12 panel" },
+    ]
+  },
 
+  // --- SEE ALSO (external links — open in new tab) --------------
+  {
+    id: "creativeastronomy",
+    label: "Creative Astronomy Resources",
+    group: "Other pages",
+    type: "external",
+    href: "https://tinyurl.com/CreativeAstronomyResources"
+  },
+];
 
+// --------------------------------------------------------------------------------------------------------------------
+// RESPONSIVE MENU BUTTON 
+// --------------------------------------------------------------------------------------------------------------------
 
+const menuBtn     = document.getElementById('menuBtn');
+const sidebar     = document.querySelector('.sidebar');
+const overlay     = document.getElementById('menuOverlay');
 
-<!--Long item-->            
-                                            <section class="grid-item grid-item-long grid-item—width2 filter_Physical filter_post-format-gallery" data-postid="48">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-see-Equations.html" 
-                                                        title="see Equations" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Physical Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-see-Equations.html" 
-                                                                title="see Equations" class="grid-item-tit-a">
-                                                                see Equations
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 37.44%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/seeequations/DSC_2588Index.jpg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section>
+function openMenu()  { sidebar.classList.add('open');    overlay.style.display = 'block'; }
+function closeMenu() { sidebar.classList.remove('open'); overlay.style.display = 'none';  }
 
+menuBtn.addEventListener('click', () => {
+  sidebar.classList.contains('open') ? closeMenu() : openMenu();});
+overlay.addEventListener('click', closeMenu);
 
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Code filter_post-format-gallery" data-postid="170">
+// --------------------------------------------------------------------------------------------------------------------
+// SIDEBAR — NAV RENDER
+// --------------------------------------------------------------------------------------------------------------------
 
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-complete-definitions2.html" 
-                                                        title="Complete Definitions no.2" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Code Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Code">
-                                                                Code Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-complete-definitions2.html" 
-                                                                title="Complete Definitions no.2" class="grid-item-tit-a">
-                                                                Complete Definitions no.2
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/completedefinitions/Knowledge3000_BALLOONIndex.jpeg"></div>
-                                                    </div>
-                                
-                                                </div><!--End inside-->
-                                            </section>
+const logoEl = document.getElementById('sidebarLogo');
+if (LOGO_SRC) {
+  logoEl.style.display = '';
+  const scheme = document.documentElement.getAttribute('data-scheme');
+  const src = (scheme === 'night' || '3am')
+    ? LOGO_SRCinv
+    : LOGO_SRC;
+  logoEl.innerHTML = `<img src="${src}" alt="Logo"/>`;
+}
+const nav  = document.getElementById('nav');
+const main = document.getElementById('main');
+const topLevel = pages.filter(p => !p.group);
+const groups   = [...new Set(pages.filter(p => p.group).map(p => p.group))];
+function makeNavItem(page) {
+  if (page.type === 'external') {
+    const a = document.createElement('a');
+    a.className = 'nav-item nav-item-external';
+    a.href = page.href;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.innerHTML = `<span>${page.label}</span><span class="nav-ext-icon">${ICONS.external}</span>`;
+    return a;
+  }
+  const btn = document.createElement('button');
+  btn.className   = 'nav-item';
+  btn.dataset.id  = page.id;
+  btn.textContent = page.label;
+  btn.addEventListener('click', () => activate(page.id));
+  return btn;
+}
+// Top-level items (no group label)
+const topGroup = document.createElement('div');
+topGroup.className = 'nav-group';
+topLevel.forEach(p => topGroup.appendChild(makeNavItem(p)));
+nav.appendChild(topGroup);
+// Grouped items
+groups.forEach(g => {
+  const grp = document.createElement('div');
+  grp.className = 'nav-group';
+  const lbl = document.createElement('span');
+  lbl.className   = 'nav-group-label';
+  lbl.textContent = g;
+  grp.appendChild(lbl);
+  pages.filter(p => p.group === g).forEach(p => grp.appendChild(makeNavItem(p)));
+  nav.appendChild(grp);
+});
 
+// --------------------------------------------------------------------------------------------------------------------
+// ACTIVATE + HASH ROUTING
+// --------------------------------------------------------------------------------------------------------------------
 
-<!--Long item-->            
-                                            <section class="grid-item grid-item-long grid-item—width2 filter_Code filter_post-format-gallery" data-postid="48">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-complete-definitions3.html" 
-                                                        title="Complete Definitions no.3" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Code Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Code">
-                                                                Code Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-complete-definitions3.html" 
-                                                                title="Complete Definitions no.3" class="grid-item-tit-a">
-                                                                Complete Definitions no.3
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 37.44%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/completedefinitions/Absurd No.3Index.jpg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section>
+function activate(id) {
+  closeMenu();
+  const page = pages.find(p => p.id === id);
+  if (!page || page.type === 'external') return;
+  // Stop and remove any running p5 sketch before swapping content
+  if (currentP5) { currentP5.remove(); currentP5 = null; }
+  // 1. Push hash to URL so the link is shareable
+  history.pushState(null, '', '#' + id);
+  // 2. Update active state in nav
+  document.querySelectorAll('.nav-item[data-id]').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === id);
+  });
+  // 3. Scroll main to top
+  main.scrollTop = 0;
+  // 4. Render content
+  main.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'content';
+  if      (page.type === 'bio')          div.innerHTML = renderBio(page);
+  else if (page.type === 'publications') div.innerHTML = renderPubs(page);
+  else if (page.type === 'links')        div.innerHTML = renderLinks(page);
+  else                                   div.innerHTML = renderProject(page);
+  main.appendChild(div);
+  // 5. If this page has a p5 section, initialize the right sketch now that
+  //    the container element is in the DOM
+  const p5Container = div.querySelector('[data-p5]');
+  if (p5Container) initSketch(p5Container, p5Container.dataset.sketch);
+}
+// Handle browser back / forward
+window.addEventListener('popstate', () => {
+  const id = window.location.hash.slice(1);
+  if (pages.find(p => p.id === id)) activate(id);
+});
+// On first load: read hash or fall back to first page
+const initialId = window.location.hash.slice(1);
+activate(pages.find(p => p.id === initialId) ? initialId : pages[0].id);
 
+// --------------------------------------------------------------------------------------------------------------------
+// RENDERERS
+// --------------------------------------------------------------------------------------------------------------------
 
-<!--Tall item-->
-                                            <section class="grid-item grid-item-tall filter_Concept filter_post-format-gallery" data-postid="97">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-exoplanet-art.html" 
-                                                        title="Science Illustration" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Concept Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Concept">
-                                                                Concept Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-exoplanet-art.html" 
-                                                                title="Exoplanet Concepts" class="grid-item-tit-a">
-                                                                Science Illustration
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/scienceillustration/jack-madden-e8rfjelxsaupeoyIndex.jpeg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section>
+function renderBio(p) {
+  const sectionHTML = p.sections
+    ? p.sections.map(s => {
+        if (s.video || s.youtube) return `<figure>${videoTag(s)}<figcaption>${s.caption || ''}</figcaption></figure>`;
+        if (s.image) return `<figure>${imgTag(s)}<figcaption>${s.caption || ''}</figcaption></figure>`;
+        if (s.pair) {
+          const imgs = s.images.map(img => `<figure>${imgTag(img)}<figcaption>${img.caption || ''}</figcaption></figure>`).join('');
+          return `<div class="figure-pair">${imgs}</div>`;
+        }
+        return '';
+      }).join('')
+    : '';
+  const bioParagraphs = p.bio.map(b => `<p class="body-text">${b}</p>`).join('');
+  const contactItems = p.contact.map(c => `
+    <li class="contact-item">
+      <span class="contact-icon">${ICONS[c.icon] || ''}</span>
+      <a href="${c.href}">${c.label}</a>
+    </li>
+  `).join('');
+  return `
+    <div class="eyebrow">${p.eyebrow}</div>
+    ${sectionHTML}
+    <div class="bio-grid">
+      <div>${bioParagraphs}</div>
+      <div><span class="contact-label">Contact</span><ul class="contact-list">${contactItems}</ul></div>
+    </div>
+  `;
+}
 
-<!--Tall item-->
-                                            <section class="grid-item grid-item-tall filter_Code filter_post-format-gallery" data-postid="97">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-deep-fields.html" 
-                                                        title="Deep Fields" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Code Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Code">
-                                                                Code Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-deep-fields.html" 
-                                                                title="Deep Fields" class="grid-item-tit-a">
-                                                                Deep Fields
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/deepfields/potw1302a.tif_0.7.0..0.Total.Straight.2..0 copy.jpeg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section>
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Physical filter_post-format-gallery" data-postid="170">
+function renderPubs(p) {
+  const items = p.pubs.map(pub => {
+    const dataLink = pub.data
+      ? `<div class="pub-data">
+           <a href="${pub.data.href}" target="_blank" rel="noopener">
+             ${ICONS.data} ${pub.data.label}
+           </a>
+         </div>`
+      : '';
+    return `
+      <li class="pub-item">
+        <div class="pub-year">${pub.year}</div>
+        <div class="pub-title"><a href="${pub.href}" target="_blank" rel="noopener">${pub.title}</a></div>
+        <div class="pub-authors">${pub.authors}</div>
+        <div class="pub-journal">${pub.journal}</div>
+        ${dataLink}
+      </li>
+    `;
+  }).join('');
 
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-books-for-robots-only.html" 
-                                                        title="Books for Robots (only)" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Physical Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-books-for-robots-only.html" 
-                                                                title="Books for Robots (only)" class="grid-item-tit-a">
-                                                                Books for Robots (only)
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/booksforrobotsonly/IMG_4417Index.jpg"></div>
-                                                    </div>
-                                
-                                                </div><!--End inside-->
-                                            </section> 
+  return `
+    <div class="eyebrow">${p.eyebrow}</div>
+    <h1 class="page-title">${p.title}</h1>
+    <div class="pub-page-links">
+      <a href="${ADS_URL}" target="_blank" rel="noopener">NASA ADS ↗</a>
+      <a href="${ORCID_PROFILE_URL}" target="_blank" rel="noopener">ORCID ↗</a>
+    </div>
+    <ul class="pub-list">${items}</ul>
+  `;
+}
 
-<!--Big item-->                                            
-                                            <section class="grid-item grid-item-big filter_Physical filter_post-format-gallery" data-postid="511">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-the-individual-painting.html" 
-                                                        title="Untitled paintings" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Code Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Physical">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-the-individual-painting.html" 
-                                                                title="Untitled paintings" class="grid-item-tit-a">
-                                                                Untitled paintings
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/theindividualpainting/ColorVertIndex.jpg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section> 
-            
+function renderLinks(p) {
+  const items = p.entries.map(e => {
+    const d = new Date(e.date + 'T12:00:00');
+    const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return `
+      <li class="link-item">
+        <div class="link-date">${dateStr}</div>
+        <div>
+          <div class="link-title">
+            <a href="${e.url}" target="_blank" rel="noopener">${e.title}</a>
+          </div>
+          ${e.note ? `<div class="link-note">${e.note}</div>` : ''}
+        </div>
+      </li>
+    `;
+  }).join('');
 
-<!--Small item-->            
-                                            <section class="grid-item grid-item-small filter_Concept filter_post-format-gallery" data-postid="170">
+  return `
+    <div class="eyebrow">${p.eyebrow}</div>
+    <h1 class="page-title">${p.title}</h1>
+    <ul class="link-list">${items}</ul>
+  `;
+}
 
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-exoplanet-art.html" 
-                                                        title="Scientific Illustation" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Concept Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Concept">
-                                                                Concept Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-exoplanet-art.html" 
-                                                                title="Deep Fields" class="grid-item-tit-a">
-                                                                Scientific Illustation
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/scienceillustration/jack-madden-transitstill-3Index.jpeg"></div>
-                                                    </div>
-                                
-                                                </div><!--End inside-->
-                                            </section>
+function imgTag(item) {
+  if (item.src) {
+    return `<img src="${item.src}" alt="${item.caption || ''}" loading="lazy" style="width:100%;display:block;">`;
+  }
+  return `<div class="img-block ${item.size || 'mid'}">Image</div>`;
+}
 
+function videoTag(s) {
+  if (s.youtube) {
+    // Test with bare URL first — add autoplay/loop back once basic embed works
+    const params = s.autoplay
+      ? `?autoplay=1&loop=1&playlist=${s.id}&mute=1`
+      : '';
+    return `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+              <iframe
+                src="https://www.youtube.com/embed/${s.id}${params}"
+                style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+                allowfullscreen loading="lazy">
+              </iframe>
+            </div>`;
+  }
+  const auto = s.autoplay
+    ? 'autoplay loop muted playsinline controls preload="auto"'
+    : 'controls preload="metadata"';
+  return `<video ${auto} style="width:100%;display:block;">
+            <source src="${s.src}" type="video/mp4">
+          </video>`;
+}
 
-<!--Tall item-->
-                                            <section class="grid-item grid-item-tall filter_Concept filter_post-format-gallery" data-postid="97">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-exoplanet-art.html" 
-                                                        title="Exoplnet Concepts" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Concept Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Concept">
-                                                                Concept Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-exoplanet-art.html" 
-                                                                title="Exoplanet Concepts" class="grid-item-tit-a">
-                                                                Exoplanet Concepts
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 150.1%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" 
-                                                        data-bg="media/scienceillustration/jack-madden-racedayIndex.jpeg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section>
+function renderProject(p) {
+  const sections = p.sections.map(s => {
+    if (s.p5) {
+      return `
+        <figure class="p5-breakout">
+          <div class="p5-container" data-p5 data-sketch="${s.sketch || 'starfield'}" style="height:${s.height || 400}px"></div>
+          ${s.caption ? `<figcaption style="padding:0 52px">${s.caption}</figcaption>` : ''}
+        </figure>
+      `;
+    }
+    if (s.video || s.youtube) {
+      return `
+        <figure>
+          ${videoTag(s)}
+          <figcaption>${s.caption || ''}</figcaption>
+        </figure>
+      `;
+    }
+    if (s.pair) {
+      const imgs = s.images.map(img => `
+        <figure>
+          ${imgTag(img)}
+          <figcaption>${img.caption || ''}</figcaption>
+        </figure>
+      `).join('');
+      return `<div class="figure-pair">${imgs}</div>`;
+    }
+    if (s.image) {
+      return `
+        <figure>
+          ${imgTag(s)}
+          <figcaption>${s.caption || ''}</figcaption>
+        </figure>
+      `;
+    }
+    return `<p class="body-text">${s.text}</p>`;
+  }).join('');
 
+  return `
+    <div class="eyebrow">${p.eyebrow}</div>
+    <h1 class="page-title">${p.title}</h1>
+    ${sections}
+  `;
+}
 
-<!--Big item-->                                            
-                                            <section class="grid-item grid-item-big filter_Concept filter_post-format-gallery" data-postid="511">
-                                                <div class="grid-item-inside" >
-                                                    <div class="grid-item-con">
-                                                        <a 
-                                                        href="pr-exoplanet-art.html" 
-                                                        title="Exoplanet Rendering" 
-                                                        class="grid-item-mask-link grid-item-open-url"></a>
-                                                                                
-                                                        <div class="grid-item-con-text">
-                                                            <span class="grid-item-cate">
-                                                                <a href="#" 
-                                                                title="View all posts in Concept Art" 
-                                                                class="grid-item-cate-a" 
-                                                                data-filter=".filter_Concept">
-                                                                Physical Art
-                                                                </a>
-                                                            </span>
-                                                            <h2 class="grid-item-tit">
-                                                                <a 
-                                                                href="pr-exoplanet-art.html" 
-                                                                title="Exoplanet Rendering" class="grid-item-tit-a">
-                                                                Exoplanet Rendering
-                                                                </a>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="brick-content ux-lazyload-wrap" style=" padding-top: 75.38%;">
-                                                        <div class="ux-lazyload-bgimg ux-background-img" data-bg="media/scienceillustration/jack-madden-earthlike2-1-gibbons1Index.jpg"></div>
-                                                    </div>
-                                                                
-                                                </div><!--End inside-->
-                                            </section> 
+// SKETCH DISPATCHER — looks up the sketch by name and hands it the container
+function initSketch(container, name) {
+  const fn = SKETCHES[name];
+  if (!fn) { console.warn('No sketch registered for:', name); return; }
+  currentP5 = fn(container);
+}
 
+</script>
 
-
-                                        </div><!--End masonry-list-->
-
-                                    </div><!-- End container-masonry -->
-
-                                </div><!-- End #content_wrap-->
-
-                        </div><!-- End content_wrap_outer-->
-
-                    </div><!--End #content-->
-
-
-
-<!--Begin Footer-->
-                    <footer id="footer" class="footer-cols-layout">
-                        <div class="footer-info">
-                            <div class="footer-container">
-                                <div class="span6">
-                                    <div id="logo-footer">
-                                        <a href="index.html" title="Home">
-                                            <img class="logo-footer-img" src="media/logo/logo_darkpen.png" alt="Home" />
-                                        </a></div></div>
-                                <div class="span6">
-                                    <div class="footer-social">
-                                        <ul class="socialmedia clearfix">                       
-                                            <li class="socialmedia-li">
-                                                <a title="Instagram" href="https://www.instagram.com/astro_madden/" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">Instagram</span></a></li>
-                                            <li class="socialmedia-li">
-                                                <a title="GitHub" href="https://github.com/JackHMadden/" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">GitHub</span></a></li>
-                                            <li class="socialmedia-li">
-                                                <a title="orcid" href="https://orcid.org/0000-0002-4701-7833" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">ORCiD</span></a></li>
-                                            <li class="socialmedia-li">
-                                                <a title="Artstation" href="https://www.artstation.com/jmadden" class="socialmedia-a">
-                                                    <span class=""></span> <span class="socialmedia-text">Artstation</span></a></li>
-                                        </ul>
-                                    </div></div></div></div>
-                        <div class="container-fluid back-top-wrap"><div id="back-top"></div></div>
-                    </footer> <!--End Footer -->
-                </div> <!--End All Content Wrap -->  
-               <div class="video-overlay modal"><span class="video-close"></span></div><!--end video-overlay-->
-            </div><!--End wrap-outer-->
-        </div><!--End wrap-all-->
-<!--Begin Lightbox controls-->
-        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="pswp__bg"></div>
-            <div class="pswp__scroll-wrap">
-                <div class="pswp__container">
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                </div>
-                <div class="pswp__ui pswp__ui--hidden">
-                    <div class="pswp__top-bar">
-                        <div class="pswp__counter"></div>
-                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                        <button class="pswp__button pswp__button--share" title="Share"></button>
-                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                        <div class="pswp__preloader">
-                            <div class="pswp__preloader__icn">
-                              <div class="pswp__preloader__cut">
-                                <div class="pswp__preloader__donut"></div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                        <div class="pswp__share-tooltip"></div> 
-                    </div>
-                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-                    </button>
-                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-                    </button>
-                    <div class="pswp__caption">
-                        <div class="pswp__caption__center"></div>
-                    </div>
-                </div>
-            </div>
-        </div><!--End Lightbox controls-->
-
-        <!-- jQuery Library -->
-        <script type='text/javascript' src='js/library/jquery.min.js'></script>
-        <!-- Main Js Plugin -->
-        <script type='text/javascript' src='js/main.min.js'></script>
-        <!-- Air. Theme main js -->
-        <script type='text/javascript' src='js/custom.theme.js'></script>
-
-    </body>
+</body>
 </html>
