@@ -1125,8 +1125,8 @@ function activate(id) {
   const p5Container = div.querySelector('[data-p5]');
   if (p5Container) initSketch(p5Container, p5Container.dataset.sketch);
   // 6. After current page settles, prefetch images for adjacent pages
-  const currentIndex = pages.findIndex(p => p.id === id);
-  setTimeout(() => prefetchFromIndex(currentIndex), 2000);
+  //const currentIndex = pages.findIndex(p => p.id === id);
+  //setTimeout(() => prefetchFromIndex(currentIndex), 2000);
   // 7. Start slideshow if present
   const slideshow = div.querySelector('#heroSlideshow');
   if (slideshow) {
