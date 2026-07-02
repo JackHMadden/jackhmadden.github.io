@@ -174,10 +174,11 @@
 
     /* --- CONTENT BASE --- */
     .content {
-      max-width: 1080px; margin: 0 auto; padding: 56px 52px 96px; animation: fadeUp 0.50s ease both;}
+      max-width: 1200px; margin: 0 auto; padding: 56px 52px 96px;}
+/*    max-width: 1080px; margin: 0 auto; padding: 56px 52px 96px; animation: fadeUp 0.50s ease both;}
     @keyframes fadeUp {
       from { opacity: 0; transform: translateX(0); }
-      to   { opacity: 1; transform: translateX(0); }}
+      to   { opacity: 1; transform: translateX(0); }} */
     .eyebrow {
       font-size: 12px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px;}
     .page-title {
@@ -215,6 +216,11 @@
       border-bottom: 1px solid transparent; transition: color 0.12s, border-color 0.12s;}
     .contact-item a:hover {
       color: var(--accent); border-bottom-color: var(--accent);}
+    .hero-slideshow {
+      position: relative; width: 100%; height: 600px; margin-bottom: 4px; overflow: hidden;}
+    .hero-slideshow img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1);}
+    .hero-slideshow img.active {opacity: 1;}
 
     /* --- PUBLICATIONS PAGE --- */
     .pub-page-links {
@@ -389,9 +395,17 @@ const pages = [
     group: null,
     type: "bio",
     eyebrow: "Jack Madden",
-    sections: [
-    { video: true, src: "media/projects/othervieweffect/OtherviewEffect_720 1minute.mp4", autoplay: true, caption: "The Otherview Effect" },
-    ],
+    heroImages: [
+      "media/projects/seeequations/DSC_2612.jpg",
+      "media/projects/deepfields/MACSJ0717_4.0.3.Total.jpg",
+      "media/projects/space4/DSC_0091.jpg",
+      "media/projects/othervieweffect/otherview_DSC_0166_Full.jpg",
+      "media/projects/completedefinitions/Knowledge2Detail1.jpeg",
+      "media/projects/theindividualrice/DSC_0483.jpg",
+      "media/projects/scienceillustration/jack-madden-e8rfjelxsaupeoy.jpeg",
+      "media/projects/mfathesis/mfathesis_interior1.jpg",
+    ], // Just have one image for static 
+    heroCaption: "",
     bio: [
       "Jack is an independent research-based artist and research affiliate with Blue Marble Space who is passionate about understanding the universe, even if it means asking difficult questions about how science operates.",
       "He holds a Ph.D. in astrophysics from Cornell University, where he worked on modeling the atmospheres of habitable planets; and an M.F.A. in digital media from the Rhode Island School of Design for designing new ways to experience science. Jack blends his astronomy background with conceptual art training to create art and write about bridging the gap between scientific discovery and genuine human understanding.",
@@ -403,6 +417,9 @@ const pages = [
       { icon: "orcid",     label: "ORCiD",                 href: ORCID_PROFILE_URL },
       { icon: "cv",        label: "Download CV",           href: CV_URL },
     ],
+    //sections: [
+    //{ video: true, src: "media/projects/othervieweffect/OtherviewEffect_720 1minute.mp4", autoplay: true, caption: "The Otherview Effect" },
+    //], //If you want sections in the bio page you can adjust their position in renderBio for $sectionHTML
   },
 
   // --- PUBLICATIONS --------------------------------------------------------------------------------------
@@ -521,6 +538,7 @@ const pages = [
       { youtube: true, id: "fe68vvIFaAQ", autoplay: false, caption: "" },
     ]
   },
+  
   // --- DEEP FIELDS 
   {id: "deep-fields", label: "Deep Fields", group: "Projects", type: "project",
     eyebrow: "Digital images · 2021–ongoing · Mathematica",
@@ -559,6 +577,7 @@ const pages = [
       ]},
     ]
   },
+  
   // --- SPACE 4 
   {id: "space4", label: "Space 4", group: "Projects", type: "project",
     eyebrow: "Installation · 2022 · Light, darkness",
@@ -976,14 +995,11 @@ const pages = [
 // --------------------------------------------------------------------------------------------------------------------
 // RESPONSIVE MENU BUTTON 
 // --------------------------------------------------------------------------------------------------------------------
-
 const menuBtn     = document.getElementById('menuBtn');
 const sidebar     = document.querySelector('.sidebar');
 const overlay     = document.getElementById('menuOverlay');
-
 function openMenu()  { sidebar.classList.add('open');    overlay.style.display = 'block'; }
 function closeMenu() { sidebar.classList.remove('open'); overlay.style.display = 'none';  }
-
 menuBtn.addEventListener('click', () => {
   sidebar.classList.contains('open') ? closeMenu() : openMenu();});
 overlay.addEventListener('click', closeMenu);
@@ -991,7 +1007,6 @@ overlay.addEventListener('click', closeMenu);
 // --------------------------------------------------------------------------------------------------------------------
 // SIDEBAR — NAV RENDER
 // --------------------------------------------------------------------------------------------------------------------
-
 const logoEl = document.getElementById('sidebarLogo');
 if (LOGO_SRC) {
   logoEl.style.display = '';
@@ -1042,9 +1057,7 @@ groups.forEach(g => {
 // --------------------------------------------------------------------------------------------------------------------
 // PREFETCHING IMAGES
 // --------------------------------------------------------------------------------------------------------------------
-
 const prefetched = new Set(); // track what's already been fetched
-
 function getPageImages(page) {
   if (!page || !page.sections) return [];
   const srcs = [];
@@ -1058,7 +1071,6 @@ function getPageImages(page) {
   }
   return srcs;
 }
-
 function prefetchPage(page) {
   if (!page) return;
   getPageImages(page).forEach(src => {
@@ -1068,7 +1080,6 @@ function prefetchPage(page) {
     img.src = src;            // browser fetches and caches silently
   });
 }
-
 function prefetchFromIndex(currentIndex) {
   // Prefetch in order outward from current page — next first, then previous,
   // then the ones further out, so the most likely next clicks load first
@@ -1083,50 +1094,50 @@ function prefetchFromIndex(currentIndex) {
   });
 }
 
-
 // --------------------------------------------------------------------------------------------------------------------
 // ACTIVATE + HASH ROUTING
 // --------------------------------------------------------------------------------------------------------------------
-
 function activate(id) {
   closeMenu();
   const page = pages.find(p => p.id === id);
   if (!page || page.type === 'external') return;
-
   // Stop and remove any running p5 sketch before swapping content
   if (currentP5) { currentP5.remove(); currentP5 = null; }
-
   // 1. Push hash to URL so the link is shareable
   history.pushState(null, '', '#' + id);
-
   // 2. Update active state in nav
   document.querySelectorAll('.nav-item[data-id]').forEach(el => {
     el.classList.toggle('active', el.dataset.id === id);
   });
-
   // 3. Scroll main to top
   main.scrollTop = 0;
-
   // 4. Render content
   main.innerHTML = '';
   const div = document.createElement('div');
   div.className = 'content';
-
   if      (page.type === 'bio')          div.innerHTML = renderBio(page);
   else if (page.type === 'publications') div.innerHTML = renderPubs(page);
   else if (page.type === 'links')        div.innerHTML = renderLinks(page);
   else                                   div.innerHTML = renderProject(page);
-
   main.appendChild(div);
-
   // 5. If this page has a p5 section, initialize the right sketch now that
   //    the container element is in the DOM
   const p5Container = div.querySelector('[data-p5]');
   if (p5Container) initSketch(p5Container, p5Container.dataset.sketch);
-
   // 6. After current page settles, prefetch images for adjacent pages
   const currentIndex = pages.findIndex(p => p.id === id);
   setTimeout(() => prefetchFromIndex(currentIndex), 2000);
+  // 7. Start slideshow if present
+  const slideshow = div.querySelector('#heroSlideshow');
+  if (slideshow) {
+    const imgs = slideshow.querySelectorAll('img');
+    let current = 0;
+    setInterval(() => {
+      imgs[current].classList.remove('active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('active');
+    }, 6000); // ms between slides — adjust to taste
+  }
 }
 
 // Handle browser back / forward
@@ -1134,7 +1145,6 @@ window.addEventListener('popstate', () => {
   const id = window.location.hash.slice(1);
   if (pages.find(p => p.id === id)) activate(id);
 });
-
 // On first load: read hash or fall back to first page
 const initialId = window.location.hash.slice(1);
 activate(pages.find(p => p.id === initialId) ? initialId : pages[0].id);
@@ -1142,8 +1152,17 @@ activate(pages.find(p => p.id === initialId) ? initialId : pages[0].id);
 // --------------------------------------------------------------------------------------------------------------------
 // RENDERERS
 // --------------------------------------------------------------------------------------------------------------------
-
 function renderBio(p) {
+  const heroHTML = p.heroImages
+  ? `<figure>
+       <div class="hero-slideshow" id="heroSlideshow">
+         ${p.heroImages.map((src, i) =>
+           `<img src="${src}" class="${i === 0 ? 'active' : ''}" loading="${i === 0 ? 'eager' : 'lazy'}">`
+         ).join('')}
+       </div>
+       ${p.heroCaption ? `<figcaption>${p.heroCaption}</figcaption>` : ''}
+     </figure>`
+  : '';
   const sectionHTML = p.sections
     ? p.sections.map(s => {
         if (s.video || s.youtube) return `<figure>${videoTag(s)}<figcaption>${s.caption || ''}</figcaption></figure>`;
@@ -1164,11 +1183,12 @@ function renderBio(p) {
   `).join('');
   return `
     <div class="eyebrow">${p.eyebrow}</div>
-    ${sectionHTML}
+    ${heroHTML}
     <div class="bio-grid">
       <div>${bioParagraphs}</div>
       <div><span class="contact-label">Contact</span><ul class="contact-list">${contactItems}</ul></div>
     </div>
+    ${sectionHTML}
   `;
 }
 
@@ -1191,7 +1211,6 @@ function renderPubs(p) {
       </li>
     `;
   }).join('');
-
   return `
     <div class="eyebrow">${p.eyebrow}</div>
     <h1 class="page-title">${p.title}</h1>
@@ -1219,7 +1238,6 @@ function renderLinks(p) {
       </li>
     `;
   }).join('');
-
   return `
     <div class="eyebrow">${p.eyebrow}</div>
     <h1 class="page-title">${p.title}</h1>
@@ -1236,7 +1254,6 @@ function imgTag(item) {
 
 function videoTag(s) {
   if (s.youtube) {
-    // Test with bare URL first — add autoplay/loop back once basic embed works
     const params = s.autoplay
       ? `?autoplay=1&loop=1&playlist=${s.id}&mute=1`
       : '';
@@ -1293,7 +1310,6 @@ function renderProject(p) {
     }
     return `<p class="body-text">${s.text}</p>`;
   }).join('');
-
   return `
     <div class="eyebrow">${p.eyebrow}</div>
     <h1 class="page-title">${p.title}</h1>
