@@ -1081,17 +1081,21 @@ function prefetchPage(page) {
   });
 }
 function prefetchFromIndex(currentIndex) {
-  // Prefetch in order outward from current page — next first, then previous,
-  // then the ones further out, so the most likely next clicks load first
+  // Prefetch in order outward from current page — bio first, then next, then previous...
   const order = [];
+  // Bio first (if not the current page)
+  const bioIndex = pages.findIndex(p => p.id === 'bio');
+  if (bioIndex !== -1 && bioIndex !== currentIndex) {
+    order.push(bioIndex);
+  }
   for (let i = 1; i < pages.length; i++) {
     if (currentIndex + i < pages.length) order.push(currentIndex + i);
     if (currentIndex - i >= 0)           order.push(currentIndex - i);
   }
-  // Stagger fetches so they don't all fire at once
-  order.forEach((idx, i) => {
-    setTimeout(() => prefetchPage(pages[idx]), i * 400);
-  });
+  // De-duplicate (bio may appear again in the outward sweep)
+  const seen = new Set();
+  const deduped = order.filter(i => seen.has(i) ? false : seen.add(i));
+  deduped.forEach(idx => prefetchPage(pages[idx]));
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -1125,8 +1129,8 @@ function activate(id) {
   const p5Container = div.querySelector('[data-p5]');
   if (p5Container) initSketch(p5Container, p5Container.dataset.sketch);
   // 6. After current page settles, prefetch images for adjacent pages
-  //const currentIndex = pages.findIndex(p => p.id === id);
-  //setTimeout(() => prefetchFromIndex(currentIndex), 2000);
+  const currentIndex = pages.findIndex(p => p.id === id);
+  setTimeout(() => prefetchFromIndex(currentIndex), 2000);
   // 7. Start slideshow if present
   const slideshow = div.querySelector('#heroSlideshow');
   if (slideshow) {
@@ -1150,14 +1154,14 @@ const initialId = window.location.hash.slice(1);
 activate(pages.find(p => p.id === initialId) ? initialId : pages[0].id);
 
 // --------------------------------------------------------------------------------------------------------------------
-// RENDERERS
+// RENDERERS loading="${i === 0 ? 'eager' : 'lazy'}"
 // --------------------------------------------------------------------------------------------------------------------
 function renderBio(p) {
   const heroHTML = p.heroImages
   ? `<figure>
        <div class="hero-slideshow" id="heroSlideshow">
          ${p.heroImages.map((src, i) =>
-           `<img src="${src}" class="${i === 0 ? 'active' : ''}" loading="${i === 0 ? 'eager' : 'lazy'}">`
+           `<img src="${src}" class="${i === 0 ? 'active' : ''}">`
          ).join('')}
        </div>
        ${p.heroCaption ? `<figcaption>${p.heroCaption}</figcaption>` : ''}
