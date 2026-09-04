@@ -12,7 +12,7 @@
   <meta property="og:title"       content="Jack Madden — Art & Science"/>
   <meta property="og:description" content="Portfolio, publications, and research across art and science by Jack Madden."/>
   <meta property="og:url"         content="https://jackhmadden.github.io/" />
-  <meta property="og:image"       content="https://jackhmadden.github.io/media/site/logo.png"/>
+  <meta property="og:image"       content="https://jackhmadden.github.io/media/site/SeeEqHeader.png"/>
   <!-- Favicon -->
   <link rel="icon" href="media/site/favicon.ico"/>
   <link rel="shortcut icon" href="media/site/favicon.ico">
@@ -27,7 +27,7 @@
   <script>
     (function() {
       const h = new Date().getHours() + new Date().getMinutes() / 60;
-      //const h = 12;
+      //const h = 23;
       const m = new Date().getMonth(); // 0=Jan ... 11=Dec
       // [dawn, sunrise, sunset, dusk] as decimal clock hours
       // Times are local clock times at ~40°N, DST-adjusted where marked
@@ -324,8 +324,6 @@
 </div>
 
 <!-- Javascript files -->
-<script src="media/scripts/starfield.js"></script>
-<script src="media/scripts/fluid.js"></script>
 <script src="media/projects/anomaly/anomaly.js"></script>
 
 <script>
@@ -341,11 +339,10 @@ const INSTA_URL         = 'https://www.instagram.com/astro_madden/';
 const CV_URL            = 'media/site/JackMadden_CV.pdf';
 
 let currentP5 = null; // Tracks the running p5 instance so it can be cleanly removed on navigation
+let slideshowInterval = null;
 
 // --- JAVASCRIPT SKETCH REGISTRY ---------
 const SKETCHES = {
-  starfield: sketchStarfield,   // scripts/starfield.js
-  fluid:     sketchFluid,       // scripts/fluid.js
   anomaly:   sketchAnomaly,     
 };
 
@@ -610,7 +607,7 @@ const pages = [
   
   // --- OTHERVIEW EFFECT 
   {id: "othervieweffect", label: "The Otherview Effect", group: "Projects", type: "project",
-    eyebrow: "Installation · 2023 · 35mm slides, Ektagraphic Model 210, Mathematica",
+    eyebrow: "Installation · 2021 · 35mm slides, Ektagraphic Model 210, Mathematica",
     title: "The Otherview Effect",
     sections: [
       { image: true, src: "media/projects/othervieweffect/otherview_DSC_0166_Full.jpg", caption: "" },
@@ -717,8 +714,8 @@ const pages = [
     ]
   },
  
-  // --- COMPLETE DEFINITIONS 1 
-  {id: "completedefinitions-1", label: "Complete Definitions I", group: "Projects", type: "project",
+  // --- COMPLETE DEFINITIONS 
+  {id: "completedefinitions", label: "Complete Definitions", group: "Projects", type: "project",
     eyebrow: "Digital rendering · 2020 · Embedding style no.1 · Vector graphics, Mathematica",
     title: "Complete Definitions",
     sections: [
@@ -739,14 +736,7 @@ const pages = [
         { src: "media/projects/completedefinitions/MeaningNo1Detail3.jpeg", caption: "" },
       ]},
       { image: true, src: "media/projects/completedefinitions/MeaningNo1Detail1.jpeg", caption: "" },
-    ]
-  },
- 
-  // --- COMPLETE DEFINITIONS 2 
-  {id: "completedefinitions-2", label: "Complete Definitions II", group: "Projects", type: "project",
-    eyebrow: "Digital rendering · 2020 · Embedding method no.2 · Vector graphics, Mathematica",
-    title: "Complete Definitions",
-    sections: [
+      { text: "The connections can be arranged in different ways to show different features of the network. The previous examples represent a simple system of adding new words counterclockwise to complete a circle which weighs all nodes equally and gives a sense of how the network builds over time. Method no.2 balloons connections out of the most commonly used nodes based on their order of appearance which leads to more variety in structure." },
       { image: true, src: "media/projects/completedefinitions/Knowledge2Detail1.jpeg", caption: "" },
       { image: true, src: "media/projects/completedefinitions/Absurd3000_BALLOON.jpeg", caption: "Absurd" },
       { pair: true, images: [
@@ -758,18 +748,7 @@ const pages = [
         { src: "media/projects/completedefinitions/Rational3000_BALLOON.jpeg", caption: "Rational" },
       ]},
       { image: true, src: "media/projects/completedefinitions/Knowledge2Detail2.jpeg", caption: "" },
-      { text: "This project renders graphical representations of \"complete definitions\" — all the words that arise in defining the initial seed word. Beginning at a single point, lines are drawn between the seed word and the words needed to define it, and then the words needed to define those words, followed by the next words, and so on, until no new words are necessary." },
-      { text: "The connections can be arranged in different ways to show different features of the network. <a href='#complete-definitions-1'>Embedding method no.1</a> represents a simple system of adding new words counterclockwise to complete a circle which weighs all nodes equally and gives a sense of how the network builds over time. Method no.2 balloons connections out of the most commonly used nodes based on their order of appearance which leads to more variety in structure. <a href='https://community.wolfram.com/groups/-/m/t/2358728'>Open source on Wolfram Community.</a>" },
-      { image: true, src: "media/projects/completedefinitions/Meaning3000_BALLOON.jpeg", caption: "Meaning" },
-      { image: true, src: "media/projects/completedefinitions/Knowledge2Detail3.jpeg", caption: "" },
-    ]
-  },
- 
-  // --- COMPLETE DEFINITIONS 3 
-  {id: "completedefinitions-3", label: "Complete Definitions III", group: "Projects", type: "project",
-    eyebrow: "Digital rendering · 2020 · Embedding method no.3 · Vector graphics, Mathematica",
-    title: "Complete Definitions",
-    sections: [
+      { text: "Here, method no.3 works from the center outward to emphasize the concentration of connections near the beginning of the network." },
       { image: true, src: "media/projects/completedefinitions/Absurd No.3.jpg", caption: "" },
       { image: true, src: "media/projects/completedefinitions/AbsurdNo3Detail2.jpeg", caption: "" },
       { pair: true, images: [
@@ -781,12 +760,9 @@ const pages = [
         { src: "media/projects/completedefinitions/Rational3000_SPIRAL_discrete.jpeg", caption: "Rational" },
       ]},
       { image: true, src: "media/projects/completedefinitions/Morality3000_SPIRAL_discrete.jpeg", caption: "Morality" },
-      { text: "This project renders graphical representations of \"complete definitions\" — all the words that arise in defining the initial seed word. Beginning at a single point, lines are drawn between the seed word and the words needed to define it, and then the words needed to define those words, followed by the next words, and so on, until no new words are necessary." },
-      { text: "The connections can be arranged in different ways to show different features of the network. <a href='#complete-definitions-1'>Embedding method no.1</a> represents a simple system of adding new words counterclockwise to complete a circle. <a href='#complete-definitions-2'>Method no.2</a> balloons connections out of the most commonly used nodes. Here, method no.3 works from the center outward to emphasize the concentration of connections near the beginning of the network. <a href='https://community.wolfram.com/groups/-/m/t/2358728'>Open source on Wolfram Community.</a>" },
-      { image: true, src: "media/projects/completedefinitions/AbsurdNo3Detail1.jpeg", caption: "" },
-      { image: true, src: "media/projects/completedefinitions/AbsurdNo3Detail3.jpeg", caption: "" },
     ]
   },
+ 
  
   // --- SCIENTIFIC ILLUSTRATION 
   {id: "scienceillustration", label: "Scientific Illustration", group: "Projects", type: "project",
@@ -1011,7 +987,7 @@ const logoEl = document.getElementById('sidebarLogo');
 if (LOGO_SRC) {
   logoEl.style.display = '';
   const scheme = document.documentElement.getAttribute('data-scheme');
-  const src = (scheme === 'night' || '3am')
+  const src = (scheme === 'night' || scheme === '3am')
     ? LOGO_SRCinv
     : LOGO_SRC;
   logoEl.innerHTML = `<img src="${src}" alt="Logo"/>`;
@@ -1282,7 +1258,7 @@ function renderProject(p) {
     if (s.p5) {
       return `
         <figure class="p5-breakout">
-          <div class="p5-container" data-p5 data-sketch="${s.sketch || 'starfield'}" style="height:${s.height || 400}px"></div>
+          <div class="p5-container" data-p5 data-sketch="${s.sketch}" style="height:${s.height || 400}px"></div>
           ${s.caption ? `<figcaption style="padding:0 52px">${s.caption}</figcaption>` : ''}
         </figure>
       `;
